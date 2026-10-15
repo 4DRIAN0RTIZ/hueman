@@ -189,3 +189,85 @@ def test_marker_splice_preserves_content_after_end_byte_for_byte(tmp_path, logge
     out = _apply(env, target, output, logger)
 
     assert out.endswith("# END HUEMAN\n" + tail)
+
+
+def test_overwrite_returns_false_when_every_output_skipped(tmp_path, logger):
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "demo.j2").write_text("content\n")
+    target = Target(
+        name="demo", template="demo.j2", skip_if_missing_parent=True,
+        outputs=[tmp_path / "gone" / "a.conf", tmp_path / "gone2" / "b.conf"],
+    )
+
+    assert render_target(env, target, "nord", {}, False, logger) is False
+
+
+def test_overwrite_returns_true_when_at_least_one_output_written(tmp_path, logger):
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "demo.j2").write_text("content\n")
+    target = Target(
+        name="demo", template="demo.j2", skip_if_missing_parent=True,
+        outputs=[tmp_path / "gone" / "a.conf", tmp_path / "b.conf"],
+    )
+
+    assert render_target(env, target, "nord", {}, False, logger) is True
+
+
+def test_overwrite_dry_run_returns_true_when_it_would_write(tmp_path, logger):
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "demo.j2").write_text("content\n")
+    target = Target(name="demo", template="demo.j2", outputs=[tmp_path / "a.conf"])
+
+    assert render_target(env, target, "nord", {}, True, logger) is True
+
+
+def test_patch_returns_false_when_every_output_missing(tmp_path, logger):
+    env, target = _splice_target(tmp_path, tmp_path / "missing.conf")
+
+    assert render_target(env, target, "nord", {}, False, logger) is False
+
+
+def test_patch_returns_false_when_parent_missing_and_skipped(tmp_path, logger):
+    env, target = _splice_target(tmp_path, tmp_path / "nodir" / "c.conf")
+    target.skip_if_missing_parent = True
+
+    assert render_target(env, target, "nord", {}, False, logger) is False
+
+
+def test_patch_returns_true_when_an_output_was_patched(tmp_path, logger):
+    output = tmp_path / "config.conf"
+    output.write_text("x\n")
+    env, target = _splice_target(tmp_path, output)
+    target.outputs = [tmp_path / "missing.conf", output]
+
+    assert render_target(env, target, "nord", {}, False, logger) is True
+
+
+def test_json_scheme_patch_returns_false_when_output_missing(tmp_path, logger):
+    env = env_for(tmp_path)
+    target = Target(
+        name="wt", mode="patch", outputs=[tmp_path / "nope.json"],
+        patch=PatchSpec(strategy="json_scheme_upsert", palette_section="kitty"),
+    )
+
+    assert render_target(env, target, "nord", {"kitty": {}}, False, logger) is False
+
+
+def test_reload_not_fired_when_all_outputs_skipped(tmp_path, monkeypatch):
+    from engine.config import HuemanConfig
+    from hueman import Hueman
+
+    (tmp_path / "t.j2").write_text("x\n")
+    (tmp_path / "palette.yaml").write_text("name: demo\nkitty: {}\n")
+    (tmp_path / "hueman.yaml").write_text(
+        f"state_file: {tmp_path / 'state'}\npalette_dirs: [{tmp_path}]\n"
+        f"template_dirs: [{tmp_path}]\ntargets:\n  t:\n    template: t.j2\n"
+        f"    palette_key: kitty\n    skip_if_missing_parent: true\n"
+        f"    outputs: ['{tmp_path}/nope/out']\n    reload: 'r'\n"
+    )
+    reloads = []
+    monkeypatch.setattr("hueman.run_reload", lambda cmd, logger: reloads.append(cmd))
+
+    Hueman(HuemanConfig(tmp_path / "hueman.yaml")).set_theme("palette")
+
+    assert reloads == []
