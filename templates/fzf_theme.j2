@@ -1,12 +1,12 @@
 # Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
-export FZF_DEFAULT_OPTS="
-  --color=bg:{{ background }},bg+:{{ background_alt }}
-  --color=fg:{{ foreground }},fg+:{{ foreground }}
-  --color=hl:{{ primary }},hl+:{{ primary }}
-  --color=prompt:{{ primary }},pointer:{{ primary }}
-  --color=marker:{{ success }},border:{{ secondary }}
-"
+# Los colores viven en ~/.fzf_opts (fzf_opts.j2), que fzf lee en cada
+# ejecución. Se hace unset de FZF_DEFAULT_OPTS porque los procesos que
+# arrancaron con un tema anterior (p. ej. el servidor de herdr) la heredan
+# congelada, y fzf la aplica encima del archivo.
+unset FZF_DEFAULT_OPTS
+export FZF_DEFAULT_OPTS_FILE="$HOME/.fzf_opts"
 
+# Sin colores: fzf aplica primero FZF_DEFAULT_OPTS_FILE y después esto.
 export FZF_CTRL_R_OPTS="
   --height=60%
   --layout=reverse
@@ -14,7 +14,4 @@ export FZF_CTRL_R_OPTS="
   --prompt='󰋚  History > '
   --pointer='▶'
   --marker='✓'
-  --color=bg+:{{ background_alt }},bg:{{ background }},spinner:{{ secondary }},hl:{{ primary }}
-  --color=fg:{{ foreground }},header:{{ secondary }},info:{{ secondary }},pointer:{{ primary }}
-  --color=marker:{{ success }},fg+:{{ foreground }},prompt:{{ primary }},hl+:{{ primary }}
 "
