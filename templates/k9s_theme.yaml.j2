@@ -1,0 +1,83 @@
+# Generado por themectl — no editar a mano, se sobreescribe en cada `theme set`.
+# Activar con `skin: current` bajo [k9s] en ~/.config/k9s/config.yaml
+k9s:
+  body:
+    fgColor: "{{ foreground }}"
+    bgColor: "{{ background }}"
+    logoColor: "{{ primary }}"
+  prompt:
+    fgColor: "{{ foreground }}"
+    bgColor: "{{ background }}"
+    suggestColor: "{{ secondary }}"
+  info:
+    fgColor: "{{ secondary }}"
+    sectionColor: "{{ foreground }}"
+  dialog:
+    fgColor: "{{ foreground }}"
+    bgColor: "{{ background }}"
+    buttonFgColor: "{{ foreground }}"
+    buttonBgColor: "{{ primary }}"
+    buttonFocusFgColor: "{{ primary | contrast }}"
+    buttonFocusBgColor: "{{ primary }}"
+    labelFgColor: "{{ warning }}"
+    fieldFgColor: "{{ foreground }}"
+  frame:
+    border:
+      fgColor: "{{ muted }}"
+      focusColor: "{{ primary }}"
+    menu:
+      fgColor: "{{ foreground }}"
+      keyColor: "{{ secondary }}"
+      numKeyColor: "{{ secondary }}"
+    crumbs:
+      fgColor: "{{ foreground }}"
+      bgColor: "{{ background_alt }}"
+      activeColor: "{{ background_alt }}"
+    status:
+      newColor: "{{ secondary }}"
+      modifyColor: "{{ primary }}"
+      addColor: "{{ success }}"
+      errorColor: "{{ alert }}"
+      highlightColor: "{{ warning }}"
+      killColor: "{{ muted }}"
+      completedColor: "{{ muted }}"
+    title:
+      fgColor: "{{ foreground }}"
+      bgColor: "{{ background_alt }}"
+      highlightColor: "{{ warning }}"
+      counterColor: "{{ primary }}"
+      filterColor: "{{ secondary }}"
+  views:
+    charts:
+      bgColor: default
+      defaultDialColors:
+        - "{{ primary }}"
+        - "{{ alert }}"
+      defaultChartColors:
+        - "{{ primary }}"
+        - "{{ alert }}"
+    table:
+      fgColor: "{{ foreground }}"
+      bgColor: "{{ background }}"
+      header:
+        fgColor: "{{ foreground }}"
+        bgColor: "{{ background }}"
+        sorterColor: "{{ secondary }}"
+    xray:
+      fgColor: "{{ foreground }}"
+      bgColor: "{{ background }}"
+      cursorColor: "{{ background_alt }}"
+      graphicColor: "{{ primary }}"
+      showIcons: false
+    yaml:
+      keyColor: "{{ secondary }}"
+      colonColor: "{{ primary }}"
+      valueColor: "{{ foreground }}"
+    logs:
+      fgColor: "{{ foreground }}"
+      bgColor: "{{ background }}"
+      indicator:
+        fgColor: "{{ foreground }}"
+        bgColor: "{{ primary }}"
+        toggleOnColor: "{{ success }}"
+        toggleOffColor: "{{ secondary }}"

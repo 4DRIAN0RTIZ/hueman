@@ -1,0 +1,19 @@
+# Generado por themectl — no editar a mano, se sobreescribe en cada `theme set`.
+# lazydocker (gocui) solo acepta 8 nombres ANSI fijos + atributos
+# (default/black/red/green/yellow/blue/magenta/cyan/white, bold/reverse/
+# underline) — NO hex propio. Por eso este bloque es estático: hereda el
+# color real directamente de la paleta ANSI del terminal activo (kitty/
+# wezterm color0-7), no de los valores hex de esta paleta de themectl.
+# "blue" se usa como acento (equivalente al rol "primary" en los demás
+# templates) para mantener consistencia visual con el resto del setup.
+gui:
+  theme:
+    activeBorderColor:
+      - blue
+      - bold
+    inactiveBorderColor:
+      - white
+    selectedLineBgColor:
+      - blue
+    optionsTextColor:
+      - blue
