@@ -23,6 +23,16 @@ coincidencias termina con exit 1 y lista los targets validos. Con `--only`
 **no** se escribe el state file (el tema activo no cambia) y **no** corre
 `post_apply`: es una re-renderizacion parcial, no un cambio de tema.
 
+### Placeholders en `reload` / `post_apply`
+
+Los comandos pueden usar `{name}` (alias `{palette}`) y `{seccion.clave}`
+(lookup con punto en la paleta activa, ej. `{kitty.color4}`). El valor se
+inserta con `shlex.quote`. `${VAR}`, `$(...)` y llaves sin punto (ej.
+`find -exec {} +`) quedan intactas; un `{a.b}` que no existe en la paleta
+aborta con un error claro. Ejemplo:
+`reload: "python3 ~/x.py --name {name} --color {kitty.color4}"`.
+Con `set --dry-run` se imprimen los `post_apply` ya expandidos.
+
 ## Arquitectura
 
 - `engine/colors.py` — helpers de contraste/luminancia (WCAG), expuestos como filtros Jinja `contrast`/`is_dark`.

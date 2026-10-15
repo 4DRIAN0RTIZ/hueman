@@ -33,3 +33,19 @@ def test_dollar_brace_and_unknown_plain_braces_left_alone():
 def test_unknown_dotted_key_fails_clearly():
     with pytest.raises(ValueError, match="kitty.nope"):
         expand_command("x {kitty.nope}", "demo", PALETTE)
+
+
+def test_set_theme_expands_post_apply_placeholders(tmp_path, monkeypatch):
+    from engine.config import HuemanConfig
+    from hueman import Hueman
+
+    (tmp_path / "pal.yaml").write_text("kitty:\n  color4: '#112233'\n")
+    cfg = tmp_path / "h.yaml"
+    cfg.write_text(
+        f"state_file: {tmp_path / 'state'}\npalette_dirs: [{tmp_path}]\n"
+        "targets: {}\npost_apply: ['run {name} {kitty.color4} ${HOME}']\n"
+    )
+    calls = []
+    monkeypatch.setattr("hueman.run_post_apply", lambda commands, logger: calls.append(commands))
+    Hueman(HuemanConfig(cfg)).set_theme("pal")
+    assert calls == [["run pal '#112233' ${HOME}"]]

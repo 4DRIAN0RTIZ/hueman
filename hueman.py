@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from engine.config import HuemanConfig  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
-from engine.reload import run_post_apply, run_reload  # noqa: E402
+from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
 from engine.render import make_jinja_env, render_target  # noqa: E402
 
 HUEMAN_DIR = Path(__file__).resolve().parent
@@ -70,15 +70,21 @@ class Hueman:
             env = self._jinja_env(target.jinja_delimiters)
             wrote = render_target(env, target, name, palette, dry_run, self.config.logger)
             if not dry_run and wrote and target.reload:
-                run_reload(target.reload, self.config.logger)
+                run_reload(expand_command(target.reload, name, palette), self.config.logger)
 
-        if dry_run or only:
+        if only:
+            return
+
+        post_apply = [expand_command(c, name, palette) for c in self.config.post_apply]
+        if dry_run:
+            for cmd in post_apply:
+                print(f"[DRY RUN] post_apply: {cmd}")
             return
 
         self.config.state_file.parent.mkdir(parents=True, exist_ok=True)
         self.config.state_file.write_text(name + "\n")
         self.config.logger.info(f"Tema activo: {name}")
-        run_post_apply(self.config.post_apply, self.config.logger)
+        run_post_apply(post_apply, self.config.logger)
 
     def status(self) -> None:
         print(f"Tema activo: {self.current_theme() or '(ninguno)'}")

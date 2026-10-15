@@ -53,5 +53,10 @@ targets:
 
 # Comandos que corren una sola vez al final de `set`, no por target.
 # No corren cuando se usa `set --only ...` (re-render parcial).
+# Los comandos de `reload` y `post_apply` admiten placeholders: `{name}`
+# (o `{palette}`) y `{seccion.clave}` (lookup en la paleta activa, ej.
+# `{kitty.color4}`); se sustituyen ya shell-quoted. `${VAR}` no se toca y
+# una clave con punto inexistente es un error.
 post_apply:
+  # - "python3 ~/x.py --name {name} --color {kitty.color4}"
   - "command -v oh-my-posh >/dev/null 2>&1 && oh-my-posh enable reload || true"
