@@ -10,6 +10,10 @@ import jinja2
 from .colors import contrast_text, is_dark
 
 
+class TargetRenderError(Exception):
+    """A target could not be rendered (e.g. the palette lacks a required key)."""
+
+
 def _dig(data: dict, dotted_path: str):
     cur = data
     for part in dotted_path.split("."):
@@ -39,7 +43,10 @@ def build_context(target, name: str, palette: dict) -> dict:
     if target.palette_key and target.palette_key in palette:
         context.update(palette[target.palette_key])
     for key, dotted_path in target.extra_vars.items():
-        context[key] = _dig(palette, dotted_path)
+        try:
+            context[key] = _dig(palette, dotted_path)
+        except (KeyError, TypeError):
+            raise KeyError(dotted_path) from None
     return context
 
 
@@ -192,6 +199,12 @@ def render_patch(env, target, name, palette, dry_run, logger) -> bool:
 
 
 def render_target(env, target, name, palette, dry_run, logger) -> bool:
-    if target.mode == "overwrite":
-        return render_overwrite(env, target, name, palette, dry_run, logger)
-    return render_patch(env, target, name, palette, dry_run, logger)
+    try:
+        if target.mode == "overwrite":
+            return render_overwrite(env, target, name, palette, dry_run, logger)
+        return render_patch(env, target, name, palette, dry_run, logger)
+    except (KeyError, TypeError) as exc:
+        key = exc.args[0] if exc.args else exc
+        raise TargetRenderError(
+            f"{target.name}: la paleta '{name}' no tiene la clave {key!r} requerida"
+        ) from exc

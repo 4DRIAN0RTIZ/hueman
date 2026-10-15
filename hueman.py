@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from engine.config import HuemanConfig  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
-from engine.render import make_jinja_env, render_target  # noqa: E402
+from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
 
 HUEMAN_DIR = Path(__file__).resolve().parent
 PACKAGED_PALETTES = HUEMAN_DIR / "palettes"
@@ -60,31 +60,42 @@ class Hueman:
             )
         return [t for t in targets if any(fnmatch.fnmatchcase(t.name, p) for p in only)]
 
-    def set_theme(self, name: str, dry_run: bool = False, only=None) -> None:
+    def set_theme(self, name: str, dry_run: bool = False, only=None) -> list:
         """Con `only` (patrones fnmatch) se renderizan solo los targets que
         coinciden y se dispara solo su reload; NO se escribe el state file ni
-        corre post_apply (es una re-renderizacion parcial, no un cambio de tema)."""
+        corre post_apply (es una re-renderizacion parcial, no un cambio de tema).
+
+        Un target cuyo render falla por una clave ausente en la paleta se
+        omite con un warning y el resto continua; devuelve los nombres de los
+        targets fallidos (el CLI sale con codigo 1 si hay alguno)."""
         selected = self._select_targets(only)
         palette = self.palettes.load(name)
+        failed = []
         for target in selected:
             env = self._jinja_env(target.jinja_delimiters)
-            wrote = render_target(env, target, name, palette, dry_run, self.config.logger)
+            try:
+                wrote = render_target(env, target, name, palette, dry_run, self.config.logger)
+            except TargetRenderError as exc:
+                self.config.logger.warning(f"{exc}; target omitido")
+                failed.append(target.name)
+                continue
             if not dry_run and wrote and target.reload:
                 run_reload(expand_command(target.reload, name, palette), self.config.logger)
 
         if only:
-            return
+            return failed
 
         post_apply = [expand_command(c, name, palette) for c in self.config.post_apply]
         if dry_run:
             for cmd in post_apply:
                 print(f"[DRY RUN] post_apply: {cmd}")
-            return
+            return failed
 
         self.config.state_file.parent.mkdir(parents=True, exist_ok=True)
         self.config.state_file.write_text(name + "\n")
         self.config.logger.info(f"Tema activo: {name}")
         run_post_apply(post_apply, self.config.logger)
+        return failed
 
     def status(self) -> None:
         print(f"Tema activo: {self.current_theme() or '(ninguno)'}")
@@ -125,9 +136,12 @@ def main():
     if args.command == "set":
         only = [p.strip() for v in args.only or [] for p in v.split(",") if p.strip()] or None
         try:
-            tc.set_theme(args.name, args.dry_run, only=only)
+            failed = tc.set_theme(args.name, args.dry_run, only=only)
         except UnknownTargetError as e:
             print(str(e), file=sys.stderr)
+            sys.exit(1)
+        if failed:
+            print(f"Targets omitidos por errores: {', '.join(failed)}", file=sys.stderr)
             sys.exit(1)
     elif args.command == "list":
         print("\n".join(tc.list_palettes()))
