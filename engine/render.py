@@ -91,7 +91,11 @@ def _apply_regex_splice(original: str, rendered: str, patch, logger) -> str:
         # Marcadores begin/end literales envolviendo el contenido renderizado.
         marker_begin = patch.marker_begin
         marker_end = patch.marker_end
-        end_pattern = patch.marker_end_regex or re.escape(marker_end)
+        if patch.marker_end_regex:
+            end_pattern = patch.marker_end_regex
+        else:
+            # Consume the newline after END: full_block re-adds it.
+            end_pattern = re.escape(marker_end) + r"\n?"
         pattern = re.compile(re.escape(marker_begin) + r".*?" + end_pattern, re.DOTALL)
         if marker_end and not patch.marker_end_regex:
             full_block = f"{marker_begin}\n{rendered}{marker_end}\n"

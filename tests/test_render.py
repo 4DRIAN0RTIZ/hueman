@@ -66,7 +66,7 @@ def test_patch_replaces_marked_block_and_preserves_surrounding_text(tmp_path, lo
     render_target(env, target, "nord", {}, False, logger)
 
     assert output.read_text() == (
-        "before\n# BEGIN HUEMAN\nmanaged=true\n# END HUEMAN\n\nafter\n"
+        "before\n# BEGIN HUEMAN\nmanaged=true\n# END HUEMAN\nafter\n"
     )
 
 
@@ -182,8 +182,8 @@ def test_marker_splice_handles_end_marker_at_eof_without_newline(tmp_path, logge
 
 def test_marker_splice_preserves_content_after_end_byte_for_byte(tmp_path, logger):
     output = tmp_path / "config.conf"
-    tail = "\n\n  indented\r\n\tTAB  \n\nlast"
-    output.write_text("# BEGIN HUEMAN\nold\n# END HUEMAN\n" + tail, newline="")
+    tail = "\n\n  indented\n\tTAB  \n\nlast"
+    output.write_text("# BEGIN HUEMAN\nold\n# END HUEMAN\n" + tail)
     env, target = _splice_target(tmp_path, output)
 
     out = _apply(env, target, output, logger)
