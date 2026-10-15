@@ -271,3 +271,86 @@ def test_reload_not_fired_when_all_outputs_skipped(tmp_path, monkeypatch):
     Hueman(HuemanConfig(tmp_path / "hueman.yaml")).set_theme("palette")
 
     assert reloads == []
+
+
+def test_missing_extra_var_key_raises_target_render_error_naming_target_and_key(tmp_path, logger):
+    from engine.render import TargetRenderError
+
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "demo.j2").write_text("{{ panel }}\n")
+    target = Target(
+        name="posting", template="demo.j2", outputs=[tmp_path / "o"],
+        extra_vars={"panel": "pi.vars.elevatedBg"},
+    )
+
+    with pytest.raises(TargetRenderError) as exc:
+        render_target(env, target, "nord", {"pi": {}}, False, logger)
+
+    assert "posting" in str(exc.value) and "pi.vars.elevatedBg" in str(exc.value)
+    assert not (tmp_path / "o").exists()
+
+
+def test_missing_json_scheme_section_raises_target_render_error(tmp_path, logger):
+    from engine.render import TargetRenderError
+
+    env = env_for(tmp_path)
+    out = tmp_path / "s.json"
+    out.write_text("{}")
+    target = Target(
+        name="wt", mode="patch", outputs=[out],
+        patch=PatchSpec(strategy="json_scheme_upsert", palette_section="kitty"),
+    )
+
+    with pytest.raises(TargetRenderError) as exc:
+        render_target(env, target, "nord", {}, False, logger)
+
+    assert "wt" in str(exc.value) and "kitty" in str(exc.value)
+
+
+def _failing_app(tmp_path, monkeypatch):
+    from engine.config import HuemanConfig
+    from hueman import Hueman
+
+    (tmp_path / "t.j2").write_text("{{ panel|default('') }}ok\n")
+    (tmp_path / "palette.yaml").write_text("name: demo\nkitty: {}\n")
+    (tmp_path / "hueman.yaml").write_text(
+        f"state_file: {tmp_path / 'state'}\npalette_dirs: [{tmp_path}]\n"
+        f"template_dirs: [{tmp_path}]\ntargets:\n"
+        f"  bad:\n    template: t.j2\n    palette_key: kitty\n"
+        f"    extra_vars: {{panel: pi.vars.x}}\n    outputs: ['{tmp_path}/bad.out']\n"
+        f"    reload: 'reload-bad'\n"
+        f"  good:\n    template: t.j2\n    palette_key: kitty\n"
+        f"    outputs: ['{tmp_path}/good.out']\n    reload: 'reload-good'\n"
+        f"post_apply: ['echo done']\n"
+    )
+    reloads, post = [], []
+    monkeypatch.setattr("hueman.run_reload", lambda cmd, logger: reloads.append(cmd))
+    monkeypatch.setattr("hueman.run_post_apply", lambda c, logger: post.append(c))
+    return Hueman(HuemanConfig(tmp_path / "hueman.yaml")), reloads, post
+
+
+def test_set_theme_skips_failing_target_continues_and_returns_failures(tmp_path, monkeypatch, caplog):
+    app, reloads, post = _failing_app(tmp_path, monkeypatch)
+
+    with caplog.at_level(logging.WARNING, logger="hueman"):
+        failed = app.set_theme("palette")
+
+    assert failed == ["bad"]
+    assert not (tmp_path / "bad.out").exists()
+    assert (tmp_path / "good.out").exists()
+    assert reloads == ["reload-good"]
+    assert (tmp_path / "state").read_text() == "palette\n"
+    assert any("bad" in r.message and "pi.vars.x" in r.message for r in caplog.records)
+
+
+def test_cli_exits_nonzero_when_a_target_failed(tmp_path, monkeypatch):
+    import hueman
+
+    monkeypatch.setattr(hueman.Hueman, "set_theme", lambda self, *a, **k: ["bad"])
+    (tmp_path / "c.yaml").write_text(f"state_file: {tmp_path / 's'}\ntargets: {{}}\n")
+    monkeypatch.setattr("sys.argv", ["hueman", "--config", str(tmp_path / "c.yaml"), "set", "p"])
+
+    with pytest.raises(SystemExit) as exc:
+        hueman.main()
+
+    assert exc.value.code == 1
