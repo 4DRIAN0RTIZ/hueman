@@ -15,7 +15,7 @@ from engine.render import make_jinja_env, render_template
 
 ROOT = Path(__file__).resolve().parent.parent
 REAL_CONFIG = Path(
-    os.environ.get("HUEMAN_REAL_CONFIG", "~/MyDotFiles/theme/themectl.config.yaml")
+    os.environ.get("HUEMAN_REAL_CONFIG", "~/.config/hueman/config.yaml")
 ).expanduser()
 PALETTE = "synthwave"
 
