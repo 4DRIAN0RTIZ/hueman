@@ -127,3 +127,65 @@ def test_windhawk_taskbar_template_matches_legacy_json(tmp_path, logger):
     assert render_target(env, target, "synthwave", palette, False, logger) is True
     legacy = json.dumps({"fill": "#170b2f", "text": "#ff2bd6"}, indent=2) + "\n"
     assert output.read_text() == legacy
+
+
+def _splice_target(tmp_path, output):
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "block.j2").write_text("managed=true\n")
+    patch = PatchSpec(marker_begin="# BEGIN HUEMAN", marker_end="# END HUEMAN")
+    target = Target(
+        name="patch", mode="patch", template="block.j2", outputs=[output], patch=patch
+    )
+    return env, target
+
+
+def _apply(env, target, output, logger):
+    render_target(env, target, "nord", {}, False, logger)
+    return output.read_text()
+
+
+def test_marker_splice_is_idempotent_with_existing_markers(tmp_path, logger):
+    output = tmp_path / "config.conf"
+    output.write_text("before\n# BEGIN HUEMAN\nold\n# END HUEMAN\nafter\n")
+    env, target = _splice_target(tmp_path, output)
+
+    first = _apply(env, target, output, logger)
+    second = _apply(env, target, output, logger)
+
+    assert first == second
+    assert first == "before\n# BEGIN HUEMAN\nmanaged=true\n# END HUEMAN\nafter\n"
+
+
+def test_marker_splice_appends_once_without_markers_then_is_stable(tmp_path, logger):
+    output = tmp_path / "config.conf"
+    output.write_text("before\n")
+    env, target = _splice_target(tmp_path, output)
+
+    first = _apply(env, target, output, logger)
+    second = _apply(env, target, output, logger)
+
+    assert first == "before\n\n# BEGIN HUEMAN\nmanaged=true\n# END HUEMAN\n"
+    assert second == first
+
+
+def test_marker_splice_handles_end_marker_at_eof_without_newline(tmp_path, logger):
+    output = tmp_path / "config.conf"
+    output.write_text("before\n# BEGIN HUEMAN\nold\n# END HUEMAN")
+    env, target = _splice_target(tmp_path, output)
+
+    first = _apply(env, target, output, logger)
+    second = _apply(env, target, output, logger)
+
+    assert first == "before\n# BEGIN HUEMAN\nmanaged=true\n# END HUEMAN\n"
+    assert second == first
+
+
+def test_marker_splice_preserves_content_after_end_byte_for_byte(tmp_path, logger):
+    output = tmp_path / "config.conf"
+    tail = "\n\n  indented\r\n\tTAB  \n\nlast"
+    output.write_text("# BEGIN HUEMAN\nold\n# END HUEMAN\n" + tail, newline="")
+    env, target = _splice_target(tmp_path, output)
+
+    out = _apply(env, target, output, logger)
+
+    assert out.endswith("# END HUEMAN\n" + tail)
