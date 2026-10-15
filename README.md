@@ -9,12 +9,19 @@ de salida vive en un `hueman.config.yaml` propio, fuera de esta carpeta.
 ## Uso
 
 ```
-python3 hueman.py --config /ruta/a/hueman.config.yaml set <paleta> [--dry-run]
+python3 hueman.py --config /ruta/a/hueman.config.yaml set <paleta> [--dry-run] [--only NOMBRE[,NOMBRE...]]
 python3 hueman.py --config /ruta/a/hueman.config.yaml list
 python3 hueman.py --config /ruta/a/hueman.config.yaml status
 ```
 
 Ver `hueman.config.example.yaml` para el esquema completo de un target.
+
+`--only` (repetible, acepta lista separada por comas y globs `fnmatch`, ej.
+`--only 'qutebrowser_userstyle_*'`) limita `set` a los targets cuyo nombre
+coincide: solo esos se renderizan y solo sus `reload` corren. Un patron sin
+coincidencias termina con exit 1 y lista los targets validos. Con `--only`
+**no** se escribe el state file (el tema activo no cambia) y **no** corre
+`post_apply`: es una re-renderizacion parcial, no un cambio de tema.
 
 ## Arquitectura
 

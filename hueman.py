@@ -7,6 +7,7 @@ dotfiles externo — todo el mapeo de rutas es explícito en ese config.
 """
 
 import argparse
+import fnmatch
 import sys
 from pathlib import Path
 
@@ -20,6 +21,10 @@ from engine.render import make_jinja_env, render_target  # noqa: E402
 HUEMAN_DIR = Path(__file__).resolve().parent
 PACKAGED_PALETTES = HUEMAN_DIR / "palettes"
 PACKAGED_TEMPLATES = HUEMAN_DIR / "templates"
+
+
+class UnknownTargetError(ValueError):
+    """Un patron de --only no coincide con ningun target."""
 
 
 class Hueman:
@@ -42,15 +47,32 @@ class Hueman:
     def current_theme(self):
         return self.config.state_file.read_text().strip() if self.config.state_file.exists() else None
 
-    def set_theme(self, name: str, dry_run: bool = False) -> None:
+    def _select_targets(self, only):
+        targets = self.config.targets
+        if not only:
+            return targets
+        names = [t.name for t in targets]
+        missing = [p for p in only if not fnmatch.filter(names, p)]
+        if missing:
+            raise UnknownTargetError(
+                f"--only sin coincidencias: {', '.join(missing)}. "
+                f"Targets validos: {', '.join(names)}"
+            )
+        return [t for t in targets if any(fnmatch.fnmatchcase(t.name, p) for p in only)]
+
+    def set_theme(self, name: str, dry_run: bool = False, only=None) -> None:
+        """Con `only` (patrones fnmatch) se renderizan solo los targets que
+        coinciden y se dispara solo su reload; NO se escribe el state file ni
+        corre post_apply (es una re-renderizacion parcial, no un cambio de tema)."""
+        selected = self._select_targets(only)
         palette = self.palettes.load(name)
-        for target in self.config.targets:
+        for target in selected:
             env = self._jinja_env(target.jinja_delimiters)
             wrote = render_target(env, target, name, palette, dry_run, self.config.logger)
             if not dry_run and wrote and target.reload:
                 run_reload(target.reload, self.config.logger)
 
-        if dry_run:
+        if dry_run or only:
             return
 
         self.config.state_file.parent.mkdir(parents=True, exist_ok=True)
@@ -74,6 +96,11 @@ def main():
     set_p = sub.add_parser("set", help="Aplicar un tema")
     set_p.add_argument("name")
     set_p.add_argument("--dry-run", action="store_true")
+    set_p.add_argument(
+        "--only", action="append", metavar="NAME[,NAME...]",
+        help="Limitar a targets por nombre o glob (repetible). No actualiza "
+        "el state file ni corre post_apply.",
+    )
 
     sub.add_parser("list", help="Listar paletas disponibles")
     sub.add_parser("status", help="Mostrar tema activo y estado de los targets")
@@ -90,7 +117,12 @@ def main():
 
     tc = Hueman(HuemanConfig(config_path))
     if args.command == "set":
-        tc.set_theme(args.name, args.dry_run)
+        only = [p.strip() for v in args.only or [] for p in v.split(",") if p.strip()] or None
+        try:
+            tc.set_theme(args.name, args.dry_run, only=only)
+        except UnknownTargetError as e:
+            print(str(e), file=sys.stderr)
+            sys.exit(1)
     elif args.command == "list":
         print("\n".join(tc.list_palettes()))
     elif args.command == "status":

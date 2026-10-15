@@ -52,5 +52,6 @@ targets:
       - "~/.config/starship.toml"
 
 # Comandos que corren una sola vez al final de `set`, no por target.
+# No corren cuando se usa `set --only ...` (re-render parcial).
 post_apply:
   - "command -v oh-my-posh >/dev/null 2>&1 && oh-my-posh enable reload || true"
