@@ -1,0 +1,107 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "foreground": "[[ session_fg ]]",
+          "style": "plain",
+          "template": "<[[ separator_fg ]]>┌─[</>{{ .UserName }}<[[ separator_fg ]]>]</>",
+          "type": "session"
+        },
+        {
+          "foreground": "[[ git_fg ]]",
+          "options": {
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "plain",
+          "template": "<[[ separator_fg ]]>──[</>{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}<[[ git_working_fg ]]> ●</>{{ end }}{{ if .Staging.Changed }}<[[ git_staging_fg ]]> ●</>{{ end }}<[[ separator_fg ]]>]</>",
+          "type": "git"
+        },
+        {
+          "foreground": "[[ aws_fg ]]",
+          "style": "plain",
+          "template": "<[[ separator_fg ]]>──[</>{{.Profile}}{{if .Region}}@{{.Region}}{{end}}<[[ separator_fg ]]>]</>",
+          "type": "aws"
+        },
+        {
+          "foreground": "[[ kubectl_fg ]]",
+          "style": "plain",
+          "template": "<[[ separator_fg ]]>──[</>{{.Context}}{{if .Namespace}}::{{.Namespace}}{{end}}<[[ separator_fg ]]>]</>",
+          "type": "kubectl"
+        },
+        {
+          "foreground": "[[ root_fg ]]",
+          "style": "plain",
+          "template": "<[[ separator_fg ]]>──[</>#<[[ separator_fg ]]>]</>",
+          "type": "root"
+        },
+        {
+          "foreground": "[[ battery_fg ]]",
+          "style": "plain",
+          "template": "{{ if not .Error }}<[[ separator_fg ]]>──[</>{{ .Icon }} {{ .Percentage }}%<[[ separator_fg ]]>]</>{{ end }}",
+          "type": "battery"
+        },
+        {
+          "foreground": "[[ status_fg ]]",
+          "style": "plain",
+          "template": "{{ if gt .Code 0 }}<[[ separator_fg ]]>──[</>✗ {{ reason .Code }}<[[ separator_fg ]]>]</>{{ end }}",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "[[ path_fg ]]",
+          "options": {
+            "style": "full"
+          },
+          "style": "plain",
+          "template": "<[[ separator_fg ]]>└─[</>{{ .Path }}<[[ separator_fg ]]>]</>",
+          "type": "path"
+        },
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "[[ ticket_fg ]]",
+          "template": "{{ if .Env.LAST_TICKET }}<[[ separator_fg ]]>──[</>T {{ .Env.LAST_TICKET }}<[[ separator_fg ]]>]</>{{ end }}"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": false,
+      "segments": [
+        {
+          "foreground": "[[ venv_fg ]]",
+          "style": "plain",
+          "template": "{{ if .Venv }}  ({{ .Venv }}) {{ end }}",
+          "type": "python"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "[[ prompt_char_fg ]]",
+          "style": "plain",
+          "template": "  ❯ ",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 4
+}

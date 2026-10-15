@@ -1,0 +1,19 @@
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+# Activar con `name = "current"` bajo [theme] en ~/.config/atuin/config.toml
+[theme]
+name = "current"
+
+[colors]
+# Important: resalta la fila seleccionada en el buscador
+Important = "{{ primary }}"
+# AlertInfo: color de la duración cuando el comando fue exitoso (exit 0)
+AlertInfo = "{{ success }}"
+# AlertError: color de la duración/errores cuando el comando falló
+AlertError = "{{ alert }}"
+AlertWarn = "{{ warning }}"
+# Guidance: columna de tiempo relativo ("hace 5m")
+Guidance = "{{ secondary }}"
+# Base: texto normal del comando
+Base = "{{ foreground }}"
+# Annotation: anotaciones tenues (paths, ayuda)
+Annotation = "{{ muted }}"

@@ -1,0 +1,16 @@
+# Harness local de agentes
+/AGENTS.md
+/CLAUDE.md
+/docs/
+/progress/
+/CHECKPOINTS.md
+/init.sh
+/.claude/agents/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+graphify-out/

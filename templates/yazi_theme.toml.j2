@@ -1,0 +1,130 @@
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+
+[mgr]
+cwd = { fg = "{{ primary }}" }
+
+# Hovered
+hovered = { fg = "{{ background }}", bg = "{{ secondary }}" }
+preview_hovered = { underline = true }
+
+# Find
+find_keyword = { fg = "{{ warning }}", italic = true }
+find_position = { fg = "{{ secondary }}", bg = "reset", italic = true }
+
+# Marker
+marker_selected = { fg = "{{ success }}", bg = "{{ success }}" }
+marker_copied = { fg = "{{ warning }}", bg = "{{ warning }}" }
+marker_cut = { fg = "{{ alert }}", bg = "{{ alert }}" }
+
+# Tab
+tab_active = { fg = "{{ background }}", bg = "{{ secondary }}" }
+tab_inactive = { fg = "{{ foreground }}", bg = "{{ background_alt }}" }
+tab_width = 1
+
+# Border
+border_symbol = "│"
+border_style = { fg = "{{ muted }}" }
+
+# Highlighting
+syntect_theme = ""
+
+[status]
+separator_open = ""
+separator_close = ""
+separator_style = { fg = "{{ muted }}", bg = "{{ muted }}" }
+
+# Mode
+mode_normal = { fg = "{{ background }}", bg = "{{ secondary }}", bold = true }
+mode_select = { fg = "{{ background }}", bg = "{{ success }}", bold = true }
+mode_unset = { fg = "{{ background }}", bg = "{{ warning }}", bold = true }
+
+# Progress
+progress_label = { fg = "{{ foreground }}", bold = true }
+progress_normal = { fg = "{{ secondary }}", bg = "{{ background }}" }
+progress_error = { fg = "{{ alert }}", bg = "{{ background }}" }
+
+# Permissions
+permissions_t = { fg = "{{ success }}" }
+permissions_r = { fg = "{{ warning }}" }
+permissions_w = { fg = "{{ alert }}" }
+permissions_x = { fg = "{{ primary }}" }
+permissions_s = { fg = "{{ muted }}" }
+
+[input]
+border = { fg = "{{ secondary }}" }
+title = { fg = "{{ foreground }}" }
+value = { fg = "{{ warning }}" }
+selected = { reversed = true }
+
+[select]
+border = { fg = "{{ secondary }}" }
+active = { fg = "{{ secondary }}" }
+inactive = { fg = "{{ muted }}" }
+
+[tasks]
+border = { fg = "{{ secondary }}" }
+title = { fg = "{{ foreground }}" }
+hovered = { underline = true }
+
+[which]
+mask = { bg = "{{ background }}" }
+cand = { fg = "{{ primary }}" }
+rest = { fg = "{{ muted }}" }
+desc = { fg = "{{ secondary }}" }
+separator = "  "
+separator_style = { fg = "{{ muted }}" }
+
+[help]
+on = { fg = "{{ secondary }}" }
+exec = { fg = "{{ primary }}" }
+desc = { fg = "{{ muted }}" }
+hovered = { bg = "{{ background_alt }}", bold = true }
+footer = { fg = "{{ background }}", bg = "{{ foreground }}" }
+
+[notify]
+title_info = { fg = "{{ success }}" }
+title_warn = { fg = "{{ warning }}" }
+title_error = { fg = "{{ alert }}" }
+
+# : file, 1: symlink, 2: hardlink, 3: orphaned
+[filetype]
+
+rules = [
+	# Images
+	{ mime = "image/*", fg = "{{ primary }}" },
+
+	# Videos
+	{ mime = "video/*", fg = "{{ warning }}" },
+	{ mime = "audio/*", fg = "{{ warning }}" },
+
+	# Archives
+	{ mime = "application/zip", fg = "{{ secondary }}" },
+	{ mime = "application/gzip", fg = "{{ secondary }}" },
+	{ mime = "application/x-tar", fg = "{{ secondary }}" },
+	{ mime = "application/x-bzip", fg = "{{ secondary }}" },
+	{ mime = "application/x-bzip2", fg = "{{ secondary }}" },
+	{ mime = "application/x-7z-compressed", fg = "{{ secondary }}" },
+	{ mime = "application/x-rar", fg = "{{ secondary }}" },
+	{ mime = "application/xz", fg = "{{ secondary }}" },
+
+	# Documents
+	{ mime = "application/doc", fg = "{{ success }}" },
+	{ mime = "application/pdf", fg = "{{ success }}" },
+	{ mime = "application/rtf", fg = "{{ success }}" },
+	{ mime = "application/vnd.*", fg = "{{ success }}" },
+
+	# Text
+	{ mime = "text/*", fg = "{{ success }}" },
+
+	# Empty files
+	{ mime = "inode/x-empty", fg = "{{ alert }}" },
+
+	# Special files
+	{ url = "*", is = "orphan", bg = "{{ alert }}" },
+	{ url = "*", is = "exec", fg = "{{ primary }}" },
+
+	# Fallback
+	{ url = "*/", fg = "{{ primary }}" }
+]

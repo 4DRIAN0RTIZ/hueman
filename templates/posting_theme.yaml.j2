@@ -1,0 +1,47 @@
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+name: current
+primary: "{{ primary }}"
+secondary: "{{ secondary }}"
+accent: "{{ primary }}"
+background: "{{ background }}"
+surface: "{{ background_alt }}"
+panel: "{{ panel }}"
+error: "{{ alert }}"
+success: "{{ success }}"
+warning: "{{ warning }}"
+dark: {{ background | is_dark | lower }}
+
+text_area:
+  cursor: "reverse"
+  cursor_line: "underline"
+  cursor_line_gutter: "bold {{ foreground }}"
+  selection: "reverse"
+  gutter: "{{ muted }}"
+  matched_bracket: "{{ background }} on {{ success }}"
+url:
+  base: "italic {{ primary }}"
+  protocol: "bold {{ secondary }}"
+  separator: "dim {{ muted }}"
+syntax:
+  json_key: "italic {{ primary }}"
+  json_number: "{{ secondary }}"
+  json_string: "{{ success }}"
+  json_boolean: "{{ success }}"
+  json_null: "underline {{ muted }}"
+
+variable:
+  resolved: "{{ success }}"
+  unresolved: "{{ alert }}"
+
+method:
+  get: "underline {{ success }}"
+  post: "italic {{ primary }}"
+  put: "bold {{ warning }}"
+  delete: "strikethrough {{ alert }}"
+  patch: "italic {{ secondary }}"
+  options: "dim {{ muted }}"
+  head: "underline {{ muted }}"
+
+author: NeanderTech
+description: "Tema generado desde theme/palettes/{{ theme_name }}.yaml"
+homepage: https://github.com/4drian0rtiz

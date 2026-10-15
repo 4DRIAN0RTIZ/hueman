@@ -1,0 +1,70 @@
+-- Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+return {
+  palette = {
+    bg1     = "{{ background }}",
+    bg2     = "{{ tab_bar_background }}",
+    bg3     = "{{ inactive_tab_background }}",
+    sel0    = "{{ inactive_border_color }}",
+    fg1     = "{{ foreground }}",
+    fg2     = "{{ inactive_tab_foreground }}",
+    fg3     = "{{ color8 }}",
+    red     = "{{ color1 }}",
+    orange  = "{{ color3 }}",
+    yellow  = "{{ color11 }}",
+    green   = "{{ color2 }}",
+    blue    = "{{ color4 }}",
+    magenta = "{{ color5 }}",
+    cyan    = "{{ color6 }}",
+  },
+
+  specs = {
+    syntax = {
+      keyword  = "{{ color1 }}",
+      string   = "{{ color2 }}",
+      variable = "{{ color3 }}",
+      number   = "{{ color11 }}",
+      comment  = "{{ color8 }}",
+      builtin  = "{{ color9 }}",
+    },
+    diag = {
+      error = "{{ color9 }}",
+      warn  = "{{ color11 }}",
+      info  = "{{ color4 }}",
+      hint  = "{{ color6 }}",
+    },
+  },
+
+  groups = {
+    CursorLine                 = { bg = "{{ tab_bar_background }}" },
+    Visual                     = { bg = "{{ inactive_border_color }}", fg = "{{ foreground }}", style = "bold" },
+    LineNr                     = { fg = "{{ color4 }}" },
+    Comment                    = { fg = "{{ color8 }}", style = "italic,bold" },
+
+    DiagnosticVirtualTextError = { fg = "{{ color9 }}", bg = "{{ tab_bar_background }}" },
+    DiagnosticVirtualTextWarn  = { fg = "{{ color11 }}", bg = "{{ tab_bar_background }}" },
+    DiagnosticVirtualTextInfo  = { fg = "{{ color4 }}", bg = "{{ tab_bar_background }}" },
+    DiagnosticVirtualTextHint  = { fg = "{{ color6 }}", bg = "{{ tab_bar_background }}" },
+
+    Pmenu                      = { bg = "{{ inactive_tab_background }}", fg = "{{ foreground }}" },
+    PmenuSel                   = { bg = "{{ inactive_border_color }}", fg = "{{ color11 }}" },
+    VertSplit                  = { fg = "{{ inactive_tab_background }}" },
+    Folded                     = { bg = "{{ tab_bar_background }}", fg = "{{ color8 }}" },
+    CursorColumn               = { bg = "{{ tab_bar_background }}" },
+
+    Search                     = { bg = "{{ color11 }}", fg = "{{ background }}", style = "bold" },
+    IncSearch                  = { bg = "{{ color9 }}", fg = "{{ foreground }}", style = "bold" },
+
+    StatusLine                 = { bg = "{{ background }}", fg = "{{ foreground }}" },
+    StatusLineNC               = { bg = "{{ tab_bar_background }}", fg = "{{ color8 }}" },
+
+    LualineNormal              = { bg = "{{ background }}", fg = "{{ foreground }}" },
+    LualineNormalNC            = { bg = "{{ tab_bar_background }}", fg = "{{ color8 }}" },
+    LualineInsert              = { bg = "{{ color9 }}", fg = "{{ background }}", style = "bold" },
+    LualineVisual              = { bg = "{{ color11 }}", fg = "{{ background }}", style = "bold" },
+    LualineReplace             = { bg = "{{ color4 }}", fg = "{{ background }}", style = "bold" },
+    LualineCommand             = { bg = "{{ color6 }}", fg = "{{ background }}", style = "bold" },
+
+    WinBar                     = { bg = "{{ background }}", fg = "{{ foreground }}", style = "bold" },
+    WinBarNC                   = { bg = "{{ tab_bar_background }}", fg = "{{ color8 }}" },
+  },
+}

@@ -1,0 +1,56 @@
+# Ejemplo mínimo de configuración de hueman.
+#
+# Este archivo NO vive dentro de hueman/ — cada usuario/máquina trae el
+# suyo (por convención, junto al repo de dotfiles que va a themear, ej.
+# "~/dotfiles/theme/hueman.config.yaml"), y se lo pasa a la herramienta
+# con `hueman.py --config <ruta>` (o vía la variable HUEMAN_CONFIG, o
+# dejándolo en ~/.config/hueman/config.yaml).
+#
+# No hay concepto de "entorno" ni convención de carpetas: cada target
+# declara su lista explícita de archivos de salida (`outputs`). Si tenés
+# varias máquinas/perfiles que comparten el mismo tema, simplemente listá
+# todas las rutas ahí.
+
+# Dónde persistir el nombre de la paleta activa.
+state_file: "~/.config/hueman/current"
+
+# Paletas propias, además de las ~24 empaquetadas dentro de hueman/palettes/.
+# Si una paleta custom tiene el mismo nombre que una empaquetada, gana la custom.
+palette_dirs:
+  - "~/dotfiles/theme/palettes.custom"
+
+# Templates propios, para targets que la herramienta no trae por defecto.
+template_dirs:
+  - "~/dotfiles/theme/templates.custom"
+
+targets:
+  # --- Ejemplo "overwrite": reemplaza el archivo entero.
+  kitty:
+    template: kitty.conf.j2
+    palette_key: kitty
+    mode: overwrite
+    outputs:
+      - "~/.config/kitty/theme.conf"
+    reload: "pgrep -x kitty >/dev/null 2>&1 && pkill -USR1 -x kitty || true"
+
+  # --- Ejemplo "patch": splice regex sobre un archivo ya existente, sin
+  # tocar el resto de su contenido (útil para configs escritas a mano,
+  # como el prompt de starship).
+  starship:
+    template: starship_block.toml.j2
+    palette_key: polybar
+    mode: patch
+    patch:
+      marker_regex: '# --- Bloque gestionado por theme_manager\.py.*?\[palettes\.dotfiles\][^\[]*'
+      replacements:
+        - ['style = "bold green"', 'style = "bold success"']
+      ensure_after:
+        - if_missing_regex: '(?m)^palette\s*='
+          anchor: "add_newline = false\n"
+          insert: 'palette = "dotfiles"\n'
+    outputs:
+      - "~/.config/starship.toml"
+
+# Comandos que corren una sola vez al final de `set`, no por target.
+post_apply:
+  - "command -v oh-my-posh >/dev/null 2>&1 && oh-my-posh enable reload || true"

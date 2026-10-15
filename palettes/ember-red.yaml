@@ -1,0 +1,111 @@
+meta:
+  name: ember-red
+
+kitty:
+  foreground: "#d8c7bf"
+  background: "#0b0a0a"
+  selection_foreground: "#0b0a0a"
+  selection_background: "#b85c5c"
+  url_color: "#8faeb8"
+
+  color0: "#0b0a0a"
+  color1: "#b85c5c"
+  color2: "#8aa872"
+  color3: "#c89b62"
+  color4: "#7f9fb3"
+  color5: "#a6819f"
+  color6: "#8aa6a2"
+  color7: "#d8c7bf"
+
+  color8: "#5f5552"
+  color9: "#e06c6c"
+  color10: "#9fbc87"
+  color11: "#d8ad70"
+  color12: "#91b6c9"
+  color13: "#bd93b4"
+  color14: "#9bbfba"
+  color15: "#f0ddd2"
+
+  cursor: "#c89b62"
+  cursor_text_color: "#0b0a0a"
+
+  active_tab_foreground: "#0b0a0a"
+  active_tab_background: "#b85c5c"
+  inactive_tab_foreground: "#9a8c86"
+  inactive_tab_background: "#181211"
+  tab_bar_background: "#100d0c"
+  tab_bar_margin_color: "#0b0a0a"
+
+  mark1_foreground: "#0b0a0a"
+  mark1_background: "#e06c6c"
+
+  active_border_color: "#b85c5c"
+  inactive_border_color: "#2a211f"
+  bell_border_color: "#e06c6c"
+  visual_bell_color: "#e06c6c"
+
+  search_result_foreground: "#0b0a0a"
+  search_result_background: "#c89b62"
+  search_current_match_foreground: "#0b0a0a"
+  search_current_match_background: "#e06c6c"
+
+tmux:
+  status_bg: "#0b0a0a"
+  status_fg: "#d8c7bf"
+  pane_border_fg: "#2a211f"
+  pane_active_border_fg: "#b85c5c"
+
+  segment_session_bg: "#b85c5c"
+  segment_session_fg: "#0b0a0a"
+  separator_fg: "#5f5552"
+
+  segment_time_fg: "#7f9fb3"
+  segment_date_fg: "#c89b62"
+  segment_user_fg: "#8aa872"
+  segment_battery_fg: "#c89b62"
+  segment_alert_fg: "#e06c6c"
+  window_inactive_fg: "#8f817b"
+
+polybar:
+  background: "#0b0a0a"
+  background_alt: "#181211"
+  foreground: "#d8c7bf"
+  primary: "#b85c5c"
+  secondary: "#c89b62"
+  alert: "#e06c6c"
+  success: "#8aa872"
+  warning: "#d8ad70"
+  muted: "#5f5552"
+
+pi:
+  vars:
+    orange: "#c89b62"
+    black: "#0b0a0a"
+    green: "#8aa872"
+    sand: "#d8ad70"
+    brown: "#5f5552"
+    redEarth: "#b85c5c"
+    baseBg: "#0b0a0a"
+    elevatedBg: "#100d0c"
+    floatingBg: "#181211"
+    textPrimary: "#d8c7bf"
+    textSecondary: "#9a8c86"
+    textMuted: "#5f5552"
+    dimGray: "#403836"
+    thinkingColor: "#7f9fb3"
+
+omp:
+  separator_fg: "#5f5552"
+  session_fg: "#b85c5c"
+  git_fg: "#7f9fb3"
+  git_working_fg: "#c89b62"
+  git_staging_fg: "#8aa872"
+  aws_fg: "#d8ad70"
+  kubectl_fg: "#7f9fb3"
+  root_fg: "#e06c6c"
+  battery_fg: "#8aa872"
+  status_fg: "#e06c6c"
+  path_fg: "#d8c7bf"
+  ticket_fg: "#a6819f"
+  venv_fg: "#c89b62"
+  prompt_char_fg: "#b85c5c"

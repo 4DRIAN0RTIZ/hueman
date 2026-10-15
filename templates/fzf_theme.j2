@@ -1,0 +1,20 @@
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+export FZF_DEFAULT_OPTS="
+  --color=bg:{{ background }},bg+:{{ background_alt }}
+  --color=fg:{{ foreground }},fg+:{{ foreground }}
+  --color=hl:{{ primary }},hl+:{{ primary }}
+  --color=prompt:{{ primary }},pointer:{{ primary }}
+  --color=marker:{{ success }},border:{{ secondary }}
+"
+
+export FZF_CTRL_R_OPTS="
+  --height=60%
+  --layout=reverse
+  --border=rounded
+  --prompt='󰋚  History > '
+  --pointer='▶'
+  --marker='✓'
+  --color=bg+:{{ background_alt }},bg:{{ background }},spinner:{{ secondary }},hl:{{ primary }}
+  --color=fg:{{ foreground }},header:{{ secondary }},info:{{ secondary }},pointer:{{ primary }}
+  --color=marker:{{ success }},fg+:{{ foreground }},prompt:{{ primary }},hl+:{{ primary }}
+"

@@ -1,0 +1,33 @@
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+set -g status-style "bg={{ status_bg }},fg={{ status_fg }}"
+set -g pane-border-style "fg={{ pane_border_fg }}"
+set -g pane-active-border-style "fg={{ pane_active_border_fg }}"
+set -g message-style "bg={{ message_bg | default(status_bg) }},fg={{ message_fg | default(status_fg) }}"
+set -g message-command-style "bg={{ message_bg | default(status_bg) }},fg={{ message_fg | default(status_fg) }}"
+set -g mode-style "bg={{ mode_bg | default(pane_active_border_fg) }},fg={{ mode_fg | default(status_bg) }}"
+
+set -g status-left-length 50
+set -g status-right-length 120
+
+set -g status-left "\
+#[fg={{ segment_session_fg }},bg={{ segment_session_bg }},bold] 🖳 #S \
+#[fg={{ segment_session_bg }},bg={{ status_bg }}] "
+
+set -g status-right "\
+#[fg={{ separator_fg }}]│\
+#[fg={{ segment_time_fg }}] 󰃰 %H:%M \
+#[fg={{ separator_fg }}]│\
+#[fg={{ segment_date_fg }}] 󰃶 %d-%b \
+#[fg={{ separator_fg }}]│\
+#[fg={{ segment_user_fg }}]  #(whoami) \
+#[fg={{ separator_fg }}]│\
+#[fg={{ segment_battery_fg }}] #(~/.battery) \
+#[fg={{ separator_fg }}]│\
+#{?window_zoomed_flag,#[fg={{ segment_alert_fg }}] zoom ,}"
+
+setw -g window-status-format "#[fg={{ window_inactive_fg }},bg={{ status_bg }}] #I #[fg={{ segment_session_bg }}]#W "
+setw -g window-status-current-format "#[fg={{ status_bg }},bg={{ segment_session_bg }},bold] #I #W "
+
+setw -g monitor-activity off
+set -g visual-activity off
+setw -g monitor-bell off

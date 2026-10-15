@@ -1,0 +1,132 @@
+/* Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`. */
+* {
+    bg:           {{ background }};
+    bg-alt:       {{ background_alt }};
+    fg:           {{ foreground }};
+    accent:       {{ primary }};
+    accent-alt:   {{ secondary }};
+    accent-text:     {{ primary | contrast }};
+    accent-alt-text: {{ secondary | contrast }};
+}
+
+window {
+    background-color: @bg;
+    border:           2px;
+    border-color:     @accent;
+    padding:          14px;
+    border-radius:    20px;
+}
+
+mainbox {
+    background-color: @bg;
+    border: 0px;
+    padding: 0px;
+    spacing: 10px;
+}
+
+message {
+    background-color: @bg-alt;
+    text-color: @fg;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+textbox {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+error-message {
+    background-color: @bg-alt;
+    text-color: @accent;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+inputbar {
+    background-color: @bg-alt;
+    text-color: @fg;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1px;
+    border-color: @accent;
+}
+
+entry {
+    background-color: transparent;
+    text-color: @fg;
+    placeholder-color: @bg-alt;
+}
+
+prompt {
+    background-color: transparent;
+    text-color: @accent-alt;
+}
+
+case-indicator {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+listview {
+    background-color: @bg;
+    lines: 10;
+    padding: 8px 0px;
+    spacing: 4px;
+    scrollbar: true;
+    scrollbar-width: 4px;
+    fixed-height: 0;
+}
+
+scrollbar {
+    background-color: @bg-alt;
+    handle-color: @accent;
+    border-radius: 8px;
+}
+
+mode-switcher {
+    background-color: @bg-alt;
+    text-color: @fg;
+    border-radius: 12px;
+    spacing: 4px;
+}
+
+button {
+    background-color: @bg-alt;
+    text-color: @fg;
+    border-radius: 10px;
+    padding: 6px;
+}
+
+button selected {
+    background-color: @accent;
+    text-color: @accent-text;
+    border-radius: 10px;
+}
+
+element {
+    background-color: @bg;
+    text-color: @fg;
+    padding: 8px 10px;
+    border-radius: 12px;
+}
+
+element-icon {
+    background-color: transparent;
+    size: 1.2em;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+}
+
+element selected {
+    background-color: @accent;
+    text-color: @accent-text;
+    border-radius: 12px;
+}
+
+element-text selected {
+    text-color: inherit;
+}
