@@ -47,3 +47,99 @@ def test_set_theme_dry_run_does_not_persist_state(tmp_path):
     app.set_theme("palette", dry_run=True)
 
     assert not (tmp_path / "state").exists()
+
+
+def _only_app(tmp_path, monkeypatch):
+    (tmp_path / "t.j2").write_text("x={{ name }}\n")
+    (tmp_path / "palette.yaml").write_text("name: demo\nkitty: {}\n")
+    targets = "".join(
+        f"  {n}:\n    template: t.j2\n    palette_key: kitty\n"
+        f"    outputs: ['{tmp_path / n}.out']\n    reload: 'reload-{n}'\n"
+        for n in ("alpha_one", "alpha_two", "beta")
+    )
+    (tmp_path / "hueman.yaml").write_text(
+        f"state_file: {tmp_path / 'state'}\n"
+        f"palette_dirs: [{tmp_path}]\n"
+        f"template_dirs: [{tmp_path}]\n"
+        f"targets:\n{targets}"
+        "post_apply: ['echo done']\n"
+    )
+    reloads, post = [], []
+    monkeypatch.setattr("hueman.run_reload", lambda cmd, logger: reloads.append(cmd))
+    monkeypatch.setattr("hueman.run_post_apply", lambda c, logger: post.append(c))
+    return Hueman(HuemanConfig(tmp_path / "hueman.yaml")), reloads, post
+
+
+def test_set_theme_only_renders_matched_targets_skips_state_and_post_apply(tmp_path, monkeypatch):
+    app, reloads, post = _only_app(tmp_path, monkeypatch)
+
+    app.set_theme("palette", only=["alpha_*", "beta"])
+
+    assert (tmp_path / "alpha_one.out").exists()
+    assert (tmp_path / "alpha_two.out").exists()
+    assert (tmp_path / "beta.out").exists()
+    assert sorted(reloads) == ["reload-alpha_one", "reload-alpha_two", "reload-beta"]
+    assert post == []
+    assert not (tmp_path / "state").exists()
+
+
+def test_set_theme_only_exact_name_limits_render_and_reload(tmp_path, monkeypatch):
+    app, reloads, post = _only_app(tmp_path, monkeypatch)
+
+    app.set_theme("palette", only=["beta"])
+
+    assert not (tmp_path / "alpha_one.out").exists()
+    assert (tmp_path / "beta.out").exists()
+    assert reloads == ["reload-beta"]
+
+
+def test_set_theme_only_unknown_pattern_raises_listing_valid_targets(tmp_path, monkeypatch):
+    import pytest
+    from hueman import UnknownTargetError
+
+    app, reloads, post = _only_app(tmp_path, monkeypatch)
+
+    with pytest.raises(UnknownTargetError) as exc:
+        app.set_theme("palette", only=["beta", "nope_*"])
+
+    assert "nope_*" in str(exc.value)
+    assert "alpha_one, alpha_two, beta" in str(exc.value)
+    assert reloads == [] and not (tmp_path / "beta.out").exists()
+
+
+def test_cli_only_flag_is_repeatable_and_comma_separated(tmp_path, monkeypatch):
+    import hueman
+
+    seen = {}
+    monkeypatch.setattr(
+        hueman.Hueman, "set_theme",
+        lambda self, name, dry_run=False, only=None: seen.update(only=only),
+    )
+    (tmp_path / "c.yaml").write_text(f"state_file: {tmp_path / 's'}\ntargets: {{}}\n")
+    monkeypatch.setattr(
+        "sys.argv",
+        ["hueman", "--config", str(tmp_path / "c.yaml"), "set", "p", "--only", "a,b", "--only", "c_*"],
+    )
+
+    hueman.main()
+
+    assert seen["only"] == ["a", "b", "c_*"]
+
+
+def test_cli_only_unknown_exits_nonzero(tmp_path, monkeypatch, capsys):
+    import pytest
+    import hueman
+
+    (tmp_path / "p.yaml").write_text("name: demo\n")
+    (tmp_path / "c.yaml").write_text(
+        f"state_file: {tmp_path / 's'}\npalette_dirs: [{tmp_path}]\ntargets: {{}}\n"
+    )
+    monkeypatch.setattr(
+        "sys.argv", ["hueman", "--config", str(tmp_path / "c.yaml"), "set", "p", "--only", "zzz"]
+    )
+
+    with pytest.raises(SystemExit) as exc:
+        hueman.main()
+
+    assert exc.value.code != 0
+    assert "zzz" in capsys.readouterr().err
