@@ -58,7 +58,7 @@ fi
 CURRENT="$(git branch --show-current)"
 if [[ "$CURRENT" != "main" ]]; then
   echo "Error: la release se corta desde 'main' (rama actual: ${CURRENT:-detached})." >&2
-  echo "Haz merge de develop a main primero." >&2
+  echo "Haz merge de dev a main primero." >&2
   exit 1
 fi
 
