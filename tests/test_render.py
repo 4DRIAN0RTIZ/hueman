@@ -354,3 +354,48 @@ def test_cli_exits_nonzero_when_a_target_failed(tmp_path, monkeypatch):
         hueman.main()
 
     assert exc.value.code == 1
+
+
+def test_skip_unless_path_exists_parses_string_and_list_with_expanduser():
+    t = Target.from_dict("x", {"skip_unless_path_exists": "~/a"})
+    assert [str(p) for p in t.skip_unless_path_exists][0].endswith("/a")
+    assert not str(t.skip_unless_path_exists[0]).startswith("~")
+    assert len(Target.from_dict("x", {"skip_unless_path_exists": ["/a", "/b"]}).skip_unless_path_exists) == 2
+    assert Target.from_dict("x", {}).skip_unless_path_exists == []
+
+
+def test_skip_unless_path_exists_skips_write_when_path_missing(tmp_path, logger):
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "demo.j2").write_text("content\n")
+    output = tmp_path / "out.json"
+    target = Target(
+        name="demo", template="demo.j2", outputs=[output],
+        skip_unless_path_exists=[tmp_path / "schtasks.exe"],
+    )
+
+    assert render_target(env, target, "nord", {}, False, logger) is False
+    assert not output.exists()
+
+
+def test_skip_unless_path_exists_writes_when_all_paths_exist(tmp_path, logger):
+    env = env_for(tmp_path)
+    (tmp_path / "templates" / "demo.j2").write_text("content\n")
+    (tmp_path / "schtasks.exe").write_text("")
+    output = tmp_path / "out.json"
+    target = Target(
+        name="demo", template="demo.j2", outputs=[output],
+        skip_unless_path_exists=[tmp_path / "schtasks.exe"],
+    )
+
+    assert render_target(env, target, "nord", {}, False, logger) is True
+    assert output.read_text() == "content\n"
+
+
+def test_skip_unless_path_exists_also_applies_to_patch_mode(tmp_path, logger):
+    output = tmp_path / "config.conf"
+    output.write_text("x\n")
+    env, target = _splice_target(tmp_path, output)
+    target.skip_unless_path_exists = [tmp_path / "absent"]
+
+    assert render_target(env, target, "nord", {}, False, logger) is False
+    assert output.read_text() == "x\n"
