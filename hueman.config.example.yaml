@@ -41,7 +41,7 @@ targets:
     palette_key: polybar
     mode: patch
     patch:
-      marker_regex: '# --- Bloque gestionado por theme_manager\.py.*?\[palettes\.dotfiles\][^\[]*'
+      marker_regex: '# --- Bloque gestionado por (?:theme_manager\.py|hueman).*?\[palettes\.dotfiles\][^\[]*'
       replacements:
         - ['style = "bold green"', 'style = "bold success"']
       ensure_after:
