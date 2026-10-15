@@ -1,0 +1,216 @@
+#!/bin/bash
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+# Custom Claude Code status line, two lines.
+# Line 1 — Left: [Model] dir ⎇ branch/status/ahead-behind   ...gap...   Right: context bar │ tokens │ cost │ duration
+# Line 2 — owner/repo │ PR #n state │ 5h % ↻reset │ 7d % ↻reset (each segment omitted when absent)
+
+input=$(cat)
+
+MODEL=$(echo "$input" | jq -r '.model.display_name')
+DIR=$(echo "$input" | jq -r '.workspace.current_dir')
+COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
+DURATION_MS=$(echo "$input" | jq -r '.cost.total_duration_ms // 0')
+PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
+TOKENS_USED=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
+TOKENS_MAX=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
+SESSION_ID=$(echo "$input" | jq -r '.session_id')
+OWNER=$(echo "$input" | jq -r '.workspace.repo.owner // empty')
+REPO=$(echo "$input" | jq -r '.workspace.repo.name // empty')
+PR_NUM=$(echo "$input" | jq -r '.pr.number // empty')
+PR_STATE=$(echo "$input" | jq -r '.pr.review_state // empty')
+FIVE_H=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+WEEK=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+FIVE_H_RESET=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+WEEK_RESET=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
+
+# 92345 -> "92.3k", 800 -> "800"
+fmt_tokens() {
+    if [ "$1" -ge 1000 ] 2>/dev/null; then
+        awk -v n="$1" 'BEGIN { printf "%.1fk", n / 1000 }'
+    else
+        echo "$1"
+    fi
+}
+
+# unix epoch seconds -> time remaining until reset, e.g. "2h59m" or "3d4h"
+fmt_countdown() {
+    local target="$1"
+    local diff=$(( target - $(date +%s) ))
+    [ "$diff" -lt 0 ] && diff=0
+    local days=$(( diff / 86400 ))
+    local hours=$(( (diff % 86400) / 3600 ))
+    local mins=$(( (diff % 3600) / 60 ))
+    if [ "$days" -gt 0 ]; then
+        echo "${days}d${hours}h"
+    else
+        echo "${hours}h${mins}m"
+    fi
+}
+
+# hex color from the active theme palette -> 24-bit ANSI foreground escape
+hex2ansi() {
+    local h="${1#\#}"
+    printf '\033[38;2;%d;%d;%dm' "0x${h:0:2}" "0x${h:2:2}" "0x${h:4:2}"
+}
+
+PRIMARY=$(hex2ansi "{{ primary }}")
+SECONDARY=$(hex2ansi "{{ secondary }}")
+ALERT=$(hex2ansi "{{ alert }}")
+SUCCESS=$(hex2ansi "{{ success }}")
+WARNING=$(hex2ansi "{{ warning }}")
+MUTED=$(hex2ansi "{{ muted }}")
+FG=$(hex2ansi "{{ foreground }}")
+BOLD='\033[1m'
+RESET='\033[0m'
+
+{% raw %}
+
+# --- git info, cached per session for 5s to avoid lag in big repos ---
+CACHE_FILE="/tmp/statusline-git-cache-${SESSION_ID}"
+CACHE_MAX_AGE=5
+
+cache_is_stale() {
+    [ ! -f "$CACHE_FILE" ] || \
+    [ $(($(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || stat -f %m "$CACHE_FILE" 2>/dev/null || echo 0))) -gt $CACHE_MAX_AGE ]
+}
+
+if cache_is_stale; then
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        BRANCH=$(git branch --show-current 2>/dev/null)
+        STAGED=$(git diff --cached --numstat 2>/dev/null | wc -l | tr -d ' ')
+        MODIFIED=$(git diff --numstat 2>/dev/null | wc -l | tr -d ' ')
+        AHEAD_BEHIND=$(git rev-list --left-right --count HEAD...@{u} 2>/dev/null)
+        AHEAD=$(echo "$AHEAD_BEHIND" | cut -f1)
+        BEHIND=$(echo "$AHEAD_BEHIND" | cut -f2)
+        echo "$BRANCH|$STAGED|$MODIFIED|${AHEAD:-0}|${BEHIND:-0}" > "$CACHE_FILE"
+    else
+        echo "|||0|0" > "$CACHE_FILE"
+    fi
+fi
+IFS='|' read -r BRANCH STAGED MODIFIED AHEAD BEHIND < "$CACHE_FILE"
+
+GIT_SEGMENT=""
+GIT_PLAIN=""
+if [ -n "$BRANCH" ]; then
+    GIT_SEGMENT=" ${MUTED}│${RESET} ${SECONDARY}⎇ ${BRANCH}${RESET}"
+    GIT_PLAIN=" │ ⎇ ${BRANCH}"
+    if [ "$STAGED" -gt 0 ] 2>/dev/null; then
+        GIT_SEGMENT="${GIT_SEGMENT} ${SUCCESS}+${STAGED}${RESET}"
+        GIT_PLAIN="${GIT_PLAIN} +${STAGED}"
+    fi
+    if [ "$MODIFIED" -gt 0 ] 2>/dev/null; then
+        GIT_SEGMENT="${GIT_SEGMENT} ${WARNING}~${MODIFIED}${RESET}"
+        GIT_PLAIN="${GIT_PLAIN} ~${MODIFIED}"
+    fi
+    if [ "$AHEAD" -gt 0 ] 2>/dev/null; then
+        GIT_SEGMENT="${GIT_SEGMENT} ${PRIMARY}↑${AHEAD}${RESET}"
+        GIT_PLAIN="${GIT_PLAIN} ↑${AHEAD}"
+    fi
+    if [ "$BEHIND" -gt 0 ] 2>/dev/null; then
+        GIT_SEGMENT="${GIT_SEGMENT} ${ALERT}↓${BEHIND}${RESET}"
+        GIT_PLAIN="${GIT_PLAIN} ↓${BEHIND}"
+    fi
+fi
+
+# --- context bar, color by threshold ---
+if [ "$PCT" -ge 90 ] 2>/dev/null; then BAR_COLOR="$ALERT"
+elif [ "$PCT" -ge 70 ] 2>/dev/null; then BAR_COLOR="$WARNING"
+else BAR_COLOR="$SUCCESS"; fi
+
+BAR_WIDTH=10
+FILLED=$((PCT * BAR_WIDTH / 100))
+EMPTY=$((BAR_WIDTH - FILLED))
+BAR=""
+[ "$FILLED" -gt 0 ] && printf -v FILL "%${FILLED}s" && BAR="${FILL// /▓}"
+[ "$EMPTY" -gt 0 ] && printf -v PAD "%${EMPTY}s" && BAR="${BAR}${PAD// /░}"
+
+COST_FMT=$(printf '$%.2f' "$COST")
+DURATION_SEC=$((DURATION_MS / 1000))
+MINS=$((DURATION_SEC / 60))
+SECS=$((DURATION_SEC % 60))
+TOKENS_STR="$(fmt_tokens "$TOKENS_USED")/$(fmt_tokens "$TOKENS_MAX")"
+
+# --- herdr sidebar: publish $ctx (context %) and $edits (lines +/-). No-op
+# outside herdr; only calls herdr when a value changed, in the background. ---
+if [ "${HERDR_ENV:-}" = "1" ] && [ -n "${HERDR_PANE_ID:-}" ] && command -v herdr >/dev/null 2>&1; then
+    LINES_ADD=$(echo "$input" | jq -r '.cost.total_lines_added // 0')
+    LINES_DEL=$(echo "$input" | jq -r '.cost.total_lines_removed // 0')
+    CTX_STATE="${PCT}|${LINES_ADD}|${LINES_DEL}"
+    CTX_CACHE="/tmp/statusline-ctx-${SESSION_ID}"
+    if [ "$(cat "$CTX_CACHE" 2>/dev/null)" != "$CTX_STATE" ]; then
+        echo "$CTX_STATE" > "$CTX_CACHE"
+        if [ "$LINES_ADD" -gt 0 ] 2>/dev/null || [ "$LINES_DEL" -gt 0 ] 2>/dev/null; then
+            EDITS_ARGS=(--token "edits=+${LINES_ADD} -${LINES_DEL}")
+        else
+            EDITS_ARGS=(--clear-token edits)
+        fi
+        herdr pane report-metadata "$HERDR_PANE_ID" --source claude-statusline --token "ctx=${PCT}%" "${EDITS_ARGS[@]}" >/dev/null 2>&1 &
+    fi
+fi
+
+# Left block: model + dir + git. Right block: context bar + tokens + cost + duration.
+# Each has a colored version (printed) and a plain-text twin (no ANSI codes,
+# used only to measure visible width for the gap calculation).
+LEFT="${BOLD}${PRIMARY}[$MODEL]${RESET} ${FG}${DIR##*/}${RESET}${GIT_SEGMENT}"
+LEFT_PLAIN="[$MODEL] ${DIR##*/}${GIT_PLAIN}"
+
+RIGHT="${BAR_COLOR}${BAR}${RESET} ${BAR_COLOR}${PCT}%${RESET} ${MUTED}(${TOKENS_STR})${RESET} ${MUTED}│${RESET} ${FG}${COST_FMT}${RESET} ${MUTED}│${RESET} ${MUTED}${MINS}m ${SECS}s${RESET}"
+RIGHT_PLAIN="${BAR} ${PCT}% (${TOKENS_STR}) │ ${COST_FMT} │ ${MINS}m ${SECS}s"
+
+# Gap: COLUMNS is set by Claude Code to the current terminal width.
+# RIGHT_MARGIN leaves room so the right block doesn't hug the exact last
+# column, where Claude Code's own UI chrome (borders, notification area) lives.
+RIGHT_MARGIN=6
+WIDTH="${COLUMNS:-80}"
+GAP=$((WIDTH - RIGHT_MARGIN - ${#LEFT_PLAIN} - ${#RIGHT_PLAIN}))
+[ "$GAP" -lt 1 ] && GAP=1
+printf -v SPACES '%*s' "$GAP" ''
+
+echo -e "${LEFT}${SPACES}${RIGHT}"
+
+# --- second line: repo identity, PR status, rate limits — all free from the
+# JSON input, no extra subprocess calls needed. Omitted entirely when empty. ---
+INFO_PARTS=()
+
+if [ -n "$OWNER" ] && [ -n "$REPO" ]; then
+    INFO_PARTS+=("${SECONDARY}${OWNER}/${REPO}${RESET}")
+fi
+
+if [ -n "$PR_NUM" ]; then
+    case "$PR_STATE" in
+        approved) PR_COLOR="$SUCCESS" ;;
+        changes_requested) PR_COLOR="$ALERT" ;;
+        pending) PR_COLOR="$WARNING" ;;
+        draft) PR_COLOR="$MUTED" ;;
+        *) PR_COLOR="$FG" ;;
+    esac
+    PR_TEXT="PR #${PR_NUM}"
+    [ -n "$PR_STATE" ] && PR_TEXT="${PR_TEXT} ${PR_STATE}"
+    INFO_PARTS+=("${PR_COLOR}${PR_TEXT}${RESET}")
+fi
+
+if [ -n "$FIVE_H" ]; then
+    FIVE_H_TXT="5h $(echo "$FIVE_H" | cut -d. -f1)%"
+    [ -n "$FIVE_H_RESET" ] && FIVE_H_TXT="${FIVE_H_TXT} ↻ $(fmt_countdown "$FIVE_H_RESET")"
+    INFO_PARTS+=("${MUTED}${FIVE_H_TXT}${RESET}")
+fi
+
+if [ -n "$WEEK" ]; then
+    WEEK_TXT="7d $(echo "$WEEK" | cut -d. -f1)%"
+    [ -n "$WEEK_RESET" ] && WEEK_TXT="${WEEK_TXT} ↻ $(fmt_countdown "$WEEK_RESET")"
+    INFO_PARTS+=("${MUTED}${WEEK_TXT}${RESET}")
+fi
+
+INFO_LINE=""
+for part in "${INFO_PARTS[@]}"; do
+    if [ -z "$INFO_LINE" ]; then
+        INFO_LINE="$part"
+    else
+        INFO_LINE="${INFO_LINE} ${MUTED}│${RESET} ${part}"
+    fi
+done
+
+if [ -n "$INFO_LINE" ]; then
+    echo -e "$INFO_LINE"
+fi
+{% endraw %}

@@ -1,0 +1,49 @@
+# Generado por theme_manager.py — no editar a mano, se sobreescribe en cada `theme set`.
+# SSHub usa el tema `current` configurado en ~/.config/sshub/config.toml.
+schema_version = 1
+extends = "default"
+name = "Auto"
+description = "Tema generado desde theme/palettes/{{ theme_name }}.yaml"
+
+[palette]
+background = "{{ background }}"
+background_alt = "{{ background_alt }}"
+foreground = "{{ foreground }}"
+primary = "{{ primary }}"
+secondary = "{{ secondary }}"
+alert = "{{ alert }}"
+success = "{{ success }}"
+warning = "{{ warning }}"
+muted = "{{ muted }}"
+
+[semantic]
+background = "palette.background"
+canvas = "palette.background"
+surface = "palette.background_alt"
+surface_raised = "palette.background_alt"
+
+border = "palette.muted"
+border_focus = "palette.primary"
+border_popup = "palette.secondary"
+
+text = "palette.foreground"
+text_bright = "palette.foreground"
+text_highlight = "palette.foreground"
+text_muted = "palette.muted"
+text_dim = "palette.muted"
+text_inverse = "palette.background"
+
+accent = "palette.primary"
+selection_bg = "palette.primary"
+selection_fg = "palette.background"
+
+success = "palette.success"
+warning = "palette.warning"
+error = "palette.alert"
+info = "palette.secondary"
+connecting = "palette.primary"
+exited = "palette.alert"
+unknown = "palette.muted"
+
+pty_background = "palette.background"
+pty_foreground = "palette.foreground"

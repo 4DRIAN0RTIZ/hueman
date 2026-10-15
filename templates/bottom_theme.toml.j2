@@ -1,0 +1,43 @@
+# Generado por themectl — no editar a mano, se sobreescribe en cada `theme set`.
+# Bloque [styles.*] para bottom (btm). El resto de bottom.toml (layout,
+# flags, comentarios default) no se toca.
+[styles.cpu]
+all_entry_colour = "{{ primary }}"
+avg_entry_colour = "{{ secondary }}"
+cpu_core_colours = ["{{ primary }}", "{{ secondary }}", "{{ success }}", "{{ warning }}", "{{ alert }}", "{{ muted }}", "{{ foreground }}", "{{ background_alt }}"]
+
+[styles.temp_graph]
+temp_graph_colour_styles = ["{{ primary }}", "{{ secondary }}", "{{ success }}", "{{ warning }}", "{{ alert }}", "{{ muted }}", "{{ foreground }}", "{{ background_alt }}"]
+
+[styles.memory]
+ram_colour = "{{ primary }}"
+cache_colour = "{{ muted }}"
+swap_colour = "{{ warning }}"
+arc_colour = "{{ secondary }}"
+gpu_colours = ["{{ primary }}", "{{ alert }}", "{{ success }}", "{{ warning }}", "{{ secondary }}", "{{ muted }}"]
+
+[styles.network]
+rx_colour = "{{ success }}"
+tx_colour = "{{ alert }}"
+rx_total_colour = "{{ primary }}"
+tx_total_colour = "{{ secondary }}"
+
+[styles.battery]
+high_battery_colour = "{{ success }}"
+medium_battery_colour = "{{ warning }}"
+low_battery_colour = "{{ alert }}"
+
+[styles.tables]
+headers = { colour = "{{ primary }}", bold = true }
+
+[styles.graphs]
+graph_colour = "{{ muted }}"
+legend_text = { colour = "{{ foreground }}" }
+
+[styles.widgets]
+border_colour = "{{ muted }}"
+selected_border_colour = "{{ primary }}"
+widget_title = { colour = "{{ foreground }}" }
+text = { colour = "{{ foreground }}" }
+selected_text = { colour = "{{ primary | contrast }}", bg_colour = "{{ primary }}" }
+disabled_text = { colour = "{{ muted }}" }
