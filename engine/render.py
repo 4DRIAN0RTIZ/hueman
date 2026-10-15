@@ -63,12 +63,14 @@ def render_overwrite(env, target, name, palette, dry_run, logger) -> bool:
     if target.palette_key and target.palette_key not in palette:
         return False
     content = render_template(env, target, name, palette)
+    wrote = False
     for out in target.outputs:
         if target.skip_if_missing_parent and not out.parent.exists():
             logger.info(f"{target.name}: {out.parent} no existe, omitido")
             continue
         _write(out, content, dry_run, logger, target.make_executable)
-    return True
+        wrote = True
+    return wrote
 
 
 def _apply_regex_splice(original: str, rendered: str, patch, logger) -> str:
@@ -157,21 +159,24 @@ def render_patch(env, target, name, palette, dry_run, logger) -> bool:
     if patch.strategy == "json_scheme_upsert":
         section = palette[patch.palette_section]
         scheme_name = patch.scheme_name or "Dotfiles"
+        wrote = False
         for out in target.outputs:
             if not out.exists():
                 logger.info(f"{target.name}: {out} no encontrado, omitido")
                 continue
             original = out.read_text(encoding="utf-8")
             content = _apply_json_scheme_upsert(original, section, scheme_name)
+            wrote = True
             if dry_run:
                 print(f"[DRY RUN] escribiría {out} (scheme '{scheme_name}')")
                 continue
             out.write_text(content, encoding="utf-8")
             logger.info(f"{target.name}: scheme '{scheme_name}' actualizado en {out}")
-        return True
+        return wrote
 
     # regex_splice
     rendered = render_template(env, target, name, palette) if target.template else ""
+    wrote = False
     for out in target.outputs:
         if target.skip_if_missing_parent and not out.parent.exists():
             logger.info(f"{target.name}: {out.parent} no existe, omitido")
@@ -182,7 +187,8 @@ def render_patch(env, target, name, palette, dry_run, logger) -> bool:
         original = out.read_text()
         content = _apply_regex_splice(original, rendered, patch, logger)
         _write(out, content, dry_run, logger, target.make_executable)
-    return True
+        wrote = True
+    return wrote
 
 
 def render_target(env, target, name, palette, dry_run, logger) -> bool:
