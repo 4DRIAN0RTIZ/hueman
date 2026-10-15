@@ -108,3 +108,22 @@ def test_json_scheme_patch_upserts_scheme(tmp_path, logger):
     schemes = json.loads(output.read_text())["schemes"]
     assert [scheme["name"] for scheme in schemes] == ["Other", "Hueman"]
     assert schemes[-1]["background"] == "#000000"
+
+
+def test_windhawk_taskbar_template_matches_legacy_json(tmp_path, logger):
+    from pathlib import Path
+
+    packaged = Path(__file__).resolve().parent.parent / "templates"
+    env = make_jinja_env([], packaged)
+    palette = {"polybar": {"background": "#170b2f", "primary": "#ff2bd6"}}
+    output = tmp_path / "taskbar-colors.json"
+    target = Target(
+        name="windhawk_taskbar",
+        template="windhawk_taskbar.json.j2",
+        palette_key="polybar",
+        outputs=[output],
+    )
+
+    assert render_target(env, target, "synthwave", palette, False, logger) is True
+    legacy = json.dumps({"fill": "#170b2f", "text": "#ff2bd6"}, indent=2) + "\n"
+    assert output.read_text() == legacy
