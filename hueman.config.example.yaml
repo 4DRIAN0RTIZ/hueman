@@ -51,6 +51,17 @@ targets:
     outputs:
       - "~/.config/starship.toml"
 
+  # --- Ejemplo de guardas opcionales: `skip_if_missing_parent` omite una
+  # salida cuyo directorio padre no existe; `skip_unless_path_exists` (ruta o
+  # lista) omite TODO el target (sin escribir ni reload) salvo que existan
+  # todas esas rutas, util para "solo si esta instalada la herramienta X".
+  # windhawk_taskbar:
+  #   template: windhawk_taskbar.json.j2
+  #   palette_key: polybar
+  #   skip_if_missing_parent: true
+  #   skip_unless_path_exists: "/mnt/c/Windows/System32/schtasks.exe"
+  #   outputs: ["/mnt/c/Users/ME/AppData/Local/DotfilesTheme/taskbar-colors.json"]
+
 # Comandos que corren una sola vez al final de `set`, no por target.
 # No corren cuando se usa `set --only ...` (re-render parcial).
 # Los comandos de `reload` y `post_apply` admiten placeholders: `{name}`
