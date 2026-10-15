@@ -33,6 +33,59 @@ aborta con un error claro. Ejemplo:
 `reload: "python3 ~/x.py --name {name} --color {kitty.color4}"`.
 Con `set --dry-run` se imprimen los `post_apply` ya expandidos.
 
+## Usar hueman con un repo de dotfiles
+
+El motor no sabe nada de tus rutas: todo el mapeo vive en un `config.yaml`
+que mantenés en tu repo de dotfiles. Patrón recomendado:
+
+1. Guardá el config (y tus `palettes.custom/` y `templates.custom/`) en el
+   repo, por ejemplo `~/dotfiles/hueman/config.yaml`.
+2. Enlazá ese directorio como `~/.config/hueman` (`ln -s ~/dotfiles/hueman ~/.config/hueman`).
+   Así `hueman set` encuentra el config sin flags.
+3. Opcional: un wrapper `bin/hueman` con `exec python3 ~/Projects/hueman/hueman.py "$@"`.
+
+### Resolución del config
+
+Orden de precedencia: `--config RUTA` > variable `HUEMAN_CONFIG` >
+`./hueman.config.yaml` en el directorio actual > `~/.config/hueman/config.yaml`.
+
+### Comandos
+
+```
+hueman list                                  # paletas disponibles
+hueman status                                # tema activo + outputs existentes
+hueman set <paleta> --dry-run                # muestra que escribiria, sin tocar nada
+hueman set <paleta>                          # aplica: render, reload por target, post_apply
+hueman set <paleta> --only 'a_*' --only b    # re-render parcial (globs fnmatch, repetible, o a,b)
+```
+
+`--only` no actualiza el state file ni corre `post_apply`. Si algun target
+falla porque la paleta no trae una clave que necesita (`palette_key` o un
+`extra_vars`), se omite con un warning que nombra target y clave, el resto
+sigue y `set` termina con exit 1.
+
+### Placeholders en hooks
+
+`reload` y `post_apply` aceptan `{name}` (alias `{palette}`) y
+`{seccion.clave}` (ej. `{kitty.color4}`), sustituidos con `shlex.quote`.
+`${VAR}` y llaves sin punto quedan intactas; un `{a.b}` inexistente aborta.
+
+### Guardas de salida
+
+- `skip_if_missing_parent: true` — omite cada output cuyo directorio padre no existe.
+- `skip_unless_path_exists: RUTA | [RUTA, ...]` — omite el target entero
+  (sin escribir ni disparar reload) salvo que existan todas las rutas.
+  Ej.: solo tocar el JSON de Windhawk si existe `/mnt/c/Windows/System32/schtasks.exe`.
+
+El `reload` de un target solo corre si realmente se escribio al menos un
+output (en `--dry-run` nunca corre).
+
+### State file
+
+`state_file` guarda el nombre de la paleta activa (una linea). Se escribe solo
+en un `set` completo y real: no en `--dry-run`, no con `--only`. `status` y
+`{name}` en hooks leen/usan ese nombre.
+
 ## Arquitectura
 
 - `engine/colors.py` — helpers de contraste/luminancia (WCAG), expuestos como filtros Jinja `contrast`/`is_dark`.
