@@ -199,6 +199,10 @@ def render_patch(env, target, name, palette, dry_run, logger) -> bool:
 
 
 def render_target(env, target, name, palette, dry_run, logger) -> bool:
+    missing = [p for p in target.skip_unless_path_exists if not p.exists()]
+    if missing:
+        logger.info(f"{target.name}: {missing[0]} no existe, target omitido")
+        return False
     try:
         if target.mode == "overwrite":
             return render_overwrite(env, target, name, palette, dry_run, logger)

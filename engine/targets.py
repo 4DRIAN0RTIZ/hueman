@@ -40,6 +40,9 @@ class Target:
     reload: str = None
     make_executable: bool = False
     skip_if_missing_parent: bool = False
+    # Rutas (archivo o directorio) que deben existir todas para que el target
+    # corra; si falta alguna se omite sin escribir ni disparar reload.
+    skip_unless_path_exists: list = field(default_factory=list)
     jinja_delimiters: tuple = None
     extra_vars: dict = field(default_factory=dict)
     patch: PatchSpec = None
@@ -49,6 +52,9 @@ class Target:
         patch_data = data.get("patch")
         patch = PatchSpec(**patch_data) if patch_data else None
         delimiters = data.get("jinja_delimiters")
+        required = data.get("skip_unless_path_exists") or []
+        if isinstance(required, str):
+            required = [required]
         return cls(
             name=name,
             mode=data.get("mode", "overwrite"),
@@ -58,6 +64,7 @@ class Target:
             reload=data.get("reload"),
             make_executable=data.get("make_executable", False),
             skip_if_missing_parent=data.get("skip_if_missing_parent", False),
+            skip_unless_path_exists=[Path(p).expanduser() for p in required],
             jinja_delimiters=tuple(delimiters) if delimiters else None,
             extra_vars=data.get("extra_vars", {}),
             patch=patch,
