@@ -8,6 +8,7 @@ dotfiles externo — todo el mapeo de rutas es explícito en ese config.
 
 import argparse
 import fnmatch
+import logging
 import sys
 from pathlib import Path
 
@@ -81,7 +82,16 @@ class Hueman:
                 failed.append(target.name)
                 continue
             if not dry_run and wrote and target.reload:
-                run_reload(expand_command(target.reload, name, palette), self.config.logger)
+                cmd = expand_command(target.reload, name, palette)
+                rc = run_reload(cmd, self.config.logger)
+                if rc:
+                    policy = target.reload_failure or self.config.reload_failure
+                    self.config.logger.log(
+                        logging.ERROR if policy == "error" else logging.WARNING,
+                        f"{target.name}: reload fallo (exit {rc}): {cmd}",
+                    )
+                    if policy == "error":
+                        failed.append(target.name)
 
         if only:
             return failed
@@ -95,7 +105,15 @@ class Hueman:
         self.config.state_file.parent.mkdir(parents=True, exist_ok=True)
         atomic_write_text(self.config.state_file, name + "\n")
         self.config.logger.info(f"Tema activo: {name}")
-        run_post_apply(post_apply, self.config.logger)
+        post_failed = run_post_apply(post_apply, self.config.logger) or []
+        for cmd, rc in post_failed:
+            error = self.config.reload_failure == "error"
+            self.config.logger.log(
+                logging.ERROR if error else logging.WARNING,
+                f"post_apply fallo (exit {rc}): {cmd}",
+            )
+        if post_failed and self.config.reload_failure == "error":
+            failed.append("post_apply")
         return failed
 
     def status(self) -> None:
@@ -146,7 +164,7 @@ def main():
             print(str(e), file=sys.stderr)
             sys.exit(1)
         if failed:
-            print(f"Targets omitidos por errores: {', '.join(failed)}", file=sys.stderr)
+            print(f"Targets con errores: {', '.join(failed)}", file=sys.stderr)
             sys.exit(1)
     elif args.command == "list":
         print("\n".join(tc.list_palettes()))

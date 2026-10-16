@@ -211,6 +211,8 @@ def render_target(env, target, name, palette, dry_run, logger) -> bool:
         return render_patch(env, target, name, palette, dry_run, logger)
     except jinja2.TemplateNotFound as exc:
         raise TargetRenderError(f"{target.name}: plantilla {exc.name!r} no encontrada") from exc
+    except OSError as exc:
+        raise TargetRenderError(f"{target.name}: error de E/S ({exc})") from exc
     except (KeyError, TypeError) as exc:
         key = exc.args[0] if exc.args else exc
         raise TargetRenderError(

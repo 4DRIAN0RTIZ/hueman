@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from .targets import load_targets
+from .targets import FAILURE_POLICIES, load_targets
 
 
 class ConfigError(ValueError):
@@ -35,6 +35,11 @@ class HuemanConfig:
             self.targets = load_targets(raw_targets)
         except TypeError as exc:
             raise ConfigError(f"{path}: target invalido: {exc}") from exc
+        self.reload_failure = raw.get("reload_failure", "warn")
+        if self.reload_failure not in FAILURE_POLICIES:
+            raise ConfigError(
+                f"{path}: reload_failure debe ser 'warn' o 'error', no {self.reload_failure!r}"
+            )
         self.post_apply = raw.get("post_apply", [])
         self.logger = self._make_logger(raw.get("logging", {}))
 

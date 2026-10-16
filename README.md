@@ -23,6 +23,16 @@ coincidencias termina con exit 1 y lista los targets validos. Con `--only`
 **no** se escribe el state file (el tema activo no cambia) y **no** corre
 `post_apply`: es una re-renderizacion parcial, no un cambio de tema.
 
+### Fallos de `reload` / `post_apply`
+
+Se registra el codigo de salida de cada comando. La clave `reload_failure`
+(`warn` por defecto, o `error`) decide que pasa si uno sale con codigo != 0;
+cada target puede sobreescribirla con su propio `reload_failure`. Con `warn`
+se loguea un warning y `set` sale con 0; con `error` se loguea un error, el
+resto de pasos se ejecuta igual (best-effort) y `set` sale con 1. `post_apply`
+usa la politica global. Un error de escritura (permisos, disco lleno) es un
+error limpio del target (log + exit 1) y su archivo original queda intacto.
+
 ### Placeholders en `reload` / `post_apply`
 
 Los comandos pueden usar `{name}` (alias `{palette}`) y `{seccion.clave}`

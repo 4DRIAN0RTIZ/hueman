@@ -15,17 +15,17 @@ def make_app(tmp_path, extra_top="", targets=None, post_apply=None):
     pal = tmp_path / "pal"
     pal.mkdir(exist_ok=True)
     (pal / "one.yaml").write_text("name: one\nkitty: {c: red}\n")
-    (tmp_path / "t.j2").write_text("{{ kitty.c }}\n")
+    (tmp_path / "t.j2").write_text("hello\n")
     body = ""
     for name, opts in (targets or {}).items():
         body += (
-            f"  {name}:\n    template: {tmp_path / 't.j2'}\n    palette_key: kitty\n"
+            f"  {name}:\n    template: t.j2\n    palette_key: kitty\n"
             f"    outputs: ['{tmp_path / name}.out']\n"
         )
         for k, v in opts.items():
             body += f"    {k}: \"{v}\"\n"
     cfg = tmp_path / "hueman.yaml"
-    text = f"state_file: {tmp_path / 'state'}\npalette_dirs: [{pal}]\n{extra_top}"
+    text = f"state_file: {tmp_path / 'state'}\npalette_dirs: [{pal}]\ntemplate_dirs: [{tmp_path}]\n{extra_top}"
     text += "targets:\n" + body if body else "targets: {}\n"
     if post_apply:
         text += "post_apply:\n" + "".join(f"  - \"{c}\"\n" for c in post_apply)

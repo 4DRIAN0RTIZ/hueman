@@ -88,7 +88,7 @@ def test_overwrite_failure_leaves_original(tmp_path, monkeypatch):
     out.parent.mkdir()
     out.write_text("old\n")
     monkeypatch.setattr(os, "replace", boom)
-    with pytest.raises(OSError):
+    with pytest.raises(TargetRenderError):
         render_target(env, Target(name="t", template="t.j2", outputs=[out]), "n", {}, False, LOG)
     assert out.read_text() == "old\n"
     assert leftovers(out.parent, {"x.conf"}) == []
@@ -100,7 +100,7 @@ def test_patch_failure_leaves_original(tmp_path, monkeypatch):
     out.write_text("keep\n")
     patch = PatchSpec(marker_begin="# B", marker_end="# E")
     monkeypatch.setattr(os, "replace", boom)
-    with pytest.raises(OSError):
+    with pytest.raises(TargetRenderError):
         render_target(env, Target(name="t", template="t.j2", mode="patch", patch=patch,
                                   outputs=[out]), "n", {}, False, LOG)
     assert out.read_text() == "keep\n"
@@ -120,7 +120,7 @@ def test_json_upsert_failure_leaves_original(tmp_path, monkeypatch):
     out = tmp_path / "settings.json"
     out.write_text('{"schemes": []}\n')
     monkeypatch.setattr(os, "replace", boom)
-    with pytest.raises(OSError):
+    with pytest.raises(TargetRenderError):
         render_target(None, json_target(out), "n", {"kitty": KITTY}, False, LOG)
     assert out.read_text() == '{"schemes": []}\n'
     assert leftovers(tmp_path, {"settings.json"}) == []

@@ -23,6 +23,14 @@ palette_dirs:
 template_dirs:
   - "~/dotfiles/theme/templates.custom"
 
+# Politica cuando un comando `reload` o `post_apply` termina con codigo != 0:
+#   warn  (default) - se registra un warning y `set` sigue; exit 0.
+#   error           - se registra un error, se siguen ejecutando los demas
+#                     pasos (best-effort) y `set` termina con exit 1.
+# Cada target puede sobreescribirla con su propio `reload_failure`.
+# El codigo de salida de cada comando siempre se registra en el log.
+reload_failure: warn
+
 targets:
   # --- Ejemplo "overwrite": reemplaza el archivo entero.
   kitty:
@@ -32,6 +40,7 @@ targets:
     outputs:
       - "~/.config/kitty/theme.conf"
     reload: "pgrep -x kitty >/dev/null 2>&1 && pkill -USR1 -x kitty || true"
+    # reload_failure: error   # override opcional de la politica global
 
   # --- Ejemplo "patch": splice regex sobre un archivo ya existente, sin
   # tocar el resto de su contenido (útil para configs escritas a mano,
