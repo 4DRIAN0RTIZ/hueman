@@ -22,6 +22,7 @@ All notable changes to this project are documented here.
 
 ### Chore
 
+- Update CHANGELOG.md [skip ci] (80da82e)
 - Add roadmap issue template (a11c066)
 - Update CHANGELOG.md [skip ci] (84c0fd8)
 - Ignore local harness files (0eb7a5d)
@@ -29,6 +30,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Add MIT license (e57fa11)
 - Document using hueman with a dotfiles repo (e727d72)
 - Document skip_unless_path_exists in example (edb0c41)
 
