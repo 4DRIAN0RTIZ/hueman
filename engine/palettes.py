@@ -35,7 +35,15 @@ class PaletteLoader:
         for d in self._search_dirs():
             path = d / f"{name}.yaml"
             if path.exists():
-                return yaml.safe_load(path.read_text())
+                try:
+                    data = yaml.safe_load(path.read_text())
+                except yaml.YAMLError as exc:
+                    self.logger.error(f"Paleta invalida {path}: {exc}")
+                    raise SystemExit(1)
+                if not isinstance(data, dict):
+                    self.logger.error(f"Paleta invalida {path}: se esperaba un mapeo YAML")
+                    raise SystemExit(1)
+                return data
         available = ", ".join(self.list_palettes())
         self.logger.error(f"Paleta no encontrada: {name}. Disponibles: {available}")
         raise SystemExit(1)

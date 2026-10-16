@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from engine.config import HuemanConfig  # noqa: E402
+from engine.config import ConfigError, HuemanConfig  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
 from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
@@ -132,7 +132,11 @@ def main():
         print(f"Config no encontrada: {config_path}", file=sys.stderr)
         sys.exit(1)
 
-    tc = Hueman(HuemanConfig(config_path))
+    try:
+        tc = Hueman(HuemanConfig(config_path))
+    except ConfigError as e:
+        print(f"Config invalida: {e}", file=sys.stderr)
+        sys.exit(1)
     if args.command == "set":
         only = [p.strip() for v in args.only or [] for p in v.split(",") if p.strip()] or None
         try:

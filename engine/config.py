@@ -10,14 +10,31 @@ import yaml
 from .targets import load_targets
 
 
+class ConfigError(ValueError):
+    """hueman.config.yaml is unreadable, malformed or has an invalid schema."""
+
+
 class HuemanConfig:
     def __init__(self, path: Path):
         self.path = path
-        raw = yaml.safe_load(path.read_text()) or {}
+        try:
+            raw = yaml.safe_load(path.read_text()) or {}
+        except yaml.YAMLError as exc:
+            raise ConfigError(f"{path}: YAML invalido: {exc}") from exc
+        if not isinstance(raw, dict):
+            raise ConfigError(f"{path}: se esperaba un mapeo YAML en la raiz")
         self.state_file = Path(raw.get("state_file", "~/.config/hueman/current")).expanduser()
         self.palette_dirs = [Path(p).expanduser() for p in raw.get("palette_dirs", [])]
         self.template_dirs = [Path(p).expanduser() for p in raw.get("template_dirs", [])]
-        self.targets = load_targets(raw.get("targets", {}))
+        raw_targets = raw.get("targets") or {}
+        if not isinstance(raw_targets, dict) or not all(
+            isinstance(v, dict) for v in raw_targets.values()
+        ):
+            raise ConfigError(f"{path}: 'targets' debe ser un mapeo nombre -> definicion")
+        try:
+            self.targets = load_targets(raw_targets)
+        except TypeError as exc:
+            raise ConfigError(f"{path}: target invalido: {exc}") from exc
         self.post_apply = raw.get("post_apply", [])
         self.logger = self._make_logger(raw.get("logging", {}))
 
