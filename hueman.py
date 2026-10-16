@@ -18,6 +18,7 @@ from engine.config import ConfigError, HuemanConfig  # noqa: E402
 from engine.fsutil import atomic_write_text  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
+from engine.statesource import GitBranchSource, State  # noqa: E402
 from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
 
 HUEMAN_DIR = Path(__file__).resolve().parent
@@ -114,7 +115,22 @@ class Hueman:
             )
         if post_failed and self.config.reload_failure == "error":
             failed.append("post_apply")
+        self._publish_state(name)
         return failed
+
+    def _publish_state(self, name: str) -> None:
+        """Best-effort: share the active palette; never raises or fails `set`."""
+        settings = self.config.state_sync
+        if settings is None:
+            return
+        try:
+            source = GitBranchSource.from_settings(settings, self.config.logger)
+            current = source.read()
+            revision = (current.revision if current else 0) + 1
+            if not source.write(State(name, revision)):
+                self.config.logger.warning("estado compartido no publicado; paleta aplicada solo en local")
+        except Exception as exc:  # noqa: BLE001 - sync must never break `set`
+            self.config.logger.warning(f"estado compartido no publicado: {exc}")
 
     def status(self) -> None:
         print(f"Tema activo: {self.current_theme() or '(ninguno)'}")

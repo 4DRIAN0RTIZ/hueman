@@ -7,6 +7,7 @@ from pathlib import Path
 
 import yaml
 
+from .statesource import DEFAULT_BRANCH, StateSyncSettings
 from .targets import FAILURE_POLICIES, load_targets
 
 
@@ -41,7 +42,25 @@ class HuemanConfig:
                 f"{path}: reload_failure debe ser 'warn' o 'error', no {self.reload_failure!r}"
             )
         self.post_apply = raw.get("post_apply", [])
+        self.state_sync = self._load_state_sync(path, raw.get("state_sync"))
         self.logger = self._make_logger(raw.get("logging", {}))
+
+    @staticmethod
+    def _load_state_sync(path, raw):
+        if raw is None:
+            return None
+        if not isinstance(raw, dict) or not isinstance(raw.get("repo"), str) or not raw["repo"]:
+            raise ConfigError(f"{path}: 'state_sync' debe ser un mapeo con 'repo'")
+        for key in ("remote", "branch", "workdir"):
+            if key in raw and not isinstance(raw[key], str):
+                raise ConfigError(f"{path}: state_sync.{key} debe ser texto")
+        workdir = raw.get("workdir")
+        return StateSyncSettings(
+            repo=Path(raw["repo"]).expanduser(),
+            remote=raw.get("remote", "origin"),
+            branch=raw.get("branch", DEFAULT_BRANCH),
+            workdir=Path(workdir).expanduser() if workdir else None,
+        )
 
     @staticmethod
     def _make_logger(logging_cfg: dict) -> logging.Logger:

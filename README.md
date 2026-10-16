@@ -33,6 +33,16 @@ resto de pasos se ejecuta igual (best-effort) y `set` sale con 1. `post_apply`
 usa la politica global. Un error de escritura (permisos, disco lleno) es un
 error limpio del target (log + exit 1) y su archivo original queda intacto.
 
+### Estado compartido (`state_sync`, opt-in)
+
+Con `state_sync: {repo, remote, branch}` en el config, cada `set` publica
+`{palette, revision}` en la rama huerfana `hueman-state` del remoto (un unico
+commit reescrito + `push --force-with-lease`; ante rechazo se hace fetch, gana
+la `revision` mayor y el empate lo resuelve el push aceptado, con reintentos
+acotados). hueman usa un repo git propio bajo `$XDG_STATE_HOME/hueman/` y no
+toca tu working tree. Sin git, remoto o red, `set` aplica en local y avisa.
+`--dry-run` y `--only` no escriben ni empujan estado. Sin la clave, nada cambia.
+
 ### Placeholders en `reload` / `post_apply`
 
 Los comandos pueden usar `{name}` (alias `{palette}`) y `{seccion.clave}`

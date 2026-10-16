@@ -31,6 +31,18 @@ template_dirs:
 # El codigo de salida de cada comando siempre se registra en el log.
 reload_failure: warn
 
+# Opcional (opt-in): publica la paleta activa en la rama huerfana `hueman-state`
+# del remoto de tu repo de dotfiles ({palette, revision} en hueman.state.yaml,
+# un unico commit reescrito con force-with-lease). hueman usa un repo propio
+# (por defecto bajo $XDG_STATE_HOME/hueman/state-sync/) y nunca toca tu working
+# tree. Sin remoto, sin red o sin git, `set` aplica en local y avisa.
+# `set --dry-run` y `set --only` nunca escriben ni empujan estado.
+# state_sync:
+#   repo: "~/dotfiles"        # repo del que se toma la URL del remoto
+#   remote: origin            # default
+#   branch: hueman-state      # default
+#   # workdir: "~/.local/state/hueman/state-sync/x.git"   # opcional
+
 targets:
   # --- Ejemplo "overwrite": reemplaza el archivo entero.
   kitty:
