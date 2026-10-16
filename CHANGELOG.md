@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Set initial tag so first release passes the tag pattern (a669a55)
 - Fail cleanly on invalid palette or config YAML instead of tracebacks or silent acceptance (df09017)
 - Skip targets with missing palette keys and exit non-zero (1b6f4c1)
 - Report written only when an output was actually written (3b06d65)
