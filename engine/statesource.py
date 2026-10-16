@@ -25,7 +25,7 @@ import yaml
 
 STATE_FILE_NAME = "hueman.state.yaml"
 DEFAULT_BRANCH = "hueman-state"
-GIT_TIMEOUT = 30
+GIT_TIMEOUT = 15  # seconds per git call; keeps shell-startup sync bounded
 _REMOTE_REF = "refs/hueman/remote"
 _IDENTITY = ["-c", "user.name=hueman", "-c", "user.email=hueman@localhost",
              "-c", "commit.gpgsign=false"]
@@ -38,18 +38,31 @@ class State:
 
 
 @dataclass(frozen=True)
+class ReadResult:
+    """Outcome of a read. `remote` is True only when the state was just
+    fetched from the remote (an empty remote is still remote=True, state=None);
+    False means the remote was unreachable and `state` is the local cache."""
+    state: Optional[State]
+    remote: bool
+
+
+@dataclass(frozen=True)
 class StateSyncSettings:
     repo: Path
     remote: str = "origin"
     branch: str = DEFAULT_BRANCH
     workdir: Optional[Path] = None
+    timeout: int = GIT_TIMEOUT
 
 
 class StateSource:
     """Backend holding the shared palette state."""
 
-    def read(self) -> Optional[State]:
+    def read_result(self) -> ReadResult:
         raise NotImplementedError
+
+    def read(self) -> Optional[State]:
+        return self.read_result().state
 
     def write(self, state: State) -> bool:
         """Publish `state`; True only if it is now the shared state."""
@@ -71,7 +84,8 @@ def parse_state(text: str) -> Optional[State]:
 
 class GitBranchSource(StateSource):
     def __init__(self, repo, remote="origin", branch=DEFAULT_BRANCH, workdir=None,
-                 max_retries=3, logger=None):
+                 max_retries=3, logger=None, timeout=GIT_TIMEOUT):
+        self.timeout = timeout
         self.repo = Path(repo).expanduser()
         self.remote = remote
         self.branch = branch
@@ -82,7 +96,7 @@ class GitBranchSource(StateSource):
 
     @classmethod
     def from_settings(cls, s: StateSyncSettings, logger=None):
-        return cls(s.repo, s.remote, s.branch, s.workdir, logger=logger)
+        return cls(s.repo, s.remote, s.branch, s.workdir, logger=logger, timeout=s.timeout)
 
     # -- git plumbing -------------------------------------------------------
 
@@ -92,9 +106,14 @@ class GitBranchSource(StateSource):
             cmd += ["--git-dir", str(self._workdir)]
         env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
         env["GIT_TERMINAL_PROMPT"] = "0"
+        for keep in ("GIT_SSH", "GIT_SSH_COMMAND"):  # user's transport choice
+            if keep in os.environ:
+                env[keep] = os.environ[keep]
+        if "GIT_SSH" not in env:
+            env.setdefault("GIT_SSH_COMMAND", "ssh -o BatchMode=yes")  # never prompt
         try:
             return subprocess.run(cmd + args, input=input, cwd=cwd, env=env,
-                                  capture_output=True, text=True, timeout=GIT_TIMEOUT)
+                                  capture_output=True, text=True, timeout=self.timeout)
         except (OSError, subprocess.SubprocessError) as exc:
             self.log.debug(f"git {' '.join(args)}: {exc}")
             return None
@@ -159,13 +178,16 @@ class GitBranchSource(StateSource):
 
     # -- StateSource --------------------------------------------------------
 
-    def read(self) -> Optional[State]:
+    def read_result(self) -> ReadResult:
         if not self._prepare():
-            return None
+            return ReadResult(None, False)
         ok, sha = self._fetch()
         if ok:
-            return self._state_at(sha) if sha else None
-        return self._state_at(f"refs/heads/{self.branch}")  # last known local copy
+            return ReadResult(self._state_at(sha) if sha else None, True)
+        # remote unreachable: last known local copy, flagged as such
+        # (last fetched tip; readers never write refs/heads, only publishers do)
+        cached = self._state_at(_REMOTE_REF) or self._state_at(f"refs/heads/{self.branch}")
+        return ReadResult(cached, False)
 
     def write(self, state: State) -> bool:
         if not self._prepare():

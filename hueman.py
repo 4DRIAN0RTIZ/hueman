@@ -18,7 +18,7 @@ from engine.config import ConfigError, HuemanConfig  # noqa: E402
 from engine.fsutil import atomic_write_text  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
-from engine.statesource import GitBranchSource, State  # noqa: E402
+from engine.statesource import GitBranchSource, ReadResult, State  # noqa: E402
 from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
 
 HUEMAN_DIR = Path(__file__).resolve().parent
@@ -63,14 +63,16 @@ class Hueman:
             )
         return [t for t in targets if any(fnmatch.fnmatchcase(t.name, p) for p in only)]
 
-    def set_theme(self, name: str, dry_run: bool = False, only=None) -> list:
+    def set_theme(self, name: str, dry_run: bool = False, only=None, publish: bool = True) -> list:
         """Con `only` (patrones fnmatch) se renderizan solo los targets que
         coinciden y se dispara solo su reload; NO se escribe el state file ni
         corre post_apply (es una re-renderizacion parcial, no un cambio de tema).
 
         Un target cuyo render falla por una clave ausente en la paleta se
         omite con un warning y el resto continua; devuelve los nombres de los
-        targets fallidos (el CLI sale con codigo 1 si hay alguno)."""
+        targets fallidos (el CLI sale con codigo 1 si hay alguno).
+
+        `publish=False` (usado por `sync`) aplica sin publicar estado nuevo."""
         selected = self._select_targets(only)
         palette = self.palettes.load(name)
         failed = []
@@ -115,8 +117,27 @@ class Hueman:
             )
         if post_failed and self.config.reload_failure == "error":
             failed.append("post_apply")
-        self._publish_state(name)
+        if publish:
+            self._publish_state(name)
         return failed
+
+    @property
+    def revision_file(self) -> Path:
+        return self.config.state_file.with_name(self.config.state_file.name + ".revision")
+
+    def local_revision(self):
+        """Revision of the shared state this node last applied or published.
+
+        Kept beside the plain state file (which only holds the palette name)
+        so the legacy format is untouched. None when absent or unreadable."""
+        try:
+            value = int(self.revision_file.read_text().strip())
+        except (OSError, ValueError):
+            return None
+        return value if value >= 0 else None
+
+    def _save_revision(self, revision: int) -> None:
+        atomic_write_text(self.revision_file, f"{revision}\n")
 
     def _publish_state(self, name: str) -> None:
         """Best-effort: share the active palette; never raises or fails `set`."""
@@ -126,14 +147,79 @@ class Hueman:
         try:
             source = GitBranchSource.from_settings(settings, self.config.logger)
             current = source.read()
-            revision = (current.revision if current else 0) + 1
-            if not source.write(State(name, revision)):
+            base = max(current.revision if current else 0, self.local_revision() or 0)
+            revision = base + 1
+            if source.write(State(name, revision)):
+                self._save_revision(revision)
+            else:
                 self.config.logger.warning("estado compartido no publicado; paleta aplicada solo en local")
         except Exception as exc:  # noqa: BLE001 - sync must never break `set`
             self.config.logger.warning(f"estado compartido no publicado: {exc}")
 
+    def sync(self):
+        """Pull the shared state and apply it only if its revision is newer.
+
+        Returns (exit_code, outcome). Safe for shell startup: no change means
+        no writes and no reload; an unreachable remote is not an error (exit 0)
+        and cached data is never applied."""
+        settings = self.config.state_sync
+        if settings is None:
+            self.config.logger.warning("sync: 'state_sync' no configurado; nada que hacer")
+            return 0, "disabled"
+        try:
+            res = GitBranchSource.from_settings(settings, self.config.logger).read_result()
+        except Exception as exc:  # noqa: BLE001 - sync must not crash shell startup
+            self.config.logger.warning(f"sync: estado compartido ilegible: {exc}")
+            return 0, "unreachable"
+        if not res.remote:
+            return 0, "unreachable"
+        remote = res.state
+        if remote is None:
+            return 0, "no-remote-state"
+        local = self.local_revision() or 0
+        if remote.revision == local:
+            return 0, "in-sync"
+        if remote.revision < local:
+            return 0, "ahead"
+        self.config.logger.info(f"sync: r{local} -> r{remote.revision} ({remote.palette})")
+        failed = self.set_theme(remote.palette, publish=False)
+        if failed:
+            print(f"Targets con errores: {', '.join(failed)}", file=sys.stderr)
+            return 1, "failed"
+        self._save_revision(remote.revision)
+        return 0, "applied"
+
+    def _drift_lines(self):
+        settings = self.config.state_sync
+        local = self.local_revision()
+        lines = [f"Revision local: {'r%d' % local if local is not None else '(ninguna)'}"]
+        try:
+            res = GitBranchSource.from_settings(settings, self.config.logger).read_result()
+        except Exception:  # noqa: BLE001
+            res = ReadResult(None, False)
+        remote = res.state
+        if remote is None:
+            lines.append("Revision remota: (desconocida)" if not res.remote else "Revision remota: (vacia)")
+        else:
+            origin = "remote" if res.remote else "local cache - remote unreachable"
+            lines.append(f"Revision remota: r{remote.revision} ({origin}, paleta {remote.palette})")
+        if not res.remote:
+            drift = "remote unreachable"
+        elif remote is None:
+            drift = "no remote state"
+        elif (local or 0) < remote.revision:
+            drift = "behind"
+        elif (local or 0) > remote.revision:
+            drift = "ahead"
+        else:
+            drift = "in sync"
+        lines.append(f"Drift: {drift}")
+        return lines
+
     def status(self) -> None:
         print(f"Tema activo: {self.current_theme() or '(ninguno)'}")
+        if self.config.state_sync is not None:
+            print("\n".join(self._drift_lines()))
         print(f"Paletas disponibles: {', '.join(self.list_palettes())}")
         total = sum(len(t.outputs) for t in self.config.targets)
         existing = sum(1 for t in self.config.targets for o in t.outputs if o.exists())
@@ -153,6 +239,11 @@ def main():
         help="Limitar a targets por nombre o glob (repetible). No actualiza "
         "el state file ni corre post_apply.",
     )
+
+    sync_p = sub.add_parser(
+        "sync", help="Aplicar el estado compartido si es mas nuevo (seguro en el arranque del shell)")
+    sync_p.add_argument("-q", "--quiet", action="store_true",
+                        help="Solo errores reales (sin avisos de red o config)")
 
     sub.add_parser("list", help="Listar paletas disponibles")
     sub.add_parser("status", help="Mostrar tema activo y estado de los targets")
@@ -182,6 +273,10 @@ def main():
         if failed:
             print(f"Targets con errores: {', '.join(failed)}", file=sys.stderr)
             sys.exit(1)
+    elif args.command == "sync":
+        if args.quiet:
+            tc.config.logger.setLevel(logging.ERROR)
+        sys.exit(tc.sync()[0])
     elif args.command == "list":
         print("\n".join(tc.list_palettes()))
     elif args.command == "status":

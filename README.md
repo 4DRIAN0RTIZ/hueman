@@ -43,6 +43,45 @@ acotados). hueman usa un repo git propio bajo `$XDG_STATE_HOME/hueman/` y no
 toca tu working tree. Sin git, remoto o red, `set` aplica en local y avisa.
 `--dry-run` y `--only` no escriben ni empujan estado. Sin la clave, nada cambia.
 
+#### `hueman sync` y drift
+
+`hueman sync` hace fetch de `hueman-state`; si la `revision` remota es mayor
+que la local aplica la paleta (sin publicar una revision nueva) y guarda la
+revision local. Si no, no hace nada: sin escrituras ni reload (idempotente).
+La revision local vive en `<state_file>.revision` (el state file sigue siendo
+solo el nombre de la paleta). `set` la actualiza al publicar.
+
+Pensado para correr en el arranque del shell: silencioso si no hay cambios,
+nunca cuelga (cada llamada git tiene timeout, `state_sync.timeout`, 15 s por
+defecto; ssh con `BatchMode`) y solo sale con codigo != 0 ante errores reales
+(paleta inexistente, target fallido segun `reload_failure`). Sin red, sin
+remoto o sin `state_sync` sale con 0 y un aviso en stderr; `-q/--quiet` los
+silencia. Nunca aplica datos de la copia local cuando el remoto es inalcanzable.
+
+`hueman status` (con `state_sync`) muestra revision local, remota y el drift:
+`in sync`, `behind` (corre `sync`), `ahead` (local mas nueva, no publicada),
+`no remote state` o `remote unreachable` (la revision remota se marca como
+`local cache`).
+
+Disparadores:
+
+```sh
+# 1. arranque del shell (~/.zshrc o ~/.bashrc)
+hueman sync -q
+
+# 2. systemd user timer (~/.config/systemd/user/hueman-sync.{service,timer})
+#    [Service] ExecStart=/path/to/hueman.py sync -q
+#    [Timer]   OnBootSec=1min  OnUnitActiveSec=15min
+#    systemctl --user enable --now hueman-sync.timer
+
+# 3. cron
+*/15 * * * * /path/to/hueman.py sync -q
+
+# 4. hook de git en tu repo de dotfiles (.git/hooks/post-merge)
+#!/bin/sh
+hueman sync -q
+```
+
 ### Placeholders en `reload` / `post_apply`
 
 Los comandos pueden usar `{name}` (alias `{palette}`) y `{seccion.clave}`

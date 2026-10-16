@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from .statesource import DEFAULT_BRANCH, StateSyncSettings
+from .statesource import DEFAULT_BRANCH, GIT_TIMEOUT, StateSyncSettings
 from .targets import FAILURE_POLICIES, load_targets
 
 
@@ -54,12 +54,16 @@ class HuemanConfig:
         for key in ("remote", "branch", "workdir"):
             if key in raw and not isinstance(raw[key], str):
                 raise ConfigError(f"{path}: state_sync.{key} debe ser texto")
+        timeout = raw.get("timeout", GIT_TIMEOUT)
+        if isinstance(timeout, bool) or not isinstance(timeout, int) or timeout <= 0:
+            raise ConfigError(f"{path}: state_sync.timeout debe ser un entero > 0 (segundos)")
         workdir = raw.get("workdir")
         return StateSyncSettings(
             repo=Path(raw["repo"]).expanduser(),
             remote=raw.get("remote", "origin"),
             branch=raw.get("branch", DEFAULT_BRANCH),
             workdir=Path(workdir).expanduser() if workdir else None,
+            timeout=timeout,
         )
 
     @staticmethod

@@ -42,6 +42,7 @@ reload_failure: warn
 #   remote: origin            # default
 #   branch: hueman-state      # default
 #   # workdir: "~/.local/state/hueman/state-sync/x.git"   # opcional
+#   # timeout: 15            # segundos por llamada git (default 15)
 
 targets:
   # --- Ejemplo "overwrite": reemplaza el archivo entero.
