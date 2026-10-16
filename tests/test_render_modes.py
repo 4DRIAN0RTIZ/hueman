@@ -76,11 +76,11 @@ def test_user_template_dir_precedes_packaged(tmp_path):
     assert out.read_text() == "user\n"
 
 
-def test_missing_template_raises_template_not_found(tmp_path):
-    import jinja2
+def test_missing_template_raises_clean_target_error(tmp_path):
+    from engine.render import TargetRenderError
     env = env_with(tmp_path)
     target = Target(name="t", template="ghost.j2", outputs=[tmp_path / "o"])
-    with pytest.raises(jinja2.TemplateNotFound):
+    with pytest.raises(TargetRenderError):
         render_target(env, target, "n", {}, False, LOG)
     assert not (tmp_path / "o").exists()
 
@@ -135,7 +135,7 @@ def test_patch_replacements_and_ensure_after_apply_once(tmp_path):
 
 
 def test_json_scheme_patch_rejects_invalid_json_without_modifying_file(tmp_path):
-    import json
+    from engine.render import TargetRenderError
     env = env_with(tmp_path)
     out = tmp_path / "s.json"
     out.write_text("{not json")
@@ -143,7 +143,7 @@ def test_json_scheme_patch_rejects_invalid_json_without_modifying_file(tmp_path)
     kitty.update({f"color{i}": "#000" for i in range(16)})
     target = Target(name="t", mode="patch", outputs=[out],
                     patch=PatchSpec(strategy="json_scheme_upsert"))
-    with pytest.raises(json.JSONDecodeError):
+    with pytest.raises(TargetRenderError):
         render_target(env, target, "n", {"kitty": kitty}, False, LOG)
     assert out.read_text() == "{not json"
 

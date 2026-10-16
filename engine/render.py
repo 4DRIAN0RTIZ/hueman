@@ -8,6 +8,7 @@ from pathlib import Path
 import jinja2
 
 from .colors import contrast_text, is_dark
+from .fsutil import atomic_write_text
 
 
 class TargetRenderError(Exception):
@@ -60,9 +61,7 @@ def _write(path: Path, content: str, dry_run: bool, logger, make_executable: boo
         print(f"[DRY RUN] escribiría {path}")
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content)
-    if make_executable:
-        path.chmod(path.stat().st_mode | 0o111)
+    atomic_write_text(path, content, make_executable)
     logger.info(f"Generado: {path}")
 
 
@@ -172,12 +171,15 @@ def render_patch(env, target, name, palette, dry_run, logger) -> bool:
                 logger.info(f"{target.name}: {out} no encontrado, omitido")
                 continue
             original = out.read_text(encoding="utf-8")
-            content = _apply_json_scheme_upsert(original, section, scheme_name)
+            try:
+                content = _apply_json_scheme_upsert(original, section, scheme_name)
+            except json.JSONDecodeError as exc:
+                raise TargetRenderError(f"{target.name}: {out} no es JSON valido ({exc})") from exc
             wrote = True
             if dry_run:
                 print(f"[DRY RUN] escribiría {out} (scheme '{scheme_name}')")
                 continue
-            out.write_text(content, encoding="utf-8")
+            atomic_write_text(out, content)
             logger.info(f"{target.name}: scheme '{scheme_name}' actualizado en {out}")
         return wrote
 
@@ -207,6 +209,8 @@ def render_target(env, target, name, palette, dry_run, logger) -> bool:
         if target.mode == "overwrite":
             return render_overwrite(env, target, name, palette, dry_run, logger)
         return render_patch(env, target, name, palette, dry_run, logger)
+    except jinja2.TemplateNotFound as exc:
+        raise TargetRenderError(f"{target.name}: plantilla {exc.name!r} no encontrada") from exc
     except (KeyError, TypeError) as exc:
         key = exc.args[0] if exc.args else exc
         raise TargetRenderError(

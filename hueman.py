@@ -14,6 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from engine.config import ConfigError, HuemanConfig  # noqa: E402
+from engine.fsutil import atomic_write_text  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
 from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
@@ -92,7 +93,7 @@ class Hueman:
             return failed
 
         self.config.state_file.parent.mkdir(parents=True, exist_ok=True)
-        self.config.state_file.write_text(name + "\n")
+        atomic_write_text(self.config.state_file, name + "\n")
         self.config.logger.info(f"Tema activo: {name}")
         run_post_apply(post_apply, self.config.logger)
         return failed
