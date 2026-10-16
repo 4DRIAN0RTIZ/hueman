@@ -14,3 +14,8 @@ __pycache__/
 .venv/
 venv/
 graphify-out/
+
+# Harness files kept local
+/.atl/
+/feature_list.json
+/progress.md
