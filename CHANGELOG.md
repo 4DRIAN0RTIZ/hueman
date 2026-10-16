@@ -23,10 +23,8 @@ All notable changes to this project are documented here.
 
 ### Chore
 
-- Update CHANGELOG.md [skip ci] (90dfb92)
-- Update CHANGELOG.md [skip ci] (80da82e)
+- Skip changelog bot commits in changelog (de8ebfc)
 - Add roadmap issue template (a11c066)
-- Update CHANGELOG.md [skip ci] (84c0fd8)
 - Ignore local harness files (0eb7a5d)
 - Import hueman baseline (4a33753)
 
