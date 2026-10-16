@@ -36,6 +36,7 @@ commit_parsers = [
   { message = "^build", group = "Build" },
   { message = "^ci", group = "CI" },
   { message = "^chore\\(release\\):", skip = true },
+  { message = "^chore\\(changelog\\):", skip = true },
   { message = "^chore", group = "Chore" },
   { message = "^revert", group = "Revert" },
 ]
