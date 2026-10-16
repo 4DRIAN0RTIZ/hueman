@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Fail cleanly on invalid palette or config YAML instead of tracebacks or silent acceptance (df09017)
 - Skip targets with missing palette keys and exit non-zero (1b6f4c1)
 - Report written only when an output was actually written (3b06d65)
 - Make marker splice idempotent (6d6536f)
@@ -22,6 +23,7 @@ All notable changes to this project are documented here.
 
 ### Chore
 
+- Update CHANGELOG.md [skip ci] (90dfb92)
 - Update CHANGELOG.md [skip ci] (80da82e)
 - Add roadmap issue template (a11c066)
 - Update CHANGELOG.md [skip ci] (84c0fd8)
@@ -36,6 +38,11 @@ All notable changes to this project are documented here.
 
 ### Features
 
+- Abstract StateSource with registry and file backend (cf28212)
+- Add sync command and drift-aware status (cf1bbcd)
+- Store active palette in orphan hueman-state branch (ff46436)
+- Record reload exit codes and add configurable reload failure policy (974228f)
+- Write files atomically and fail cleanly on invalid JSON or missing template (edac82c)
 - Add skip_unless_path_exists guard (2ab1eff)
 - Add windhawk taskbar colors template (f28f208)
 - Substitute {name} and {dotted.key} in hook commands (2e37b1a)
@@ -51,6 +58,9 @@ All notable changes to this project are documented here.
 
 ### Testing
 
+- Cover reload exit codes, failure policy and write OSError handling (a0fe57c)
+- Cover render modes, patch strategies and palette/template precedence (2dd321a)
+- Isolate HOME and cover state persistence, reload failure and CLI errors (37216cb)
 - Marker accepts old and new generated header (41813c9)
 - Assert a second full set run changes no file (3878eae)
 - Cover skip_unless_path_exists guard (e7c39bb)
