@@ -23,6 +23,89 @@ coincidencias termina con exit 1 y lista los targets validos. Con `--only`
 **no** se escribe el state file (el tema activo no cambia) y **no** corre
 `post_apply`: es una re-renderizacion parcial, no un cambio de tema.
 
+### Fallos de `reload` / `post_apply`
+
+Se registra el codigo de salida de cada comando. La clave `reload_failure`
+(`warn` por defecto, o `error`) decide que pasa si uno sale con codigo != 0;
+cada target puede sobreescribirla con su propio `reload_failure`. Con `warn`
+se loguea un warning y `set` sale con 0; con `error` se loguea un error, el
+resto de pasos se ejecuta igual (best-effort) y `set` sale con 1. `post_apply`
+usa la politica global. Un error de escritura (permisos, disco lleno) es un
+error limpio del target (log + exit 1) y su archivo original queda intacto.
+
+### Estado compartido (`state_sync`, opt-in)
+
+Con `state_sync: {repo, remote, branch}` en el config, cada `set` publica
+`{palette, revision}` en la rama huerfana `hueman-state` del remoto (un unico
+commit reescrito + `push --force-with-lease`; ante rechazo se hace fetch, gana
+la `revision` mayor y el empate lo resuelve el push aceptado, con reintentos
+acotados). hueman usa un repo git propio bajo `$XDG_STATE_HOME/hueman/` y no
+toca tu working tree. Sin git, remoto o red, `set` aplica en local y avisa.
+`--dry-run` y `--only` no escriben ni empujan estado. Sin la clave, nada cambia.
+
+#### Backends (`state_sync.type`)
+
+La fuente de verdad esta detras de la interfaz abstracta `StateSource`
+(`engine/statesource.py`); el motor solo la usa a traves de `build_source`.
+El backend se elige con `state_sync.type`: `git` (default, lo descrito arriba;
+configs sin `type` siguen igual) o `file`:
+
+```yaml
+state_sync:
+  type: file
+  path: "~/Sync/hueman.state.yaml"   # carpeta sincronizada por Syncthing/Dropbox
+```
+
+`file` guarda el mismo `{palette, revision}`, con escritura atomica; gana la
+`revision` mayor y el empate lo gana la ultima escritura aceptada. Si la
+carpeta no existe (no montada) cuenta como inalcanzable y no se crea. Un tipo
+desconocido es un `ConfigError` que lista los validos. Backend HTTP: pendiente
+(requiere definir un protocolo de compare-and-set del servidor).
+
+Contrato de un backend (probado por `tests/test_state_source_contract.py`):
+nunca lanza, tiempos acotados, `revision` monotona (mayor gana, empate gana la
+escritura aceptada), `read_result()` distingue "alcanzable pero vacio" de
+"inalcanzable" y `write()` solo devuelve True si el estado quedo publicado.
+
+#### `hueman sync` y drift
+
+`hueman sync` hace fetch de `hueman-state`; si la `revision` remota es mayor
+que la local aplica la paleta (sin publicar una revision nueva) y guarda la
+revision local. Si no, no hace nada: sin escrituras ni reload (idempotente).
+La revision local vive en `<state_file>.revision` (el state file sigue siendo
+solo el nombre de la paleta). `set` la actualiza al publicar.
+
+Pensado para correr en el arranque del shell: silencioso si no hay cambios,
+nunca cuelga (cada llamada git tiene timeout, `state_sync.timeout`, 15 s por
+defecto; ssh con `BatchMode`) y solo sale con codigo != 0 ante errores reales
+(paleta inexistente, target fallido segun `reload_failure`). Sin red, sin
+remoto o sin `state_sync` sale con 0 y un aviso en stderr; `-q/--quiet` los
+silencia. Nunca aplica datos de la copia local cuando el remoto es inalcanzable.
+
+`hueman status` (con `state_sync`) muestra revision local, remota y el drift:
+`in sync`, `behind` (corre `sync`), `ahead` (local mas nueva, no publicada),
+`no remote state` o `remote unreachable` (la revision remota se marca como
+`local cache`).
+
+Disparadores:
+
+```sh
+# 1. arranque del shell (~/.zshrc o ~/.bashrc)
+hueman sync -q
+
+# 2. systemd user timer (~/.config/systemd/user/hueman-sync.{service,timer})
+#    [Service] ExecStart=/path/to/hueman.py sync -q
+#    [Timer]   OnBootSec=1min  OnUnitActiveSec=15min
+#    systemctl --user enable --now hueman-sync.timer
+
+# 3. cron
+*/15 * * * * /path/to/hueman.py sync -q
+
+# 4. hook de git en tu repo de dotfiles (.git/hooks/post-merge)
+#!/bin/sh
+hueman sync -q
+```
+
 ### Placeholders en `reload` / `post_apply`
 
 Los comandos pueden usar `{name}` (alias `{palette}`) y `{seccion.clave}`

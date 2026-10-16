@@ -4,6 +4,8 @@ archivo(s), con qué modo (overwrite/patch) y qué comando de reload dispara."""
 from dataclasses import dataclass, field
 from pathlib import Path
 
+FAILURE_POLICIES = ("warn", "error")
+
 
 @dataclass
 class PatchSpec:
@@ -38,6 +40,7 @@ class Target:
     palette_key: str = None
     outputs: list = field(default_factory=list)
     reload: str = None
+    reload_failure: str = None  # None = inherit global; "warn" | "error"
     make_executable: bool = False
     skip_if_missing_parent: bool = False
     # Rutas (archivo o directorio) que deben existir todas para que el target
@@ -55,6 +58,11 @@ class Target:
         required = data.get("skip_unless_path_exists") or []
         if isinstance(required, str):
             required = [required]
+        policy = data.get("reload_failure")
+        if policy is not None and policy not in FAILURE_POLICIES:
+            raise TypeError(
+                f"{name}: reload_failure debe ser 'warn' o 'error', no {policy!r}"
+            )
         return cls(
             name=name,
             mode=data.get("mode", "overwrite"),
@@ -62,6 +70,7 @@ class Target:
             palette_key=data.get("palette_key"),
             outputs=[Path(o).expanduser() for o in data.get("outputs", [])],
             reload=data.get("reload"),
+            reload_failure=policy,
             make_executable=data.get("make_executable", False),
             skip_if_missing_parent=data.get("skip_if_missing_parent", False),
             skip_unless_path_exists=[Path(p).expanduser() for p in required],

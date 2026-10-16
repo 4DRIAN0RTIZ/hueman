@@ -31,14 +31,26 @@ def expand_command(cmd: str, name: str, palette: dict) -> str:
     return _PLACEHOLDER.sub(repl, cmd)
 
 
-def run_reload(cmd: str, logger) -> None:
+def _run(label: str, cmd: str, logger) -> int:
+    """Run `cmd` through the shell and log its exit code."""
+    rc = subprocess.run(["sh", "-c", cmd]).returncode
+    logger.info(f"{label}: {cmd} (exit {rc})")
+    return rc
+
+
+def run_reload(cmd: str, logger) -> int:
+    """Run a target reload command; return its exit code (0 if no command)."""
     if not cmd:
-        return
-    subprocess.run(["sh", "-c", cmd])
-    logger.info(f"reload: {cmd}")
+        return 0
+    return _run("reload", cmd, logger)
 
 
-def run_post_apply(commands: list, logger) -> None:
+def run_post_apply(commands: list, logger) -> list:
+    """Run every command (a failure does not stop the rest); return the
+    `(command, exit_code)` pairs of those that exited non-zero."""
+    failed = []
     for cmd in commands:
-        subprocess.run(["sh", "-c", cmd])
-        logger.info(f"post_apply: {cmd}")
+        rc = _run("post_apply", cmd, logger)
+        if rc:
+            failed.append((cmd, rc))
+    return failed
