@@ -18,7 +18,7 @@ from engine.config import ConfigError, HuemanConfig  # noqa: E402
 from engine.fsutil import atomic_write_text  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
-from engine.statesource import GitBranchSource, ReadResult, State  # noqa: E402
+from engine.statesource import ReadResult, State, build_source  # noqa: E402
 from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
 
 HUEMAN_DIR = Path(__file__).resolve().parent
@@ -145,7 +145,7 @@ class Hueman:
         if settings is None:
             return
         try:
-            source = GitBranchSource.from_settings(settings, self.config.logger)
+            source = build_source(settings, self.config.logger)
             current = source.read()
             base = max(current.revision if current else 0, self.local_revision() or 0)
             revision = base + 1
@@ -167,7 +167,7 @@ class Hueman:
             self.config.logger.warning("sync: 'state_sync' no configurado; nada que hacer")
             return 0, "disabled"
         try:
-            res = GitBranchSource.from_settings(settings, self.config.logger).read_result()
+            res = build_source(settings, self.config.logger).read_result()
         except Exception as exc:  # noqa: BLE001 - sync must not crash shell startup
             self.config.logger.warning(f"sync: estado compartido ilegible: {exc}")
             return 0, "unreachable"
@@ -194,7 +194,7 @@ class Hueman:
         local = self.local_revision()
         lines = [f"Revision local: {'r%d' % local if local is not None else '(ninguna)'}"]
         try:
-            res = GitBranchSource.from_settings(settings, self.config.logger).read_result()
+            res = build_source(settings, self.config.logger).read_result()
         except Exception:  # noqa: BLE001
             res = ReadResult(None, False)
         remote = res.state

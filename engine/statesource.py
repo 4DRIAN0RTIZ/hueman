@@ -1,5 +1,10 @@
 """Shared palette state behind a small `StateSource` interface.
 
+The engine only ever talks to `StateSource` (see its docstring for the
+contract) and obtains one through `build_source(settings)`; the backend is
+chosen declaratively by `state_sync.type` and looked up in a registry.
+Backends: `git` (default) and `file` (a state file in a synced folder).
+
 `GitBranchSource` keeps the state in an orphan branch (`hueman-state`) holding
 a single parentless commit with `hueman.state.yaml`. All git work happens in a
 hueman-owned bare repository (default: XDG state dir), built with plumbing
@@ -17,11 +22,14 @@ import logging
 import os
 import shutil
 import subprocess
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Callable, ClassVar, Optional
 
 import yaml
+
+from .fsutil import atomic_write_text
 
 STATE_FILE_NAME = "hueman.state.yaml"
 DEFAULT_BRANCH = "hueman-state"
@@ -48,6 +56,8 @@ class ReadResult:
 
 @dataclass(frozen=True)
 class StateSyncSettings:
+    """Settings of the `git` backend (`state_sync.type: git`, the default)."""
+    type: ClassVar[str] = "git"
     repo: Path
     remote: str = "origin"
     branch: str = DEFAULT_BRANCH
@@ -55,18 +65,43 @@ class StateSyncSettings:
     timeout: int = GIT_TIMEOUT
 
 
-class StateSource:
-    """Backend holding the shared palette state."""
+class StateSource(ABC):
+    """Backend holding the shared palette state.
 
+    Contract every backend must honour (checked by
+    tests/test_state_source_contract.py):
+
+    * Never raise: every failure (missing tool, unreachable store, corrupt
+      data, I/O error, timeout) degrades to the "unreachable"/False results
+      below so callers can keep applying palettes locally.
+    * Bounded time: every blocking operation has a timeout; a backend must
+      not hang shell startup.
+    * `revision` is a monotonic integer. Higher revision wins; on a tie the
+      accepted write wins (last writer), mirroring the git push rule.
+    """
+
+    @abstractmethod
     def read_result(self) -> ReadResult:
-        raise NotImplementedError
+        """Read the shared state.
+
+        `ReadResult(state, remote=True)`: the store was reached; `state` is
+        None when it is empty or its content is unparseable.
+        `ReadResult(state, remote=False)`: the store was unreachable; `state`
+        is a possibly stale local cache or None, and callers must not apply it.
+        """
 
     def read(self) -> Optional[State]:
+        """Convenience: just the state of `read_result()`."""
         return self.read_result().state
 
+    @abstractmethod
     def write(self, state: State) -> bool:
-        """Publish `state`; True only if it is now the shared state."""
-        raise NotImplementedError
+        """Publish `state`; True only if it is now the shared state.
+
+        Returns True when the store already holds exactly `state`. Returns
+        False, without overwriting, when the store holds a strictly higher
+        revision, and False when the store is unreachable or the write fails.
+        """
 
 
 def dump_state(state: State) -> str:
@@ -214,3 +249,119 @@ class GitBranchSource(StateSource):
                 return True
         self.log.warning("push de estado rechazado repetidamente; se desiste")
         return False
+
+
+class FileSource(StateSource):
+    """State file in a folder synced by something else (Syncthing, Dropbox...).
+
+    Same YAML format as the git backend. The write is atomic (temp file +
+    rename via `engine.fsutil`), so the sync tool never uploads a partial file.
+    There is no cross-node lock: simultaneous writers are reconciled by the
+    sync tool (e.g. conflict copies) and by the higher-revision-wins rule on
+    the next read/write. A missing parent folder means the synced folder is
+    not mounted: unreachable, and it is never created.
+    """
+
+    def __init__(self, path, logger=None):
+        self.path = Path(path).expanduser()
+        self.log = logger or logging.getLogger("hueman")
+
+    @classmethod
+    def from_settings(cls, s: "FileSettings", logger=None):
+        return cls(s.path, logger=logger)
+
+    def read_result(self) -> ReadResult:
+        try:
+            if not self.path.parent.is_dir():
+                return ReadResult(None, False)
+            try:
+                text = self.path.read_text(encoding="utf-8")
+            except FileNotFoundError:
+                return ReadResult(None, True)
+            return ReadResult(parse_state(text), True)
+        except (OSError, UnicodeDecodeError) as exc:
+            self.log.debug(f"{self.path}: {exc}")
+            return ReadResult(None, False)
+
+    def write(self, state: State) -> bool:
+        res = self.read_result()
+        if not res.remote:
+            self.log.warning(f"carpeta de estado no disponible: {self.path.parent}")
+            return False
+        current = res.state
+        if current is not None:
+            if current.revision > state.revision:
+                self.log.warning(
+                    f"estado compartido mas nuevo (r{current.revision} > r{state.revision}, "
+                    f"paleta {current.palette}); no se publica")
+                return False
+            if current == state:
+                return True
+        try:
+            atomic_write_text(self.path, dump_state(state))
+        except OSError as exc:
+            self.log.warning(f"no se pudo escribir {self.path}: {exc}")
+            return False
+        return self.read() == state
+
+
+@dataclass(frozen=True)
+class FileSettings:
+    """Settings of the `file` backend (`state_sync.type: file`)."""
+    type: ClassVar[str] = "file"
+    path: Path
+
+
+# -- registry -----------------------------------------------------------------
+
+class StateSyncConfigError(ValueError):
+    """Invalid `state_sync` mapping (caller adds file context)."""
+
+
+def _parse_git(raw: dict) -> StateSyncSettings:
+    if not isinstance(raw.get("repo"), str) or not raw["repo"]:
+        raise StateSyncConfigError("'state_sync' (type git) debe ser un mapeo con 'repo'")
+    for key in ("remote", "branch", "workdir"):
+        if key in raw and not isinstance(raw[key], str):
+            raise StateSyncConfigError(f"state_sync.{key} debe ser texto")
+    timeout = raw.get("timeout", GIT_TIMEOUT)
+    if isinstance(timeout, bool) or not isinstance(timeout, int) or timeout <= 0:
+        raise StateSyncConfigError("state_sync.timeout debe ser un entero > 0 (segundos)")
+    workdir = raw.get("workdir")
+    return StateSyncSettings(
+        repo=Path(raw["repo"]).expanduser(),
+        remote=raw.get("remote", "origin"),
+        branch=raw.get("branch", DEFAULT_BRANCH),
+        workdir=Path(workdir).expanduser() if workdir else None,
+        timeout=timeout,
+    )
+
+
+def _parse_file(raw: dict) -> FileSettings:
+    if not isinstance(raw.get("path"), str) or not raw["path"]:
+        raise StateSyncConfigError("'state_sync' (type file) debe ser un mapeo con 'path'")
+    return FileSettings(path=Path(raw["path"]).expanduser())
+
+
+# type name -> (parse raw mapping into settings, build source from settings)
+SOURCE_TYPES: dict = {
+    "git": (_parse_git, GitBranchSource.from_settings),
+    "file": (_parse_file, FileSource.from_settings),
+}
+DEFAULT_TYPE = "git"
+
+
+def parse_settings(raw):
+    """Validate a `state_sync` mapping and return the backend's settings."""
+    if not isinstance(raw, dict):
+        raise StateSyncConfigError("'state_sync' debe ser un mapeo")
+    kind = raw.get("type", DEFAULT_TYPE)
+    if not isinstance(kind, str) or kind not in SOURCE_TYPES:
+        raise StateSyncConfigError(
+            f"state_sync.type desconocido: {kind!r} (validos: {', '.join(sorted(SOURCE_TYPES))})")
+    return SOURCE_TYPES[kind][0](raw)
+
+
+def build_source(settings, logger=None) -> StateSource:
+    """Instantiate the backend that `settings` belongs to."""
+    return SOURCE_TYPES[settings.type][1](settings, logger)

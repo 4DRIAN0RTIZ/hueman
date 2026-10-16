@@ -43,6 +43,30 @@ acotados). hueman usa un repo git propio bajo `$XDG_STATE_HOME/hueman/` y no
 toca tu working tree. Sin git, remoto o red, `set` aplica en local y avisa.
 `--dry-run` y `--only` no escriben ni empujan estado. Sin la clave, nada cambia.
 
+#### Backends (`state_sync.type`)
+
+La fuente de verdad esta detras de la interfaz abstracta `StateSource`
+(`engine/statesource.py`); el motor solo la usa a traves de `build_source`.
+El backend se elige con `state_sync.type`: `git` (default, lo descrito arriba;
+configs sin `type` siguen igual) o `file`:
+
+```yaml
+state_sync:
+  type: file
+  path: "~/Sync/hueman.state.yaml"   # carpeta sincronizada por Syncthing/Dropbox
+```
+
+`file` guarda el mismo `{palette, revision}`, con escritura atomica; gana la
+`revision` mayor y el empate lo gana la ultima escritura aceptada. Si la
+carpeta no existe (no montada) cuenta como inalcanzable y no se crea. Un tipo
+desconocido es un `ConfigError` que lista los validos. Backend HTTP: pendiente
+(requiere definir un protocolo de compare-and-set del servidor).
+
+Contrato de un backend (probado por `tests/test_state_source_contract.py`):
+nunca lanza, tiempos acotados, `revision` monotona (mayor gana, empate gana la
+escritura aceptada), `read_result()` distingue "alcanzable pero vacio" de
+"inalcanzable" y `write()` solo devuelve True si el estado quedo publicado.
+
 #### `hueman sync` y drift
 
 `hueman sync` hace fetch de `hueman-state`; si la `revision` remota es mayor

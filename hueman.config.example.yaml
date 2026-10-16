@@ -38,11 +38,19 @@ reload_failure: warn
 # tree. Sin remoto, sin red o sin git, `set` aplica en local y avisa.
 # `set --dry-run` y `set --only` nunca escriben ni empujan estado.
 # state_sync:
+#   type: git                 # git (default) | file
 #   repo: "~/dotfiles"        # repo del que se toma la URL del remoto
 #   remote: origin            # default
 #   branch: hueman-state      # default
 #   # workdir: "~/.local/state/hueman/state-sync/x.git"   # opcional
 #   # timeout: 15            # segundos por llamada git (default 15)
+#
+# Alternativa sin git: un archivo de estado en una carpeta que ya sincroniza
+# otra herramienta (Syncthing, Dropbox...). Escritura atomica; gana la mayor
+# revision. Si la carpeta no existe se considera inalcanzable (no se crea).
+# state_sync:
+#   type: file
+#   path: "~/Sync/hueman.state.yaml"
 
 targets:
   # --- Ejemplo "overwrite": reemplaza el archivo entero.
