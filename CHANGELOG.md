@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Documentation
+
+- Add generated project wiki (ee0c6bb)
+- Add generated project wiki (394c85c)
+
 ## [0.1.0] - 2026-10-16
 
 ### Bug Fixes
