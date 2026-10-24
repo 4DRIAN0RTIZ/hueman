@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e5a4b5f684512b252672bf0a651e732f17f53f09e1a22fd280a8aec647377059",
+  "claims": [
+    {
+      "id": "claim_4f2f6df1053542e8a9c1dacc3e58cb9d",
+      "statement": "Las paletas se resuelven por nombre de archivo `*.yaml`: el loader busca primero en los directorios custom declarados en el config, en el orden dado, y luego en el directorio empaquetado; por eso una paleta custom con el mismo nombre eclipsa a la empaquetada.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L172-L181",
+          "version": "repo-lines-v1:sha256:ca067cbc2ef2839463e5c341773c3a5bd5d4aa1c8f28b74b0107ffc75593d3a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5Yjg2MGJkY2JlMDhiYjY4ZWMwY2FiZjMwYTExMDQ4OTYwZWI2MjhkZTc5OTE4ZjVmMzE4MzgwMTJjZDc0ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNGIyZWEwYzJlMjU0MjdmY2Q0OGJmM2EzZWYwMWYxOGZkMzcxMDEzN2FmYWI4NjExYjFjODhmNDdjNjQwZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkZTBkMDgzZDIxN2IxMWU4OTMyNjZmY2Y4ZWQyY2FhNmQwMzE5NzM4MWMxMTZiYTViZTBlNTZiZmEwYjkwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2NzI3MjY1YWU5MTZmY2E3ZjUxMTY5N2E3ZDhjZjRjMDRhNWI5NDcwZjAyMWU0Mzc2ZTQ1N2NlZTdlMmI1ZGUifQ"
+        },
+        {
+          "resource": "repo://engine/palettes.py#L15-L18",
+          "version": "repo-lines-v1:sha256:cba32e57c6c73a747be5d0ebd9ff8e14b614f3cbbd716bc11f7cdec9514f3e91:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDk1OWNlYjM5YTZhNjM4YWFkZDYxMDk5N2YxMDcwN2VmNDliMzgyZGYwMDNhZWFiZjI0YjY0ODQ0NmVjZTBlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTkwMDcyZTMyMDk4MGI5N2JlYjdmYWVhMjQ5NmRiZDZiNDAwNGQyMGY2YmI3NjE3ZTM1NDBmM2M1MmMxZWEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTFkMTkwZDY0YTBjZjI0NTM2ZjBjM2UzY2E0OTQ5NzFlMjFiNTY0NWQ2ZDc5ZmI2MzQ1YmFlNzMzZmJhNDljYiJ9"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L17-L21",
+          "version": "repo-lines-v1:sha256:8f6f4e2e47cd694d018ed1c539533af5716286003663ff55e6f16dcfa9098f3c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNiZTgyMWYzOTA1NGM3Zjg4YWRiNTQyYmIyMmQ2YjUxYzkxMWU2ZmY4ODk4NTNhYjYxYTI3ZTY3MjE4Y2E5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGE1NDZkODMyY2NiZTUwOGUyNmFmNGE5MzhhOGQwOWI1M2JmOWVjZDk5MTZhMTlkNTcxYmQzNTBlNTBkNzE5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjBmZTBlMzFiZGQ0ZDYyMDk4MDNjNTAwZTM5YWY2NjQxMmZiYTdhOGFhOWRjNjFmNWZkOTY5YmYxMDk1ZTk3ZiJ9"
+        },
+        {
+          "resource": "repo://tests/test_config_and_palettes.py#L30-L44",
+          "version": "repo-lines-v1:sha256:a121279f6c0d532426ef0c423b9b802f0672abb967b2ec50b3fe064e9ad5562f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5OWRiNWE1YmI5NzcxMDdiZmIyYzk4NzllY2UxYzJmN2FlZGZkMDgyZGIzZDYzMWNjNzBlMTBkMDQwYTA3YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2MGM1MzY1MDg4YTRkMTY4YWM2NmY2Y2Q4MTIxOTcwODBiNzZmZDcwODQ3Y2VmYmU1NWNkNjU0ODAxNzA2ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4YzE2YTBhYmUyOWYzODc4MmNiZDE2N2JkNzczZGI2ZjY2NGY4YTRmZTQwZDNiZWU5NjhjNTRhYmIyNTU4YWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e6d0cf01da947f1936f31a89fc96e92",
+      "statement": "`list_palettes()` devuelve nombres únicos ordenados y, si detecta el mismo nombre en más de un directorio, conserva la versión de mayor precedencia y emite un warning en lugar de fallar.",
+      "evidence": [
+        {
+          "resource": "repo://engine/palettes.py#L19-L32",
+          "version": "repo-lines-v1:sha256:223e81ba8a16bec4d3a9691557dc586137ba9362c0e7caf981308bf199c448fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDAzMDBiYWY4NTNlNGFlMWU2NjM2MmVkZjU3NzNmMTY2NGFiYzM5NDYzY2RiYjE3OTlmZjMzYmMwZDg2MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlNjQ5YzBkOWRiODVkMjgzMmMwYTc1Njg5NmNiNTM0OTIzZGVmZTZmMTFlOGYxMmZlMDIzODgyODA3YTdmNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMjU0MTlmYTc2MDI4MmYyNjkyYzZkNjM1ZjhmM2FmNDdmMWZiN2Q4Y2RlMmJiMTUzZjE3ZTY1ZTlmODRlNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4NzBhZWJjNzNlMDQyMTY4YjJiODY4YThhNTI2YWQ3M2U5NDI0ZGJiMGJlNGI0YjBhNWNjYTY5NWZmYzVkNTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_40f1b3f6dfa945449f76cdd85a96e7d8",
+      "statement": "`load(name)` aplica la misma precedencia para elegir un único archivo, y aborta con `SystemExit(1)` si la paleta no existe, si el YAML es sintácticamente inválido o si la raíz parseada no es un mapeo.",
+      "evidence": [
+        {
+          "resource": "repo://engine/palettes.py#L34-L49",
+          "version": "repo-lines-v1:sha256:a26b638d970c289e97c6237cf16e0b89b5c806886bfb8f0640651c0f4a53bb71:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmMThmN2M5NzY2MDlhNjQxOWMwYmUzYzg3YjIwYTVjYjZmMWI0ODZlYjc0YWNjNmI0NWM2ODQxZjdiMzY0ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3NmFlMzVmYTc5MTMzNTFhZDAwMmY0ZGU2MTNiZmYxZTMxN2E2ZGFjNTAyYzZhN2FkNzk2NmMyNzc1ODk3OGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3NDEzODVkOWM1Mjc0ODk3OWMzYWRjZGUxMDIxOWVkYTUxODIxZTg5YjFjN2NjZDc0ZWFiNWRjYmMyOTUyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_36f665a112634aeaa22b51f13b7cebcd",
+      "statement": "El contrato observable para consumidores de paletas es recibir un `dict` YAML ya validado; el loader no fusiona varios archivos ni interpreta el semántico de las claves de la paleta.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L111-L117",
+          "version": "repo-lines-v1:sha256:22c8c88996a1fc30b99ca08479c814618d4671d461c1d9527950a57071cb7525:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU0NTc0NDdhMWNmZjA1MjFmODBlNmExYTdjODQ5NjgxOTIxNDdjN2I2NzY4NWVlYzM4OGIwZGEyMjc3OWE5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTVkYjg5Yzc3NDQ4ODE5M2FhNjI2NDVkNGNkNzEzZTQzNzIyMGM2ODI5OWMxODg2MDNkMDAwZmM0OGJjNzRkYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDRjYzBhZWY5OTE5ZDAyY2VjNDllYzdhZjg4NTcwNzE4NmE3NTMwZjc2NzE2MTM1MjUwZWZiYzE4NTQ2MDhhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmJjODQ4NDBhZWJjZmQxMWU0YjE4MmRhYjIzZjVjOTE2MjI0ZTExMTdlN2E0NWVkZDExOGI2MzExMzJhNzA5MSJ9"
+        },
+        {
+          "resource": "repo://engine/palettes.py#L34-L46",
+          "version": "repo-lines-v1:sha256:228d09f6edf8f0bdfe7d5c6a6c7152a314197ac8ffc10b87634aedd823140195:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmMThmN2M5NzY2MDlhNjQxOWMwYmUzYzg3YjIwYTVjYjZmMWI0ODZlYjc0YWNjNmI0NWM2ODQxZjdiMzY0ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyYTM0NDc4ZDk5ZDEyYTg1OTgwYTZiMDMyMmQyZDg1NTk4N2FmMzFkMmJmY2YyYmZiMGVjM2UyOGNiNjAwMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3NDEzODVkOWM1Mjc0ODk3OWMzYWRjZGUxMDIxOWVkYTUxODIxZTg5YjFjN2NjZDc0ZWFiNWRjYmMyOTUyMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2NTM0Y2RmZTdhYmMyY2M5ZjhlYzBjYmQzY2Q5YzBkMzljY2I0YjRiNGIxMTUxYjAyMmM1ZmE1NTUzMzBmYWUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}

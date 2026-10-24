@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:cd394a017dc0d439bca64082c27cfbbb802635e0f34d7e3aa14f7b6ef37c9b62",
+  "claims": [
+    {
+      "id": "claim_1afd4150f0834baeab9f77cab2bef6f1",
+      "statement": "`hueman.config.yaml` se resuelve con esta precedencia: `--config` > `HUEMAN_CONFIG` > `./hueman.config.yaml` si existe > `~/.config/hueman/config.yaml`.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L130-L134",
+          "version": "repo-lines-v1:sha256:848a8ef483513383c5a100c51040a3deb4543841a0b635f7d72d296348037993:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQ3Nzk2NzgwMDZiOGU3MmQyZWI5NzdlYTZiNWZlMDc5ODFkY2U1OTgwNTFhODBhN2RlNmFjYTcyYTQ2NzA3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODM1NjczZjlmOWZlOGZhZmU4NGYzMWZjZmY0MWZiODAyZjMzYWVkZDg0ODg5YzU2Mjg0ODY1ZWZhNThlZTFlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWRlYzBkMjdjMzZkZWZlNmRkMDc0MzBmNDExMWIwOGJjNDlkYTllMDllNWI4M2M2ODExODQwODAxYTk3NzNkYyJ9"
+        },
+        {
+          "resource": "repo://engine/config.py#L72-L82",
+          "version": "repo-lines-v1:sha256:0a4f42e337a784fe938b13ec60e32eb63206c32677973ad8fbefd90332b901b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYWJjZDBjYzY5MTNkNGY1MWViMjFlNGY1YWZjMmU5MGY4NmQzNmE0NTBiYjQyY2IwNWM2ZjNlMGQ3MDZmOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzN2Y1NzZjMTQ1MDcyYjk4NDkzOWRjNjQ1NTE1YmZhNmEzNWZlYTBkMTAyMTM0Yjc3YzVkZDUxMzdkMzlhNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwMjliNWQzOWViZjFmNTY0ZmJjMTRmYzNkYjE0Yjk3NThkMGMwNWRmOTk2Mzg5OGFhMGVlY2UwZTU5NDZlMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_config_and_palettes.py#L14-L27",
+          "version": "repo-lines-v1:sha256:4bd1f58c479c6fd4bd526aac40d5dcd88af0d813312d8f57d8d0e52c2fad833d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4MzhiYzY2MzNlMGExYWU3YzA4NzAzZWI4OGM1MzZhMGI1MmMyYjFiMDgzZTE5MDhmZGE1ZDA3NjFmODdhODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMWUzY2YxMjgyMDgxNTZlN2RkNzQxODU2NDM1YzE1OTBhNzVlNjEzZjYzODRlNmZiMmFhZWQ3ZDJkNWI3ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YWJhNzYxYmY1ODEwM2VjMmEzNjcyODc4MzlkMDFhYTRkNjRhYzU2MTI1ZTJmMWJiNWZkZmJjZTkyOGRmYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyM2M3ZGQ1YjczMGNlMWE1NjMwZWU1NDEwOTE0OWZhYmE0MjkwZjk0NjU1ODg2YzE2OTkwMTIyNDg4YzYzOGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_83ed88690aa84f9f98b5882729169e0f",
+      "statement": "La raíz del config debe ser un mapeo YAML; `targets` también debe ser un mapeo nombre -> definición, y una definición no mapeada o un YAML malformado se rechaza con `ConfigError`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/config.py#L21-L38",
+          "version": "repo-lines-v1:sha256:09f95eb5d12b1809b679ad5daeccd202e2adaac52ce2b64304b510e7a0cfdb56:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NjljYjA5MjgwZWUwNzgxOTQ1ZTQ4ZDQwNDFiZDJkZmFhZTY5MWFkMmVhYmY1ZDNjYmEwODQ2YzcyMTZjYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwODA2MzJmMjk1NjgzY2YyOWE4OGU2OWY0NWQ4ZWM2ZTcxYWQ4NmY1ODdhYWVkZTFhMjUwZTZjNzFhMmYyYWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5MWU5MDE0NTg2MGI4ZDdlYzAyZDU4ZWYzN2Q1NDViOTg0MmMxOTY0MDY1MmM1MDU4YjQ3OTJmYTdiN2RjZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5MmVhMjIxMjQxN2M1MzVkYWQ4MDg2NWI5MThjZTA4NWVlZWE3ZDdjOGM1OGUzN2Q4MjVlYWE3MmU5Njg1YjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3090ae86b735419f970dfe285dbca2c3",
+      "statement": "Si no se especifica `state_file`, el motor usa `~/.config/hueman/current`; si no se especifica `reload_failure`, el valor por defecto es `warn`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/config.py#L27-L40",
+          "version": "repo-lines-v1:sha256:7e2b24f204555e60c1aa89351279c1a3bf8e384c67db3b3c158c75794e9c08ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZmQyMmExZTljMjM0NzBhMWQ4YzY3YmEwYzhhYWY5NDFkYWFkNTBhYTJiYjc1MjNhOGE4ZjY3OTVjMDQxZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzNjlkNmEzMzcxODcxOGRlOTNhZGExNWE3NGI4YWViMzFiMjM4MDRhNTNiYWFiY2Y5ZWQ5YjA1MmFmZmE4MzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjZGUzZTBkYzAyOWY0ODYyYzBjNWRhZDMxMDk1NWJjMWVhMzQ1ZjFiZjFmNGZkNzdiMTgwNzc5MGVlNmNiYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1MTU2MTY0ZTA5NTdlZWM2NGZlNWVmMWIxYjcyZWZkOGI2YzUyY2I3MjE4ZDVhYTRhZjQ4NTM1MWYyYzBmMGUifQ"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L14-L32",
+          "version": "repo-lines-v1:sha256:7914eb5eefff3c79a85a994f2662b5ce50602af6e58973c41a0ca1f3786ab9ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTFlOTdiMGJkZTA1ZGNmYWRiZGY4MGUwMGJkMmFhYzYwYTBhMDEzN2NkYWFmYWMyNjY1MmQ3NTBmZmEyYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5MjM3MTJiY2U4ZDQyOTk0NjAyOTY1NjZkOTdjYTY0ZjUwZDhkOTEzOTgwNzdkYWMxYmQ1OTkwZmVjNGQ0NDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlYmU0OGFjMmMyYTA0ZjFjYzZiYTVmZTc4NmRlOTQyZTBlZWM3ZWMxYzNmOWM0ZDBkZDkyN2EwM2MyMzc5YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViYzhiMDAwMzdiZjQwZGY1OTEzNTYwZDE3OTVkMTg1MDI1YjAwZWYwODc0MjhkOWNiN2U1NTkxODVkZTMxM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_49f5a94e2bc94703b4b061f47801e4ac",
+      "statement": "`palette_dirs` y `template_dirs` se expanden con `expanduser()` y se usan para añadir paletas y templates custom al material empaquetado del repositorio.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L174-L181",
+          "version": "repo-lines-v1:sha256:e35455ac42c41be61de1d00e979b65b88f1ad4acdffd54c8be590ca4c76267f6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWMxMTc1NDNhODI5MzA4YTAzMmY5NmI0NGU0MzAzM2VmOTAwNjM4ZjRkNGZlOWM1ZmM4YTVmMDMyZTMxMjAzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI0YjJlYTBjMmUyNTQyN2ZjZDQ4YmYzYTNlZjAxZjE4ZmQzNzEwMTM3YWZhYjg2MTFiMWM4OGY0N2M2NDBmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2EzZTE0NTQzMzEzNjI5M2VjN2FhMDU0ZWIyNmY5MWQ5MTViZThhOTFmNzU3NzY5OTAzZjI0YTE1ZjUxNzE5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDY3MjcyNjVhZTkxNmZjYTdmNTExNjk3YTdkOGNmNGMwNGE1Yjk0NzBmMDIxZTQzNzZlNDU3Y2VlN2UyYjVkZSJ9"
+        },
+        {
+          "resource": "repo://engine/config.py#L27-L29",
+          "version": "repo-lines-v1:sha256:cdd6e15e8da3ee5efc779364c3f2c1aad8221ba69da4e86cdad8c0e78222c5ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZmZDIyYTFlOWMyMzQ3MGExZDhjNjdiYTBjOGFhZjk0MWRhYWQ1MGFhMmJiNzUyM2E4YThmNjc5NWMwNDFmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDkwY2QwM2VhYzJlZTcyMDRlOTlkMTYzMGFhYTdmMmJkOThlOTQ3ODVkYjIwYTViNzNkNDUwZGI5N2QzMWMyMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWNkZTNlMGRjMDI5ZjQ4NjJjMGM1ZGFkMzEwOTU1YmMxZWEzNDVmMWJmMWY0ZmQ3N2IxODA3NzkwZWU2Y2JiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM1ODViZDYwZThlMDFhZjM1M2U4ZDY1NDU1ZWIzMThkMjA3M2YwNTM0YjM1MjA1YzUwMTU5ZGQ4OTliOGUwMyJ9"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L17-L24",
+          "version": "repo-lines-v1:sha256:196fd8a7d79c2bba9222ae512e49a3ba86b118dd2110f3c0989ec906956147cd:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNiZTgyMWYzOTA1NGM3Zjg4YWRiNTQyYmIyMmQ2YjUxYzkxMWU2ZmY4ODk4NTNhYjYxYTI3ZTY3MjE4Y2E5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNThhMjUzNGM5NjQyOGYwMDM4NjJmODI2OWQ4MTliMDExMjNjNjU0ZmQ2ZGY4ZWViM2M1MDVkNzk3ODM2YTg3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGE1NDZkODMyY2NiZTUwOGUyNmFmNGE5MzhhOGQwOWI1M2JmOWVjZDk5MTZhMTlkNTcxYmQzNTBlNTBkNzE5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg4MmNlODRiMDg3NzMwYjM1ODZhZWNkYmY2YjgzNmQ0M2ZhMzA5Y2IyOTk2ODFjMTRkZGNmMTVmYTc0NWI1MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_986664c7bf0b4bfc903861d46c92e2f8",
+      "statement": "Las paletas custom con el mismo nombre que una paleta empaquetada tienen prioridad sobre la empaquetada.",
+      "evidence": [
+        {
+          "resource": "repo://hueman.config.example.yaml#L17-L24",
+          "version": "repo-lines-v1:sha256:196fd8a7d79c2bba9222ae512e49a3ba86b118dd2110f3c0989ec906956147cd:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNiZTgyMWYzOTA1NGM3Zjg4YWRiNTQyYmIyMmQ2YjUxYzkxMWU2ZmY4ODk4NTNhYjYxYTI3ZTY3MjE4Y2E5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNThhMjUzNGM5NjQyOGYwMDM4NjJmODI2OWQ4MTliMDExMjNjNjU0ZmQ2ZGY4ZWViM2M1MDVkNzk3ODM2YTg3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGE1NDZkODMyY2NiZTUwOGUyNmFmNGE5MzhhOGQwOWI1M2JmOWVjZDk5MTZhMTlkNTcxYmQzNTBlNTBkNzE5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg4MmNlODRiMDg3NzMwYjM1ODZhZWNkYmY2YjgzNmQ0M2ZhMzA5Y2IyOTk2ODFjMTRkZGNmMTVmYTc0NWI1MiJ9"
+        },
+        {
+          "resource": "repo://tests/test_config_and_palettes.py#L30-L44",
+          "version": "repo-lines-v1:sha256:a121279f6c0d532426ef0c423b9b802f0672abb967b2ec50b3fe064e9ad5562f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5OWRiNWE1YmI5NzcxMDdiZmIyYzk4NzllY2UxYzJmN2FlZGZkMDgyZGIzZDYzMWNjNzBlMTBkMDQwYTA3YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2MGM1MzY1MDg4YTRkMTY4YWM2NmY2Y2Q4MTIxOTcwODBiNzZmZDcwODQ3Y2VmYmU1NWNkNjU0ODAxNzA2ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4YzE2YTBhYmUyOWYzODc4MmNiZDE2N2JkNzczZGI2ZjY2NGY4YTRmZTQwZDNiZWU5NjhjNTRhYmIyNTU4YWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b7c9c8db50b84066ac8f930636ff07cb",
+      "statement": "Cada target declara de forma explícita sus outputs; el motor no descubre rutas de salida por entorno o hostname.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L121-L128",
+          "version": "repo-lines-v1:sha256:8e1274feeeeda7cb34bf4f5af156b6c26aab5601a85d0ffe6b9a7d1c831ba109:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzA2ZjIxMTRiMGE4ZGEwNjA0ODdkNmYzODNiYTNkYmRhZmQ5NjNkOWVjOGQ3YzM0YTNiMDVhYTYzZjhjYjZjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjYyZDExMjAxMTI5YTdiNDBiZDE4YWI0MzJhMTcyY2FkMmM3ZjRmOWI4ODUwOTg4MjU0YmUwOWJmODBmNDFkOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmJjODQ4NDBhZWJjZmQxMWU0YjE4MmRhYjIzZjVjOTE2MjI0ZTExMTdlN2E0NWVkZDExOGI2MzExMzJhNzA5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWZlNmEyYmM3NjllODkxZmRjZjRmMzU4Y2I3Mjc5ZWZhZTY2ZmU1Mjc1ZDVmYmM3YTVjMGQ4ZWYyNGM5YjBkYyJ9"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L55-L63",
+          "version": "repo-lines-v1:sha256:8a6b098532aaa95fb094230f07307224225e9281c62ee2d75aa75f40192d4e99:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjk4MmRlOTNiNDA3YWQwM2VmNGJhYTIyM2Q4YjNmYTU2YjRhZDQ4ZjkwYTJiNjRmYzBlNmVmMDFlNzY3NzU5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjM2ZjZjNTgyMDNlYjMyNGEwYjdiYzMzZTM3YjZlMzUzNzgzZmI1NWIwNzAwZTMzNDA2ODI5ZDljZmQ5MDFjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA0ZmRmYzA3OTg5OWJjNDZmZTcyOTVmYTg0MTcxNGI5YWM3NzM3MGJiNzY4NTk5OTczNTMwOTE2ZThjMzIxMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWQ5ZDU4ZWZjODFkYjU2YjE3MWY0ODcxMzIxYTJiZDk3ZGE3NmE4Y2QxNDhkNmNmYTBjNjdkZmZlYzU4OWFkNSJ9"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L9-L12",
+          "version": "repo-lines-v1:sha256:53afcd5cf10da507eeace4eeea175048f70984928bef0c6cad5dc33551358e4e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzY3NDY1OGRjY2U4NTg1Njc0NDJiZDRhOGI3YmNmM2U1ZGIwODQyMjVmYTQ1YzJjZWYzNjNlYjgzZmRmMDRkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU5NzZhNjI4ZjNhM2EyMzI1YTBkNTEwMmVkMmQxZTkzYWY2MTVkYzE3ODZiMTFhN2U4ZTRkZWNlZWNiMWFhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDIyOTM5MTVkOWRjYzA5MWM1NTFlN2ExZTk2MzNlZDlmZDNjNmEyMGM2NGQyYWFkZGIzOTRlYTc5OTNhZWI2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyMTk5MjYzNzA1YWI2ZGZlZDNmYWRmYjU3MWUwOTc1ZGUxNDI2ZWE4YzkyZTM3MDkyMjlhY2I1ZDlmYmNlMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_91bbb14b41e14ac5882a4dec824d16b3",
+      "statement": "`--only` limita el `set` a targets seleccionados, no escribe el state file y no ejecuta `post_apply`.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L145-L148",
+          "version": "repo-lines-v1:sha256:48254cfd793f1f719f329323d3d78c1acaefb32b3909b2e714b024f3f680cde1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE2NzhhOWRmNjE5M2I4OTcyOTkxNjE0OTg3ZDYxYjllNWFhYzE3NjhmZWI3ZGZlYWJkZDQxNDE1OGQ1MjhiOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmJhNmVmZjk2NWZhMmI4NGY2NmJjNTY5ODFjZDcyMjBiNGM4YzJkNTc4YzhkOGM2MjZiYmQxOTJkOWM3ZTRlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmY1YWFhZDczNjAzODUyNjNjOGZiOGNiM2Q1MDA3NDEzNTI2MGJiNTdkYmIwZDU4NjAwNTc5NmVkOGJlMGRkMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzc5ZWNmOTA3ZGZmYjIwNTY3MTdmODg4N2I2NGU2ZjBhMjQwYTRjMTdmMjAwOTQ1NjM5ZWU2ZjZiNTU2MmFlYSJ9"
+        },
+        {
+          "resource": "repo://README.md#L19-L25",
+          "version": "repo-lines-v1:sha256:022e58608fe5eb77e570f53801d4c43f98c0c86d926d8196d3887960ae2657a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGY1OTkyNzU2MWRkMzgwNDAxZGVmYzZkMWYyMjgxMTcwMDU5Y2Y2OGZiMzgwYmY1ZGZkM2ZiY2MyYTIwMTQ0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWFjMjYzMWNhOGI5MGFkYmE3ODlmMTNiMDM4YjBmZmMyMDMxYmEzNjQ1YzQ1ZGUxYWRkYTNlOWMwNTdjYWQ2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTc5ZGRlY2JjZGQ2ZDg5NjlhMmI4MmY1NjIyZjQyODRkMGYwZjk4NzFkYWZhMWRiOTAwYTQ1MDkwNjVjNmEwZiJ9"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L95-L103",
+          "version": "repo-lines-v1:sha256:527489de4edef2fcdcf2827019fbf2b1d801f7cc203e29a8fe7b51c01af28b81:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzRhMDcxYmY1YzA0OTM2ZWUxMjdlODk0MTA1YWJiY2M1OWUzNGE5YjQ2YTM4YzNmMmYxOGE5NDQxY2RjZDBkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmMzZmE0ZGFkYjJhMDY2NGY4ZmMyNDM3M2NlZTI4NzI0YTgxNWMzMjdiZjNjMjExYzgzZGRiOWFlYjFmNjhlYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjZjYzczNTY0ZTBlZGE4NzIwNWQ3NmJkYTg0ZGRhMDk5NmI5NTIyMTMzN2RmNDhkOWIxZDgxNjM0ZmJkOWEzMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf2296ac960a485ca68e7c653155429e",
+      "statement": "`state_sync` es opt-in: si no aparece en el config, el estado compartido no se activa; con `type: git` es el backend por defecto y con `type: file` el estado se guarda en un archivo sincronizado externamente.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L36-L68",
+          "version": "repo-lines-v1:sha256:094c3e0aa1f3f317fe04ce3ee977abff233e5d1afba07fbb9bfae250a17188e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ODE0MmE2ZmUyYWUwOTkzMmFmZTFjOThlODA3YzY0YTk1Mzk1NmQ5NzFmY2I0MjA5NmMxMmY3OWI2NGZiYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjNjI1ZTIyY2VkYTdlNDY0Nzk1NjcyZmRlZjcyNGQ0ZmI0ZTkxOGY4OWJmMmI1ZmVkZDk2MTgxNmFjNDU1YTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0ZGVjYTRhM2I2ZTgyZDcwNGRkMjFmZjhmN2I4NGVmYjY4Nzc5ZDQ3OWFjYTYzOGQ5YTEwZWExNjY0Y2EwZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExMGQ2OTdhNzU2MGJiYWQ4NDQzZjEzNzNiMGIxMTE4NDhhMDE4ZWE4MmIxOWRjNmM3ZmVlNmEzNGJkMWZiZDYifQ"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L34-L53",
+          "version": "repo-lines-v1:sha256:c9aaeafd3bf40a7b1bab44443593f33f35d6f242f6bdd2406b500dda2d2f1c8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhNmU1MTU4ZDJkZmI0MDVjMjRmZmMyYjg4MGU4YTIyNmYzMDc1ZTE0Mzk2Mzg4NjliYTQwOTFlYjQ0OTA0OTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5MDdlYzNmYTcwZTQwY2Q1ZmI2ZmM5N2FhNjM5ZDc4ZjgyYmQ2MzdmN2JjYzI1ODAzMjM1YmQxZmYzZjNjMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhZjgzNmE2YzhjOGM2M2Y4MmNhNTE4NzVjYTFhN2Q4MGNjZDliZTY5MDY0MmQyZmM1NzBlYTc1N2M0OTdiOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlNGMzZjQ5NDRhODhjOTgxYjM0NmIyMWY5N2RiNGIyOGIzMjExMTY3MTExNjhiNTY3NjdiNDZmNWE4YzU2NTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51c8197a9ef342f5a38aa6362b91ae0e",
+      "statement": "La carga de `state_sync` se delega a `parse_settings()` y cualquier error de configuración de ese bloque se reexpone como `ConfigError`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/config.py#L48-L55",
+          "version": "repo-lines-v1:sha256:a21b6a9909618c0ad2ee54ced4680acbaa3ff2167d79794406b2bf144956cef1:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFhYmNkMGNjNjkxM2Q0ZjUxZWIyMWU0ZjVhZmMyZTkwZjg2ZDM2YTQ1MGJiNDJjYjA1YzZmM2UwZDcwNmY4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTk0YzM1NzI2Yzc4ZGY0M2U3NjNjYTE4Njc0NDdjMWFmMDUxZWI2ZjRjN2IwNDMyOTA5ZGRmMTMwNzc5MTg0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGU3ZWRjMGJlYTk1OWJlMGJjNmQwOTBjMDczZDE2ZWM4OWQ3Mzg3YjJhZTAzNjkwOTlkOThmNWYyOWEwYWE0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjUxYjZjYTkwNGNhMTZhNzEwNmJmOTlhZjM0Y2QyNmE4YTJjOWJlYjYyZDk2ZGJhNWY3ZmRkNzkxNDM0NGMzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fd4c8509bf547b7a8e063b54c38519a",
+      "statement": "El logger `hueman` usa nivel configurable en `logging.level` con `INFO` por defecto, añade un `StreamHandler` si no existen handlers previos y puede añadir un `FileHandler` cuando `logging.file` está presente.",
+      "evidence": [
+        {
+          "resource": "repo://engine/config.py#L57-L70",
+          "version": "repo-lines-v1:sha256:64361cf831cdb3043a2d83999c8718c170b64502ff015a4e3ae34bf09e39319b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYWJjZDBjYzY5MTNkNGY1MWViMjFlNGY1YWZjMmU5MGY4NmQzNmE0NTBiYjQyY2IwNWM2ZjNlMGQ3MDZmOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3OWU0M2Q4NDIxYzZmMjNiNjgyM2FkZjM4YWY2ZmQ5M2Q1ZDhjZjM1YTZkY2IyZTQ1ZDc0MjM1OGEwZTEzYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlYzBkYzFiYjFiN2I1YTkyYzBkYTU1NGFlMmE3MmUyMGJiMzczOWI2MDMyNjdkYmJiZGZiY2M2NzgyY2ExNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1MmZhMjY4M2Y2MjA3NjdiMDNmMWZkODUyMjg2YTFjNmFmNDEyY2U3NzI3YzlmNzdjYzVlNTA3NDliMzIyOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf4a8746efe84c0db272f5c72b1fa2d1",
+      "statement": "El repo incluye un smoke test que exige que un config real resuelva sus templates empaquetados y renderice sin dejar delimitadores Jinja sin procesar.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_real_config.py#L1-L52",
+          "version": "repo-lines-v1:sha256:ebf1eb3dd13da204946402819dcb945581276f84cd7a5e79c6a158bd8261f3d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmZDY5MDc0N2I5ZDI0Y2Q1OGI4NTVmODY1OWI4M2NiYTcyNzc3ZjM0ODMwMmUxNTg1OGJlYjlhMjY5MTEyN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyOTAzNDVjOWM0YWYzYTI5YTNkNzdmNDM0NmQ2ODU3OWM2MTZiYmM5MjlhOTkwODczMzY0M2I4MWUyOWY1ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_175edea88d4d4d47a6e7d11a1e55c9c2",
+      "statement": "`set --dry-run` y `set --only` no escriben ni publican el estado compartido, y la publicación usa `{palette, revision}` con una rama huérfana `hueman-state` en el backend git por defecto.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L36-L45",
+          "version": "repo-lines-v1:sha256:5aa17d987387238c70df3d0d4caf8cacb92f47d7abb4bfaaec80c64cf875c82a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ODE0MmE2ZmUyYWUwOTkzMmFmZTFjOThlODA3YzY0YTk1Mzk1NmQ5NzFmY2I0MjA5NmMxMmY3OWI2NGZiYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0ZGVjYTRhM2I2ZTgyZDcwNGRkMjFmZjhmN2I4NGVmYjY4Nzc5ZDQ3OWFjYTYzOGQ5YTEwZWExNjY0Y2EwZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MGMxNGJmMTIyM2E3MzRkNzhjZWYxOWU1NzA0NTdhMTU5NTgwMWE5N2IwZDNhMjEzNWZkYzFlZmM1YWQ2MDkifQ"
+        },
+        {
+          "resource": "repo://hueman.config.example.yaml#L34-L53",
+          "version": "repo-lines-v1:sha256:c9aaeafd3bf40a7b1bab44443593f33f35d6f242f6bdd2406b500dda2d2f1c8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhNmU1MTU4ZDJkZmI0MDVjMjRmZmMyYjg4MGU4YTIyNmYzMDc1ZTE0Mzk2Mzg4NjliYTQwOTFlYjQ0OTA0OTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5MDdlYzNmYTcwZTQwY2Q1ZmI2ZmM5N2FhNjM5ZDc4ZjgyYmQ2MzdmN2JjYzI1ODAzMjM1YmQxZmYzZjNjMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhZjgzNmE2YzhjOGM2M2Y4MmNhNTE4NzVjYTFhN2Q4MGNjZDliZTY5MDY0MmQyZmM1NzBlYTc1N2M0OTdiOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlNGMzZjQ5NDRhODhjOTgxYjM0NmIyMWY5N2RiNGIyOGIzMjExMTY3MTExNjhiNTY3NjdiNDZmNWE4YzU2NTQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}
