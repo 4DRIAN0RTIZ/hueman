@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:511e3c25580a5659fd91ecce5b2ae576ff7bb50a0c2a2dc20aa2191164838c13",
+  "claims": [
+    {
+      "id": "claim_d30b1ed978fb419fb8aec3a373579c61",
+      "statement": "La CLI `hueman.py` actúa como orquestador de alto nivel: resuelve config, carga paletas, selecciona targets, renderiza salidas, ejecuta `reload`/`post_apply` y coordina la publicación del estado compartido, pero no contiene lógica específica de herramientas.",
+      "evidence": [
+        {
+          "resource": "repo://hueman.py#L33-L45",
+          "version": "repo-lines-v1:sha256:ef1c8b805517733594f788073e848805e8e95eaad326693f3f7af49390d9e1bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ZjQ4YjFkMjMxYmFhOGFkNzM2YjEzNzcxYWVhMGJlMjU4YjBjYjI5N2YyY2JjNjhiMmEwOWVhZDViMWNkMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViOGJkYmNhNWY2MTJlOWVmMTRjMjdlMWE1N2M2MTM0MzRhYzcyMzJiZTE4MjVlMDAzODI5NTRjMmE4MTljMGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ZDE2NmU4MGJlODVhN2Q5OTA1NzYwZmM5YTJkNTBjM2QxNzE3YTJhMjI0ZmQzZTQ1YTE0Yzc0MGYzNDlmOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjMmQyOWM1MTk5Yzg3ZDU1ZWVjYjgxNTBmMTBjZTAxYTBhYjNjZTAzNjAxMjhjN2M3OWVjOWE0YTMwZjU5NzAifQ"
+        },
+        {
+          "resource": "repo://hueman.py#L66-L123",
+          "version": "repo-lines-v1:sha256:550b2e9417d39552e94c603056031f4b4dc9b8ef1427326984d5198641168d37:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiOGUwYTg1ZTJjNmZkNzY1YWQwMjViYzE5MzBjYmQxNDNlMjlhOGNmM2NiZTg1MmIzYjZkMGRiNTQ5NTIzOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxMGUxOWM1ZjhjM2U2MGQ2YmFiZWUzYWM3MmY5MjExZDUxNWVlYTA0OWExODdmYTBmY2RhZjk2MmQwZTc2NGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0MzY3NjE5ZTMzN2Y0YzFiZGI2NjQ0NjM4NWExMTgwMWI5ZDlkNDU5OGZhOWFjMTZjODQ5YjcwZjQ4YzFlOTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ced5cb516fdb4d6a9349ba1f4f129350",
+      "statement": "La configuración se resuelve con precedencia fija `--config` > `HUEMAN_CONFIG` > `./hueman.config.yaml` > `~/.config/hueman/config.yaml`, y `HuemanConfig` valida el YAML, targets, `reload_failure` y `state_sync` al cargarlo.",
+      "evidence": [
+        {
+          "resource": "repo://engine/config.py#L18-L47",
+          "version": "repo-lines-v1:sha256:1999afa5f2bfc522f9e1b3427e89fc4886c89c0a189eeda53d92635469341586:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4YWVhMmQ2YTFmYjQ4YmQ2ZDFjYzJhYjQ4YzZmYjlmZmJlNmEwYzYxZmE4MGI2M2I0NDVjZjExMTlhNjQyNzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyZDY3MmU0Nzg2NzA4OTU2NGFmZDQ4MDI5ODdlOWZlNjQyZDMzOTQyOGY5ZWNlYWRkMzk4NzczNjk4YzRiZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1MmVkYTBkNmU2Yjc1YTM1MjUwY2MzMTM4NTcwNzMwOWI3YjhkNDM1MmRkMWYxYzgyNTgzNmNiMDViZGNhNDYifQ"
+        },
+        {
+          "resource": "repo://engine/config.py#L72-L82",
+          "version": "repo-lines-v1:sha256:0a4f42e337a784fe938b13ec60e32eb63206c32677973ad8fbefd90332b901b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYWJjZDBjYzY5MTNkNGY1MWViMjFlNGY1YWZjMmU5MGY4NmQzNmE0NTBiYjQyY2IwNWM2ZjNlMGQ3MDZmOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzN2Y1NzZjMTQ1MDcyYjk4NDkzOWRjNjQ1NTE1YmZhNmEzNWZlYTBkMTAyMTM0Yjc3YzVkZDUxMzdkMzlhNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwMjliNWQzOWViZjFmNTY0ZmJjMTRmYzNkYjE0Yjk3NThkMGMwNWRmOTk2Mzg5OGFhMGVlY2UwZTU5NDZlMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_628eacc9a3524a81bb50528bfd2683af",
+      "statement": "`PaletteLoader` busca paletas primero en `palette_dirs` custom y luego en el directorio empaquetado, permitiendo sobrescribir paletas por nombre; cuando hay colisión, gana la ruta de mayor precedencia y se emite un warning.",
+      "evidence": [
+        {
+          "resource": "repo://engine/palettes.py#L19-L33",
+          "version": "repo-lines-v1:sha256:ff2fd6622199b3081e28478a935c1456d21e733a412d9cd90e626bebd8f7c85e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDAzMDBiYWY4NTNlNGFlMWU2NjM2MmVkZjU3NzNmMTY2NGFiYzM5NDYzY2RiYjE3OTlmZjMzYmMwZDg2MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMjU0MTlmYTc2MDI4MmYyNjkyYzZkNjM1ZjhmM2FmNDdmMWZiN2Q4Y2RlMmJiMTUzZjE3ZTY1ZTlmODRlNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2ZDI0ZWVlZmQ1YzQxZGJmOGUzZTNjODJiNTkwZDgyNWQzNDBhMTE0ZDNiYTAyODhiYmIxMGEwYmYxY2I5ZmMifQ"
+        },
+        {
+          "resource": "repo://engine/palettes.py#L9-L18",
+          "version": "repo-lines-v1:sha256:1d498a59eb58813a22a65b1c15ced5c92f534f7b8fc7629d0faf04eb94617d8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYzU0MDUxNDk0OTkwNGIwMTU5OTVmYzIyZTU4MzhiNzVhNmRlMjJiNTRjNzg1ODc3NjAxN2M1M2JjMjEzYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4NWVlNzkxMDMzMjk3ZTc4MDFlMjAyNDk0MjFlMTNmNTgyYTJlZTcwOWRmNDkwYjAyYjNkNmVmNGJiOTMzYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxZDE5MGQ2NGEwY2YyNDUzNmYwYzNlM2NhNDk0OTcxZTIxYjU2NDVkNmQ3OWZiNjM0NWJhZTczM2ZiYTQ5Y2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e3327fc4dfa4869b4076a141b4a25b9",
+      "statement": "El renderizado está centralizado en `engine/render.py`: `render_overwrite` y `render_patch` comparten el mismo motor para todos los targets, usan Jinja2 con filtros comunes, y omiten targets cuando falta la clave de paleta requerida o el destino no cumple las condiciones declaradas.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L160-L220",
+          "version": "repo-lines-v1:sha256:f5154930fc0cd8fc0ddfcf70f609ac8dd9f5a24e92736ef29544beb5e535a4d5:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMDg3MDRmMTdlMzFmNGEwZjIyMzFkNjFjOGMxYTk1ODI2ODFjYzNjZTZjOTA4ZDkxZDEyYzVjMTNiYjYzZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNjU3ZmFhOTA3MWRhMGZjNWZjOTE1N2EyMWI1NDYyZmEwNTNmY2FhYjM4NjRjMTAwZThlMmRkN2FlZWQ1NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZGY4OGEyMTg3MjY4NGYxNDExZGYyNmZlMDgwNDE2NzEzMTZiYzEzNzQ4YjllZTk5YzJkMTBkY2I1NzdjMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://engine/render.py#L25-L39",
+          "version": "repo-lines-v1:sha256:46f749e7f991c4c475dbbbb02f8e17bf857ccfbd5a7cfa7305248359f16532a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZjgyNDQwOTkxYmYzMTBlNTNiYzViMWZjZTAxNzI2MDY0OGQ3NDk3ZmNlNDY0OTZmYmZkZWQwOGY3OGFmOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNmZlNGE4Zjk2NjEyZGE3ZTE1N2UwODAwMGZjNjY1MjBjYjlmMWI2NDBkMzNlYTI4ODcyOTc1M2NlYWMwNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NDI1OTgxNzRlNDQ1OTE5MjYyZDFjODFmMWE3YTUxNWQyMTIwNDgxY2E3MWFiZGVlMmMzNjRjYzFjYmM5ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiNjM4ZmIxNDY4MzkyYjFhNzZlOTljODZlNDhlZmZlZDJhYzkwNTFjZGNjNTYyNWQ4OTYwZjA2ZjkzMjcxYWEifQ"
+        },
+        {
+          "resource": "repo://engine/render.py#L68-L80",
+          "version": "repo-lines-v1:sha256:75f1dc14e10771711f6ef9eb708fb070cc8f269e42fd28dad1bf7566a152b2df:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNmI5ZWI3ZDIxODdhN2E5NGEwZTllMGVmNTJjYTBkYzE5ZTQ3NTVkNmVhYWRiOGU1YjJhMDg4MDcwNDBhOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmNmY4NTQzZWEzNjI3Y2JmNjlkN2M5NTRiNDZjNzBkNDkwNDAzMGQ2ZDZlMmQ2YjhmMDcyOTM0MDI3N2IyOTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyODAzOGVkYmM3YmFjZmFhMDgyYmQ3MjlkMzU1MTlkNWM4NjRiODM3Y2YwMDg2ZmVhZWEzM2Y1ZDRkYzQzZTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_95a60e8780994b2eb4e506a041c9351c",
+      "statement": "`engine/reload.py` expande placeholders como `{name}` y `{seccion.clave}` con `shlex.quote`, deja intactos `${VAR}` y llaves sin punto, y ejecuta `reload` y `post_apply` como comandos de shell registrando su código de salida.",
+      "evidence": [
+        {
+          "resource": "repo://engine/reload.py#L10-L31",
+          "version": "repo-lines-v1:sha256:2f0d45196c78657c22c034140c051886d5859cb76816e24d73d889b963173587:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0Y2RjNWMwMGNhYTNmZTY3NTU3ODczMzYwODE4YjJiYTMwYWMzNDkwODg2NzZlYzJmN2QzMGRmZTkyY2M2YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiY2Q3NzQzMmEyNWU0ZDM1MmU2MmMwZjNjMTdmNGQ3YmQ1NDcxMWU5MTVhMDBlYzEwN2ZjZjllNmU3MjY1ZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1MWZiZTg1OTZhMjhiZTlkN2ZiMmVjZjcxOGI4ZDIyYjNiOGE3MDYxNzYzOThlMDA0NGZkMWQ4YTAwMjEzNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjZjBlYzRlNDMzYzExMGIyZWI1MTJkM2FhMWU2ZjdhYWUyYjAwMjIwNWE3YjAwN2I4ZjUwN2I4NzZhMzNiNWQifQ"
+        },
+        {
+          "resource": "repo://engine/reload.py#L34-L56",
+          "version": "repo-lines-v1:sha256:46518798c4ca18cecd2c5634fecef6107d323261cf7735aa698215abdfd2754b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzZDc4NzRlMzA5ZDg1NzhjYWUwNWIwMjdkYjUxNjUzMzdmMzY3MTQ3ZGYxNjZjZDM1NWQ2MjQyNjYwOTZiNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkODBiOTkwNTIxZjRmNTk3Yzg1YTRjNDgwNDM3NGMxMDkwOTFkNDVkYzdjODU0OTRjMmJmNWJlZWNiZDM3ZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4M2EzNmE4MzRkMWNjNGRkMTk1OTNkZWNjYTFjNGI0ZDIwZjEyZjkwNjdhNTc0OGI2ZmRmMmUwNDk4MWVmOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0d6fe94a8ba442c86ed6b6671fb8db7",
+      "statement": "El archivo de estado local guarda solo el nombre de la paleta activa, mientras que la revisión compartida se almacena aparte en `<state_file>.revision`; `set_theme()` escribe el estado solo en un cambio real y no lo actualiza en `--dry-run` ni con `--only`.",
+      "evidence": [
+        {
+          "resource": "repo://hueman.py#L108-L123",
+          "version": "repo-lines-v1:sha256:1e13257ae75eb41390e4c858075dc767d07d8512b60812be5dd2800a0dc94fe5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNDc5MGZiN2U0MjI4YzdjYTkyNjIzZmY3YzJlM2Y4NDJhNWJiOWM5MTE5YjA4NWI4NWFhNDM2OGQ5ZGE0NzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5YTAzZGVkMDRlMWI3N2JiZDNkZTMzNjRhYTA0MDVkMDU0YWFkMzEyODczMjk2NmRjNmYzMjQ0M2VlZjk1OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0MzY3NjE5ZTMzN2Y0YzFiZGI2NjQ0NjM4NWExMTgwMWI5ZDlkNDU5OGZhOWFjMTZjODQ5YjcwZjQ4YzFlOTMifQ"
+        },
+        {
+          "resource": "repo://hueman.py#L124-L141",
+          "version": "repo-lines-v1:sha256:7cde0fddbe23da3fe75379fcffe133669f979b1c0f4277fd4b77eedab9b489fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZDAwY2YyNzA5NjRkNDRhMTNkZmFjODc1MmIwOWZjYzQzNWIwZjE5YjMxNmFiY2Y4MWE3YWE2NGJiMTIyZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4MTYyMWYzMWQyOGVlN2M4MThkNWZiMTQzNTgwMmI4OWRhYmQwMjBhM2RmNTIyMzNiMDZkNGI5N2MxMzVlMDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0M2EwYTI1ZTY5NGQ4MGFlYWVmYzlkOTg5MmU0NWJiNzkzNmJmYTZjNDM5MWYwMDU4NDk3NzMzZWJmMDEyMWYifQ"
+        },
+        {
+          "resource": "repo://hueman.py#L50-L52",
+          "version": "repo-lines-v1:sha256:196338847f0c839072a2d237a84bf8e7d07cf860b12a4f808b2e0249cbf6ff45:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODE2MzdhNGQ3OTViODI2MTc0MjEzZTZjNDRlMTBkNWI3YWQ4OTJmNmMwMGZiYmRmMDg4ZmFiMDEyOWEyMjRjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDk3OTE5YzY5OWU2YmExZTI4YzY4ODUzOTFiMDliM2UwOGJjZTdlMGNjODhiMjMyYzU2ZjMzOTVkMmNmMDZmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWEwZGJhYmRhNDRiZDZlOTBjNmU3NmI0OTg5MzdiNjI2NTJlZTgwZTAxMDQzNDhjOTA1YWNlYWNkNzk0YzY5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6203f9daa6864d78b227c2fa129f12f8",
+      "statement": "La sincronización compartida está abstraída por `StateSource`; `build_source()` instancia el backend según `state_sync.type`, y hoy existen los backends `git` y `file`, ambos con semántica de revisión monotónica y degradación segura ante indisponibilidad.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L216-L305",
+          "version": "repo-lines-v1:sha256:0db4fdb96ef5b4603b362a7d015b29c62bda525aa6d6236417f207f3e901284d:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MzgwYzdkOTk0NDNkNTI0OTQ4ZTcyMDkxMmY2YTBlNzgzZWFhMWYzZWUzNzg2ZDI1YjVkOTBmZjFiYTE1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMzI1ODhiZjE1NzMzZGZiM2Q4MjA2NDc5MDU5OWVmYjU3Yzk0ZGNiZTlmMmU2ODdkNmZlZGZmYWNlYTliZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2OTUzMWZjMTVmOWUwM2Y5YWY1OTllMGZmMmM1NTViYjQ5YjI2ZDMzMGQ5ZjMxYjZjOTc2MWRlNmI4MjkwNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwY2UzZjI0YWI0N2MyZjVhOWQzMzdmMzc3ZWQ4NTczZmE1NjU4NDA3NjQwMmYxYWYwNTRhM2RlZDYxOTQ2MmYifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L315-L367",
+          "version": "repo-lines-v1:sha256:ce28cd10749f55b7b3f4e0a09da38e58d8db1212a60834f3c6fc2fa0fa0fca85:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMDI2ZmUzZDYxNTM1OWVmNWRiOGM3MWYxYjZjODA2N2FiYjlhZDE1NjczZmY1MzExMjhkMTk5MDFiNjNlYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjliZDhlMjhmMTU5ZWVlM2NjYzhmZmFmZDg3ZjBlNTI1YTUyNzczMGQ4NzAzNmVmYjM5ZmE5NTZhNWE0NTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzNTQxNTZiZDk2M2E5MzYyNDIwMGQ1Yjk2MzFlYzYwODg5ODVhYWUzYTc3NDMxNWUyN2JkZjM5OTI3YWUyYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L68-L105",
+          "version": "repo-lines-v1:sha256:f7eb66cdb82dc1495465694c24b89060e1cd79592ec851cfd163d7c31ae6ba98:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0ZDUxYjIzMmJmMjI3ZTk3Y2VhZjNiOGI5ZTU2YTkyN2Q5NDZiMThjNTMxN2U4ZGNiZWJhMjgxMjdiYTI5NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyMzc5MGUyMTBhZmMwNmJmNzgzYjRiMzYxNmQ0NjY0ZmQ3YTE3YzAxOTJmMDcyMjliMmZkZDA4MTc1YzdlOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhZTg3ODlhYTI5NDVkMWQ2NzM5ZjViMmMwNTZmYWE0ODNmNzRmNjA5NDNlYzA3OTUwNDRlMDJkOGUyOWZiOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b89829e14a194022bfaaa28931aa99c2",
+      "statement": "`GitBranchSource` mantiene el estado en una rama huérfana `hueman-state` dentro de un repositorio de estado propio, usa timeout por operación y `push --force-with-lease`, y ante fallos de git, red o remoto devuelve resultados no fatales en lugar de lanzar excepciones.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L120-L195",
+          "version": "repo-lines-v1:sha256:c28c52ca1467d320cc614f4d26460d19aab28f99e85efd3927ba340110e2c09f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMzNiZGI4ODFhMzQxN2Q2NjJjMmRiYTFmY2U5ZmUxMTE3YWJkMDY4OTU2YmE2YzkwZmY5YmEzZjU1MmQ3ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYWJkZjgyMzE1MzkxZGUwYTY1YTVkOWVjMzhiZjU1M2RkODNhN2FjYTUxNWY1NmFjNTc4Zjk3OWVlMDkzZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczM2U4NDg3Yzg1ZGZkY2Y5ZmE3YjkzYzc0NmM5NDYyNWFlNDdlMTIwYzc5N2U3OTFlNzM3ZjllZDdmZmM3M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhZjZhNzczZDMzM2MxYTA4MGFiNjQwOWFjMWYyYzQ1ZjI0YjRiNzg2OGFiYTAwMTRhN2I0ZjFiNzg4OTQzMDUifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L227-L251",
+          "version": "repo-lines-v1:sha256:d8cbd6b739d3dc7352dac87cbff32dbba6e4c3545a1cdef0618b72092bb9b3fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMTAyOTBjNTUyZGQ4M2M2YzZhNjEwNjljMDM0YTY1ODMzMGExYmRjNjllYzdkNGE3MThlMThkY2JlYWM5N2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5OTg1ZjQzMjFmOGU2YTA5N2Q1YzQyNWE5YzcyZDE0ZTkyZTUwYThkZDY1ZmJlNjllOGRlMTY4NzQzM2QzYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxOThlNTZjYTA2ZTEzOTVmYmY0MmZlMWIyYTRhZTYxMTJkYTlmODI5YmZhY2IzNDQ5YWNiY2NiZTY2Y2UxYTgifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L8-L18",
+          "version": "repo-lines-v1:sha256:1ab62dfc6a1651ca898be1b13fcab54c48088922b6d83bed997b6065c693cc48:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyMzQ1MWE4NDAwYzMyYjQ2OTFmODJlN2Q0NWYyOTFiYzUwZDM1MDRkMDQyNmM2N2I1Yzg4NTE1ZDk4NjkyMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzMDNlY2RkNGE0ZDEwZjE5YzczZmQ0MmZkMTI0MzdmZDMzNTRhODI2ODE2MDVkYTUyNTVhOTdhMzkwNjhkYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZDIyNGFhMzIwMDk0YmQ5MGNkZTIxYmY0N2Y2YWFkY2Y4MzIwNGI5MGRmZmRmMDA5OGJjN2NkMTc5MDNjM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlNTdlN2ZlM2I2YWU1YTllMTE2Mzg3Yjg4Y2E1ODQ4Mjg2OWVhNmFlYWYwYWQyNzUwZTMwNzNiNjNkM2QwMTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d21c9470dfb48c09001cb8dad9e48dc",
+      "statement": "`FileSource` trata la ausencia del directorio padre como un estado inalcanzable, escribe de forma atómica y resuelve conflictos por revisión mayor; la escritura se confirma solo si la lectura posterior coincide con el estado publicado.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L254-L305",
+          "version": "repo-lines-v1:sha256:6b84a75f415f98108f2d2fa71642c82cde433db5c9539c2f4f6a64d600fbe750:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNWYyNzZiMDQ4ODgxYmYzMGEzN2MyYTFhNWUzM2I5NGMyZTFjN2Y4MWE4YzVmZTFlNjNhZDM0YmJhYzdmZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMzI1ODhiZjE1NzMzZGZiM2Q4MjA2NDc5MDU5OWVmYjU3Yzk0ZGNiZTlmMmU2ODdkNmZlZGZmYWNlYTliZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5OWVmZWRmZDJkOTcwNmQ4OTFjN2JhOTgzZTdmODRlMDVhZDBlMDE5MWMxMzI3OThiZTVlM2MxY2M1MzA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwY2UzZjI0YWI0N2MyZjVhOWQzMzdmMzc3ZWQ4NTczZmE1NjU4NDA3NjQwMmYxYWYwNTRhM2RlZDYxOTQ2MmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_67b4703c0cae4232b2458b8517b8f248",
+      "statement": "`Hueman.sync()` consulta el backend de estado, aplica la paleta remota solo si la revisión remota es mayor que la local, no publica una revisión nueva durante la sincronización y evita usar la caché local cuando el remoto es inalcanzable.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L70-L88",
+          "version": "repo-lines-v1:sha256:2bc9c812ddbd64b61b8037c33fd581d4889e06ab230c136d55da793cbb62e326:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0M2JkNTA3MzcxODI2ZTgyNjFlOTM4OTk5OGZiYmEzNWRhMTUxYzNjZjcxZDdmNjliZGI0ZmViOWEyNjYyOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNGJhOGQ4NWYwZTJkODU1MjIyZmQwODg4NWU0N2U0ZDgyYTk0ZTQzMjFiNTJmZTViMWVhZDI2YzQ0ZDlhODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZGM1YTViNzI5MTc1Zjk1MTFkMmE1OWIyNmJlZjdlMWIwZDU2NmNiZTVmMGZiYmU2MzJmNjRhYzViOWUwZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2MzMxMWNmZGRjMGRhMjI5Mjg2ZTY1NzM4ZTdhMzE3N2JlOWI4YTNlZjA4OTA4ODljOTU1YTNjYTZmNzYyNDcifQ"
+        },
+        {
+          "resource": "repo://hueman.py#L159-L190",
+          "version": "repo-lines-v1:sha256:93e5aa76801c55cf419711136b8d5b581403e78bcbbbc97c98dcb571ed0913bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkZTM5MmM4NzM0ZmEyMDgzZmE0N2Q0NGNjNmFjZjQ4YmM0MjNjNGQwNDM4MTU4YTYyZGI2MDUzMmFlZGMzZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwMTU4MmEzNzVhMmRlZDE0ODE0Zjk2ZDg2Yjc0NjNmYjQwMDgxODRlY2M0NDhiNmYzNjIzODhmMDhlOTJkOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNTFmZTg0ZjZlZDI5ODJiY2VmNmI3MWRkMzk0Zjc5ZjUxZWE4ZjBkN2Q0OGExMDU0YWVhNTNlY2ZiMzRkZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxZTk2ZTVkY2UyMjVlMjc5ZjQ3YTg1MDJlM2FmNDBjODY1MTEyYWYzZGFmZWVmZjFiOTJhMDZlZjE1MjdjODQifQ"
+        },
+        {
+          "resource": "repo://tests/test_sync_status.py#L117-L169",
+          "version": "repo-lines-v1:sha256:3a0aa1daf9856642460f451cc63d18804b3513f6d36fde99aa18a24c8f6d4904:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ODAwYjBlNjQwNGZmOTg3YWEzNTZiN2ExMDUxYzBmNTJhM2NjYzQ5ZmZmNGYxN2RmZmQ2ZGQ5MDkzZjc5ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMzFiZWFkNWZjM2NjMjMyMGNkNjljN2Y3NGJhMWJjNWI0YjlkZDg5NDk3MmNmMmNkNjQwNWVlYTRiOTMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5NTZiMTE5MzliMTFjMzk4NDBkNTY0ODc2NDdjMjJlMmI1N2NhMzk4YWRjNjNkZGRmOTI0ZTU5ZWI0MzNjYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwNWQ2MDA5ZTZiNjM0MjM1ZWY3NjFlYmExYjFkMzI1N2E4YjE4OTBiMzBlMjg1ZTk5M2RhYzlhZGIwYjM3MjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f4dfd0937ff94ae0b813fc272bef7909",
+      "statement": "El sistema de targets es declarativo: `Target` y `PatchSpec` describen modos de salida, plantillas, variables adicionales, reglas de salto y estrategia de parcheo, de modo que agregar una herramienta nueva normalmente requiere configuración y templates, no código Python específico.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L172-L181",
+          "version": "repo-lines-v1:sha256:ca067cbc2ef2839463e5c341773c3a5bd5d4aa1c8f28b74b0107ffc75593d3a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5Yjg2MGJkY2JlMDhiYjY4ZWMwY2FiZjMwYTExMDQ4OTYwZWI2MjhkZTc5OTE4ZjVmMzE4MzgwMTJjZDc0ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNGIyZWEwYzJlMjU0MjdmY2Q0OGJmM2EzZWYwMWYxOGZkMzcxMDEzN2FmYWI4NjExYjFjODhmNDdjNjQwZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkZTBkMDgzZDIxN2IxMWU4OTMyNjZmY2Y4ZWQyY2FhNmQwMzE5NzM4MWMxMTZiYTViZTBlNTZiZmEwYjkwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2NzI3MjY1YWU5MTZmY2E3ZjUxMTY5N2E3ZDhjZjRjMDRhNWI5NDcwZjAyMWU0Mzc2ZTQ1N2NlZTdlMmI1ZGUifQ"
+        },
+        {
+          "resource": "repo://engine/targets.py#L1-L84",
+          "version": "repo-lines-v1:sha256:af848e4930c5b06182083849fbc14d0338436ec00c14c1619df0c91047d49a09:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxODg4MDcyNzJjNzRmMThjYzI3NDBiNDQzNjNiODZkMjlhYTg0YTA1ZTZiMDIwZWIyN2I5MWFiMTNlZWY0YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4ZjkwMDhiOWRjYzdkYzhmZTVhZTY5YzhlNWM3ZjhlNDNlNTI3NTU5ZjFiZDY3YzE0ODEwYTBiNDY4NGIxZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}

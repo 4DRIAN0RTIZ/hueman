@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:685edb14a8921563a715848d8e13202c42091edbc34ea1847c07534a97c04596",
+  "claims": [
+    {
+      "id": "claim_bba9b560ad554350a9e8b7559b0b6aab",
+      "statement": "El motor crea un entorno Jinja2 compartido con `ChoiceLoader`, priorizando `template_dirs` del usuario sobre los templates empaquetados, y registra los filtros globales `contrast` e `is_dark` para todos los templates.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L25-L39",
+          "version": "repo-lines-v1:sha256:46f749e7f991c4c475dbbbb02f8e17bf857ccfbd5a7cfa7305248359f16532a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZjgyNDQwOTkxYmYzMTBlNTNiYzViMWZjZTAxNzI2MDY0OGQ3NDk3ZmNlNDY0OTZmYmZkZWQwOGY3OGFmOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNmZlNGE4Zjk2NjEyZGE3ZTE1N2UwODAwMGZjNjY1MjBjYjlmMWI2NDBkMzNlYTI4ODcyOTc1M2NlYWMwNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NDI1OTgxNzRlNDQ1OTE5MjYyZDFjODFmMWE3YTUxNWQyMTIwNDgxY2E3MWFiZGVlMmMzNjRjYzFjYmM5ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiNjM4ZmIxNDY4MzkyYjFhNzZlOTljODZlNDhlZmZlZDJhYzkwNTFjZGNjNTYyNWQ4OTYwZjA2ZjkzMjcxYWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_68f45896446446aeb0609d601e9f3053",
+      "statement": "El contexto de render siempre incluye `theme_name`; añade la sección `palette_key` cuando existe en la paleta activa y resuelve `extra_vars` mediante rutas punteadas, fallando con error de clave si falta alguna ruta requerida.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L42-L51",
+          "version": "repo-lines-v1:sha256:c384e3374d7ec6311e90ba619001f290e68bb6f9855d6007a46cdf5823444b92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OWE1M2MyNjM0MmZlYjIwNzEwNGNiYjliNjNiMGEyOTQyZjk2YWJmYWI5N2ZiMDg0NzM1NzQwMTU4NTVhOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmJiNDQ3MWIwNTI5ZmRiZDFlOWQ3ZGMzYTYyNDA3ZDVhN2M5YzBkNWFhNjhkZjA5OGNmZTlkMzJiN2Q4OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYzIzZTJjMTE3YTU5Y2M2NzEwNzBiZDcwY2E0NzY1OWJkNzE4YTA1NTJkNDJlNWQ1ODlmOWQwNTBiMmE5ZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2YWNkYWFlYzNkN2M1Yjg5NGY3Yzg4YTZiMjZiYjZkOWY5Nzc4MmMxZGQ4YWY0MGI4ZjZlMzZlNzQzMDNmNDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e9f2d02b5fb4405da911a32483c3bb02",
+      "statement": "`render_target` convierte `TemplateNotFound`, errores de E/S y claves o tipos faltantes en `TargetRenderError` con mensajes explícitos, mientras que targets con `palette_key` ausente se omiten devolviendo `False`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L203-L220",
+          "version": "repo-lines-v1:sha256:b94e284d05be2a4475f5688600181cb11c51a4340927287a3ed44774b48735e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhY2ExMGViZDgwYTZiNTUzMWQzZDVjYmY5NDJjZDJmZGQzM2IzMDVjNjY5ZjlhOTM1YjBlMjhlZDUyNzI0MjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNjU3ZmFhOTA3MWRhMGZjNWZjOTE1N2EyMWI1NDYyZmEwNTNmY2FhYjM4NjRjMTAwZThlMmRkN2FlZWQ1NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTRlMmQxNWU1NTc4MjIxNWRlMDczNThhNTVjMDA2ZjEyNzliYWJkOWQ1ZWQ1MTBkMTU3ZThlZTc0OWIyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://engine/render.py#L68-L79",
+          "version": "repo-lines-v1:sha256:c1157cd3ff97e37348dc73add817022bc40e287f412e3a73725696de8645418b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNmI5ZWI3ZDIxODdhN2E5NGEwZTllMGVmNTJjYTBkYzE5ZTQ3NTVkNmVhYWRiOGU1YjJhMDg4MDcwNDBhOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZWZhZmU1MDQwZDEwNTc4YWRlZGJhNTQ4ODFkNDA5ZjJhMjEyNzM2NmJmODhlMjAwZDBlZTQ5NjhlMzMzZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmNmY4NTQzZWEzNjI3Y2JmNjlkN2M5NTRiNDZjNzBkNDkwNDAzMGQ2ZDZlMmQ2YjhmMDcyOTM0MDI3N2IyOTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkNTA0MDAyNTEyOTkxN2Q3Y2M5ZjQ5YThhNzNjYWVkY2U4ZDRmZTAxNGI4NzYwMzdlOTIyZDU2Yjk3OTYxODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a92f5ac4dcea45eda9db9c549f1d0b54",
+      "statement": "El modo `patch` soporta `regex_splice` y `json_scheme_upsert`: el primero reemplaza o inserta bloques delimitados por regex o marcadores literales, y el segundo actualiza o agrega un esquema JSON existente, fallando si el archivo no es JSON válido.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L125-L200",
+          "version": "repo-lines-v1:sha256:82b69222b795748dfc3d32a29a9f53a3b5406c26cc30b5f73a0f86e9f90992f8:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNjgxMzA4NjU4ZjEzMTg0OTM4OTI0NDIwYTMzNmY5ZjM2ZGI4ZGQ4MGUzMjJiZjIzOGJlMThjOWUyZjQ1YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZWZhZmU1MDQwZDEwNTc4YWRlZGJhNTQ4ODFkNDA5ZjJhMjEyNzM2NmJmODhlMjAwZDBlZTQ5NjhlMzMzZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYmY3NDA3MDljNGU2MzM0NjVlZWE4YTU0N2UzOGYyODc4NzcyM2RjODAzYzliYzMxOGFkY2VmODVjOTMzNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxZTNmZGY2NTZhNzNjYzRlNTg0NTkwZTkzOTY1YTZlY2UwNzA4MmI1MzAwYzM4ZTcwYmI5ZjFmYmQzNDQ2ODcifQ"
+        },
+        {
+          "resource": "repo://engine/render.py#L82-L123",
+          "version": "repo-lines-v1:sha256:29cdc760301e63725c989ad7de331650032fc8b1adc40e4c35d49483218f8b09:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmNGY2OWNmYmZlMjQ1MjIyODY0NzZjMmIyNDY2MTMzMjAwYTAyZDQzODVjZGU0ODliN2YxZTI1YmE3M2FhYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTRlMmQxNWU1NTc4MjIxNWRlMDczNThhNTVjMDA2ZjEyNzliYWJkOWQ1ZWQ1MTBkMTU3ZThlZTc0OWIyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhNGIwY2Y3YjM3MWI5YWI0MjMxZTQxY2Y4ODRkZjU3MjZiYWYwYjUzOGRhM2Y2NDdkODAxNjk0MjM4ZWJjY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5dabd1302a5486c92bc59eccac14118",
+      "statement": "Los filtros `contrast_text` e `is_dark` usan la misma luminancia relativa WCAG para clasificar colores claros u oscuros; `contrast_text` devuelve `#1a1a1a` o `#f5f5f5` según el umbral.",
+      "evidence": [
+        {
+          "resource": "repo://engine/colors.py#L8-L30",
+          "version": "repo-lines-v1:sha256:c1d7bf9b1c97eb0d3ac2a224a9bbca9de5cdc96b9bf14ff45beb322eab26eb6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNjA2OGY0YTIwNmE1Mzc2OWUxNGNhOWNkOTdkMDg4OTU5NzNmZjVkYWQwZDYxMmNjOTU3NDI3NzY0MjE0NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxMjQ5ZDY5OGY2YjFlMDBiZjBkZDNiMzEzMTI4ZDk3YmZiNDQ3MDc5NGY0ZTA3NmYzOWVkNTkxM2JhZTY1NzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4YWU2MGEwOWE3ODRiNDdlYTA4NTMxNmJmZjkyYzY4MDExZGQ2NzBkODlmMjhkYWY1ZGE5YmI2YWU0MWJjNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_colors_and_cli.py#L8-L12",
+          "version": "repo-lines-v1:sha256:e4bfae84c120979412bca7ac7c8bcfe13d92a27b23693c7ae45fcbe10ed36177:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWU0NWQ5Y2FkNDk0ZmRhN2ZhYjRiZmFkM2Y3NzM3ZmZhYzZmZjliNjQ3YjU0MTM3Yzc1NWZiYTAzZGM0MDZiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNlOGYyOTkyOWVjZTYyZDNhZDI0NTI4MjFlOWU4MDc4ZDU4MjIyMmI3M2ZhYzk1MGM0N2M4NjNiYWFiODhkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWRjNDAwMmQ3ZDViMDdlMmQxNWNhMDZiMjk0ZDcyMDUwMzEzZDU3ODBjZWFmNzZhZmZiNDVkNTVjZGVmMmQ2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGQyMjFmNzE3NGMzMmU0MjQxNGJhYjI3YmU3MGI4NmMyZmVlZGRkZThhZWFkMzNkZmFjNjU2ZGY4ZTk0YjZiNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9d12e67733cb4ca8b372bb8383d7379b",
+      "statement": "`expand_command` sustituye `{name}`, `{palette}` y placeholders punteados `{a.b}` con quoting de shell; preserva `${VAR}` y llaves literales sin punto, y falla con `ValueError` si no puede resolver un placeholder punteado.",
+      "evidence": [
+        {
+          "resource": "repo://engine/reload.py#L10-L31",
+          "version": "repo-lines-v1:sha256:2f0d45196c78657c22c034140c051886d5859cb76816e24d73d889b963173587:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0Y2RjNWMwMGNhYTNmZTY3NTU3ODczMzYwODE4YjJiYTMwYWMzNDkwODg2NzZlYzJmN2QzMGRmZTkyY2M2YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiY2Q3NzQzMmEyNWU0ZDM1MmU2MmMwZjNjMTdmNGQ3YmQ1NDcxMWU5MTVhMDBlYzEwN2ZjZjllNmU3MjY1ZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1MWZiZTg1OTZhMjhiZTlkN2ZiMmVjZjcxOGI4ZDIyYjNiOGE3MDYxNzYzOThlMDA0NGZkMWQ4YTAwMjEzNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjZjBlYzRlNDMzYzExMGIyZWI1MTJkM2FhMWU2ZjdhYWUyYjAwMjIwNWE3YjAwN2I4ZjUwN2I4NzZhMzNiNWQifQ"
+        },
+        {
+          "resource": "repo://tests/test_command_substitution.py#L9-L35",
+          "version": "repo-lines-v1:sha256:a2f405002528a5fd11b5051fa90ce1fca58c23b020ae5f631969621cecc095d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNWM2NGY4OTAzZmZhYzhmMDcyNzY5NjA5Y2NkZTY3YTc3ZmE3YTQyMTExYWE3OWVhYTUxMmY2NWU4YzBjMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YmM3M2ViYWYzNTRhNjM2OTJmMGZhMjU3YzI5NDk3N2IzNzE4M2RmMjIxYmZiMTU2NjMzYWE0YjJlOGFhZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmMjZlOWZiODIwYWEyZmE0MGIwZmJmMzFmMTE2Mjc0YWMyYWQzOTI1NmVkYzFmNGI3NjA4NDkwNDQzZDUxNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhZTQzMzkyZDlmODc4NmY1MzI1OWQyOTRmOTJiMGQ5OGYzMTU0Yjg5ZjMxMzY4MjIzNWVkNWE2ODA2Mzk1YzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a64c469d2de9414cb5d94264fbd95a4c",
+      "statement": "`run_reload` ejecuta el comando de recarga vía `sh -c` y devuelve su código de salida; si no hay comando, devuelve `0`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/reload.py#L34-L46",
+          "version": "repo-lines-v1:sha256:912ce07947fa4ff375648e4fefee2fc26ea86337e0cdd89a36953e0107cb862a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzZDc4NzRlMzA5ZDg1NzhjYWUwNWIwMjdkYjUxNjUzMzdmMzY3MTQ3ZGYxNjZjZDM1NWQ2MjQyNjYwOTZiNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4M2EzNmE4MzRkMWNjNGRkMTk1OTNkZWNjYTFjNGI0ZDIwZjEyZjkwNjdhNTc0OGI2ZmRmMmUwNDk4MWVmOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJiYTdhZTEwMTM3MjFiYmI3Y2U2ZDhkNzFiMzdhNWZjNmEwMWFiYTk5ZTllZTM1ZTJmY2ZlZDkxNTBhMWNiZDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aff2cc9abe454728ab1ea8e8d1157378",
+      "statement": "`run_post_apply` ejecuta todos los comandos globales aunque uno falle, registra cada salida y devuelve los pares `(command, exit_code)` de los que terminan con código no cero.",
+      "evidence": [
+        {
+          "resource": "repo://engine/reload.py#L48-L56",
+          "version": "repo-lines-v1:sha256:f74d08ce323c6b244ba34cd05f422397a38cc78923d8842cd327e2735cd2981c:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Y4MmEzNmE1OTY5MmRlOGE4ZTk3YWE4ZWJjNTU0ZWE0YTZhMzBlZWZlYjM1NmExYmY1Yjk2NzI1N2Q4MzlhNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQ4MGI5OTA1MjFmNGY1OTdjODVhNGM0ODA0Mzc0YzEwOTA5MWQ0NWRjN2M4NTQ5NGMyYmY1YmVlY2JkMzdlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y1ZjJjMzNkMzUyNDk1M2ExZjBkY2NmNjdmNTdlOWI0ODU5ZGMzNDk3ZmRkNGJiNTA4YjkxZGExNWMwZDA0MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c069c521a1b4d9cb3b962a284ec3641",
+      "statement": "Al aplicar `set_theme`, los hooks `reload` se ejecutan después de renderizar cada target y `post_apply` se invoca una sola vez al final; los tests también muestran que `only` filtra tanto el render como los reloads asociados.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_colors_and_cli.py#L15-L33",
+          "version": "repo-lines-v1:sha256:34ad39f42d4f28ea6954c81f5cb21b53ff0912f21aecb9bde909e7f4e29d2f0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxOWIzMjVjMDRiNmQ2MTlhMDFmYmY0NDJkMDVjMTlhZTY5NmIwYTFhN2RkYmE5OWZhMGJmOTBlZTY5YWVmMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3ZGQzOWE0ZThjMjIyMGNiNDJjOTk5YWNkOTk0MGI1MWRjMTIyMTIyNmY0ZmVhOGU2Nzk0ZGQ5YzFjZTY2NzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ODc5YjYyMTcyNGUxZGIxNjEzZmQ2MTNjM2ZjMTk4ZjkzYWFkOWUyZWM4YmVjZmM4ZjRkYjc0OGM0NmFlMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzZWUwZjcyOGQ3ZTE5NTNiOTc3N2U5ODIzODlkODA1ODdmZDQzZmRiYmU0MWFiMTM1MmZiNGY3MWJjOTgyODMifQ"
+        },
+        {
+          "resource": "repo://tests/test_colors_and_cli.py#L73-L107",
+          "version": "repo-lines-v1:sha256:4f37cd27eb6083fd3b3ea1e6046d471c6a59ec3e11c6e2c2c62e28eae1dfacd1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOTFlYWI2OTU3YzBlYzcxYTBlZGM3N2RkNmNjNThmN2NkZTU1MmQxNTM2N2NmNmMzZjE0N2M0Y2E3ZDg4YjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlZWM0ZmJmYzZmMDQwNTkyMWQzMjA1NzlkOTM4NTIwMmEwNjQ2YzkxZjgyY2RiNWE0NjM5ZjJjMTIyN2NiNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0OWMzZGI3ZWZhZTU4NjYwMmM0YWFlMzZkNDgzZGVjZjJjNDA4NmI1NGU4YTI2NjI1NTExYzg1OWVlZWVmMmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YWI0MzU2MDlkYmQ4YWNhY2VkMmIzYzMzODVjNGNhOTljMTc2NDY4NWUxYjcxZTllZTFhNDEzMjE4ZWQwMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_79f1830e24e84265b389bd1bfe508375",
+      "statement": "La expansión de placeholders en `post_apply` ocurre antes de ejecutar los comandos y conserva `${HOME}` literal cuando corresponde, mientras que el valor interpolado se cita de forma segura.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_command_substitution.py#L38-L51",
+          "version": "repo-lines-v1:sha256:b43398fde5902db21b006b94a0042d3acd3cd801fea6aaf01de656787701290f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMzhiZDljYmM2MTVmNmY0MGQ0ODQ1YTNhZjE0OTE4ZWE3MGE2NDM2NDQzMTZjMjc0ZmQ3YzhkNWZkM2Q2ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYWIyZDEyMjlhM2MyNjAzNWIwY2I2MTliNmMyNzBmMmIyZWU2YTRiYzlmNzU3ODlhY2RkM2U3ZmYwZmE1ODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkYzEwZDJhYzk0NGQxMDNjMWIzN2JkOTMyM2RlZmQxMTQzZTI2NTNjOGNkZmI2NjE1MTE2MjQ3YTUyNzU0YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}

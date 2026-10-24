@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9856bef87c42f2f25c4d31b8ef817d6696eec8472fc1df8eb29ef9433a40c68e",
+  "claims": [
+    {
+      "id": "claim_619ddd85ed6e4cdcae5f5305f27708e9",
+      "statement": "La página describe un flujo de contribución centrado en localizar la superficie afectada, leer las pruebas relacionadas y ejecutar primero una batería mínima antes de ampliar la verificación.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_error_paths.py#L13-L21",
+          "version": "repo-lines-v1:sha256:d51f271f86fc474afd05f501900ceff30514cb5b7a5009ce6fb1e52d9bd002d6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNkNjZhMDk3OWVlMDZjYTI0NmZhYTFjNDg3NzBiMmZjZWYzZWVhOTE5NmVmZjZjM2U2MWViYTgzMTRiNzc4ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjA1ZmE3ODAzZmIyMzRmZGQ0ODY1NzMwMThiYTJkNDY2ZTMzNWQ4ODdiOWE2MDZjZWU1NTY0MTI1ODA1MWI0MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjgzZDkzMjE3NDg3NTI1ZTNlM2E2MmIyZWQyOWE2MmIwOGE3ZWQzODY3MjUyOTlkMTg5MDgzY2Y4ZDFlNmE1MSJ9"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L21-L27",
+          "version": "repo-lines-v1:sha256:3291dc1f5b3388a34bc95f1603bd5a332dfc9258e3eccc69cb0798b036e7b067:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwYjc4ODM0MjZiZTY3NTIyMTM4MzlmM2Y1ZGJmZThmMGE5N2JjYzNjZDFkMDgyNzhjYjE4Y2M4YzRmNDUyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFhY2E0OWFkNzRhMTM5MDUxYTdhYjAzZWYxNDU0Njc3ZjVjOTRmYzcxYWQzZWE4Yzc5ZmYxZjljZmY2ZWRmZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjY3ZjFjNzg5ODRiODlkZTU2NTM4OWQ5YmM5Y2NjMTJhYjAyZjI2MDhmMGRlYWU5NWZkOGMyZTEzMmYxZTYxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTlhMmQ2ZGRlMjBkOTg5OGQ4MDM3ZTVlYzhiNTEzNTVhZWVhZDNlNzc0YmIxMTMxODEyNDkyYmZkNTQzZWMyZiJ9"
+        },
+        {
+          "resource": "repo://tests/test_state_and_reload.py#L28-L49",
+          "version": "repo-lines-v1:sha256:2ae9423046ebe2fe8542e98ec297134f4565aea394cefda7f9ac58f7ea2a64e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4M2EzNDNiY2RhZTMzZjcwZjRhZjNlMDI5NDVkNzhkOTkzMDA2MDU5Y2NkNTFiZDMyYTNlNGU5NzEzYTcwMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyZWFlMGNkNzY0ZGQ1NDkyYzE5Y2MxODQ5Njg5YWIzMjViZGU0YTY5YjIxOTg3MmFlZTFlOGJjNmQ4MjkwMjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZmY2MDVkZWZiMjIzNDJmZTk3NzlhNDI1MWQzNWE0MmYxODk5MDNlNzY1N2Q3NmQ0MTlmZGU2ZTk5OTM1OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3ZDgzM2QxMmUxY2U1M2YyOWJlNzBjOTQ1ODg3ZWZlNGNiZjZiZjRmOTI1ZTg4ODg3MTYyMjRlNTk3OGFhNjcifQ"
+        },
+        {
+          "resource": "repo://tests/test_state_source_contract.py#L1-L41",
+          "version": "repo-lines-v1:sha256:657a709ca371bd5be0ed6b638f26ccdb0a3425cd37c10993e59dc196d951ac36:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNzhmNGYyYzRmNTFmZjE3NzE0YWYzMmIyYmI0NDFlNWE1ZTUyM2IwYmM3YTc1MmEyNTY2NWVkZTVmY2VmMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyYTM2YThiN2YxYzQ2MTRlZWNjYTE4NWM2MWVkNjQ2NGNlN2Y4M2I4NmU2OGJhNmRmODUzMGJkODNhOTYyMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4NjY2ZGU0N2NjMWFhNWEwMTE0ZDgzMTQyNGE5ZjkwNmI3NjYwNWEyODRhODIyOGI4NzdmMDczZWIwMzdjYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09d973338a994408b4251b71c3114b1c",
+      "statement": "El flujo recomienda validar cambios contra las pruebas de `tests/test_render.py`, `tests/test_state_and_reload.py`, `tests/test_error_paths.py` y `tests/test_state_source_contract.py` porque cubren renderizado, estado, errores y el contrato de los backends.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_error_paths.py#L13-L21",
+          "version": "repo-lines-v1:sha256:d51f271f86fc474afd05f501900ceff30514cb5b7a5009ce6fb1e52d9bd002d6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNkNjZhMDk3OWVlMDZjYTI0NmZhYTFjNDg3NzBiMmZjZWYzZWVhOTE5NmVmZjZjM2U2MWViYTgzMTRiNzc4ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjA1ZmE3ODAzZmIyMzRmZGQ0ODY1NzMwMThiYTJkNDY2ZTMzNWQ4ODdiOWE2MDZjZWU1NTY0MTI1ODA1MWI0MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjgzZDkzMjE3NDg3NTI1ZTNlM2E2MmIyZWQyOWE2MmIwOGE3ZWQzODY3MjUyOTlkMTg5MDgzY2Y4ZDFlNmE1MSJ9"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L21-L27",
+          "version": "repo-lines-v1:sha256:3291dc1f5b3388a34bc95f1603bd5a332dfc9258e3eccc69cb0798b036e7b067:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwYjc4ODM0MjZiZTY3NTIyMTM4MzlmM2Y1ZGJmZThmMGE5N2JjYzNjZDFkMDgyNzhjYjE4Y2M4YzRmNDUyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFhY2E0OWFkNzRhMTM5MDUxYTdhYjAzZWYxNDU0Njc3ZjVjOTRmYzcxYWQzZWE4Yzc5ZmYxZjljZmY2ZWRmZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjY3ZjFjNzg5ODRiODlkZTU2NTM4OWQ5YmM5Y2NjMTJhYjAyZjI2MDhmMGRlYWU5NWZkOGMyZTEzMmYxZTYxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTlhMmQ2ZGRlMjBkOTg5OGQ4MDM3ZTVlYzhiNTEzNTVhZWVhZDNlNzc0YmIxMTMxODEyNDkyYmZkNTQzZWMyZiJ9"
+        },
+        {
+          "resource": "repo://tests/test_state_and_reload.py#L28-L49",
+          "version": "repo-lines-v1:sha256:2ae9423046ebe2fe8542e98ec297134f4565aea394cefda7f9ac58f7ea2a64e4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4M2EzNDNiY2RhZTMzZjcwZjRhZjNlMDI5NDVkNzhkOTkzMDA2MDU5Y2NkNTFiZDMyYTNlNGU5NzEzYTcwMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyZWFlMGNkNzY0ZGQ1NDkyYzE5Y2MxODQ5Njg5YWIzMjViZGU0YTY5YjIxOTg3MmFlZTFlOGJjNmQ4MjkwMjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZmY2MDVkZWZiMjIzNDJmZTk3NzlhNDI1MWQzNWE0MmYxODk5MDNlNzY1N2Q3NmQ0MTlmZGU2ZTk5OTM1OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3ZDgzM2QxMmUxY2U1M2YyOWJlNzBjOTQ1ODg3ZWZlNGNiZjZiZjRmOTI1ZTg4ODg3MTYyMjRlNTk3OGFhNjcifQ"
+        },
+        {
+          "resource": "repo://tests/test_state_source_contract.py#L1-L41",
+          "version": "repo-lines-v1:sha256:657a709ca371bd5be0ed6b638f26ccdb0a3425cd37c10993e59dc196d951ac36:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNzhmNGYyYzRmNTFmZjE3NzE0YWYzMmIyYmI0NDFlNWE1ZTUyM2IwYmM3YTc1MmEyNTY2NWVkZTVmY2VmMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyYTM2YThiN2YxYzQ2MTRlZWNjYTE4NWM2MWVkNjQ2NGNlN2Y4M2I4NmU2OGJhNmRmODUzMGJkODNhOTYyMzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4NjY2ZGU0N2NjMWFhNWEwMTE0ZDgzMTQyNGE5ZjkwNmI3NjYwNWEyODRhODIyOGI4NzdmMDczZWIwMzdjYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7a8d5b7eae84c00a24d080b0dd65a91",
+      "statement": "La página explica que `set` coordina renderizado, recarga y publicación de estado, mientras que `sync`, `status` y `list` tienen superficies de verificación distintas dentro del CLI.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L11-L15",
+          "version": "repo-lines-v1:sha256:8c77cb59c990d03927aec7fa6006c9e1aa9c0f19dff36f7f4e8f0ac5e3a2218c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDdjMDZjNTYxZDVjMzI3MzQzNjg1MjY4YTQ2YjMzOTFmMzk5OGVlZTg5MGQyYmU1MWYwZDIxY2M0YTUzYWU2ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDdjMDZjNTYxZDVjMzI3MzQzNjg1MjY4YTQ2YjMzOTFmMzk5OGVlZTg5MGQyYmU1MWYwZDIxY2M0YTUzYWU2ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTBjZTVlYjdmMjM5NmU5NTI4Mzk3ODdhMjM5NjgwZDM3MTk4OGJmNTk0YWI5NDdlN2NhZmQ5M2I5NTljODAyZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWFjMjYzMWNhOGI5MGFkYmE3ODlmMTNiMDM4YjBmZmMyMDMxYmEzNjQ1YzQ1ZGUxYWRkYTNlOWMwNTdjYWQ2MSJ9"
+        },
+        {
+          "resource": "repo://README.md#L36-L45",
+          "version": "repo-lines-v1:sha256:5aa17d987387238c70df3d0d4caf8cacb92f47d7abb4bfaaec80c64cf875c82a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ODE0MmE2ZmUyYWUwOTkzMmFmZTFjOThlODA3YzY0YTk1Mzk1NmQ5NzFmY2I0MjA5NmMxMmY3OWI2NGZiYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0ZGVjYTRhM2I2ZTgyZDcwNGRkMjFmZjhmN2I4NGVmYjY4Nzc5ZDQ3OWFjYTYzOGQ5YTEwZWExNjY0Y2EwZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MGMxNGJmMTIyM2E3MzRkNzhjZWYxOWU1NzA0NTdhMTU5NTgwMWE5N2IwZDNhMjEzNWZkYzFlZmM1YWQ2MDkifQ"
+        },
+        {
+          "resource": "repo://README.md#L70-L88",
+          "version": "repo-lines-v1:sha256:2bc9c812ddbd64b61b8037c33fd581d4889e06ab230c136d55da793cbb62e326:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0M2JkNTA3MzcxODI2ZTgyNjFlOTM4OTk5OGZiYmEzNWRhMTUxYzNjZjcxZDdmNjliZGI0ZmViOWEyNjYyOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNGJhOGQ4NWYwZTJkODU1MjIyZmQwODg4NWU0N2U0ZDgyYTk0ZTQzMjFiNTJmZTViMWVhZDI2YzQ0ZDlhODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZGM1YTViNzI5MTc1Zjk1MTFkMmE1OWIyNmJlZjdlMWIwZDU2NmNiZTVmMGZiYmU2MzJmNjRhYzViOWUwZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2MzMxMWNmZGRjMGRhMjI5Mjg2ZTY1NzM4ZTdhMzE3N2JlOWI4YTNlZjA4OTA4ODljOTU1YTNjYTZmNzYyNDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38f3b941c150471db85c180ba4e05cd1",
+      "statement": "La página incluye un diagrama Mermaid de flujo de trabajo y otro de secuencia para situar las capas que conviene revisar al cambiar el sistema.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L172-L180",
+          "version": "repo-lines-v1:sha256:cfcc74c9ab56fc69d55db26ff406b66dc9b820050c5e7484bddb5588697c139e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODliODYwYmRjYmUwOGJiNjhlYzBjYWJmMzBhMTEwNDg5NjBlYjYyOGRlNzk5MThmNWYzMTgzODAxMmNkNzRlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RlMGQwODNkMjE3YjExZTg5MzI2NmZjZjhlZDJjYWE2ZDAzMTk3MzgxYzExNmJhNWJlMGU1NmJmYTBiOTBhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU4ZDUyMGExOGJlOTk2MWRlNDhiNGM5ZWE5YzYxNDdkNzMxMWRjYTRjODdlZDllMjhlOTM3YzhlZmZiYmY4YSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}
