@@ -14,6 +14,10 @@
     sideNav: document.getElementById("side-nav"),
     doc: document.getElementById("doc"),
     pager: document.getElementById("pager"),
+    outline: document.getElementById("page-outline"),
+    pageStamp: document.getElementById("page-stamp"),
+    sectionLabel: document.getElementById("section-label"),
+    spineMeta: document.getElementById("spine-meta"),
     heroTitle: document.getElementById("hero-title"),
     heroLead: document.getElementById("hero-lead"),
     heroBadges: document.getElementById("hero-badges"),
@@ -32,9 +36,7 @@
   }
 
   function pageHref(versionId, pageId) {
-    const v = encodeURIComponent(versionId);
-    const p = encodeURIComponent(pageId);
-    return `?v=${v}&p=${p}`;
+    return `?v=${encodeURIComponent(versionId)}&p=${encodeURIComponent(pageId)}`;
   }
 
   function parseRoute() {
@@ -43,7 +45,6 @@
     let versionId = params.get("v");
     let pageId = params.get("p");
 
-    // Legacy hash routes: #/latest/add-tool
     if (!versionId && location.hash.startsWith("#/")) {
       const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
       const known = new Set((STATE.versionsDoc?.versions || []).map((x) => x.id));
@@ -59,38 +60,31 @@
     return {
       versionId: versionId || defaultVersion,
       pageId: pageId || "intro",
-      sectionId: location.hash.startsWith("#/") ? "" : (location.hash || "").replace(/^#/, ""),
+      sectionId: location.hash.startsWith("#/")
+        ? ""
+        : (location.hash || "").replace(/^#/, ""),
     };
   }
 
-  function setRoute(versionId, pageId, { replace = false, keepSection = false } = {}) {
+  function setRoute(versionId, pageId, { replace = false } = {}) {
     const url = new URL(location.href);
     url.searchParams.set("v", versionId);
     url.searchParams.set("p", pageId);
-    if (!keepSection) {
-      url.hash = "";
-    }
-    const next = `${url.pathname}${url.search}${url.hash}`;
-    if (replace) {
-      history.replaceState(null, "", next);
-    } else {
-      history.pushState(null, "", next);
-    }
+    url.hash = "";
+    const next = `${url.pathname}${url.search}`;
+    if (replace) history.replaceState(null, "", next);
+    else history.pushState(null, "", next);
   }
 
   async function fetchText(path) {
     const res = await fetch(path, { cache: "no-cache" });
-    if (!res.ok) {
-      throw new Error(`No se pudo cargar ${path} (${res.status})`);
-    }
+    if (!res.ok) throw new Error(`No se pudo cargar ${path} (${res.status})`);
     return res.text();
   }
 
   async function fetchJson(path) {
     const res = await fetch(path, { cache: "no-cache" });
-    if (!res.ok) {
-      throw new Error(`No se pudo cargar ${path} (${res.status})`);
-    }
+    if (!res.ok) throw new Error(`No se pudo cargar ${path} (${res.status})`);
     return res.json();
   }
 
@@ -114,9 +108,7 @@
   }
 
   function configureMarked() {
-    if (typeof marked === "undefined") {
-      throw new Error("marked.js no cargó");
-    }
+    if (typeof marked === "undefined") throw new Error("marked.js no cargó");
     const renderer = new marked.Renderer();
     renderer.heading = function heading({ tokens, depth }) {
       const body = this.parser.parseInline(tokens);
@@ -124,8 +116,7 @@
       const id = slugify(plain);
       if (depth >= 2 && depth <= 3 && id) {
         return (
-          `<h${depth} id="${id}">` +
-          `${body}` +
+          `<h${depth} id="${id}">${body}` +
           ` <a class="heading-anchor" href="#${id}" aria-label="Enlace a esta sección">#</a>` +
           `</h${depth}>\n`
         );
@@ -142,11 +133,7 @@
       const attr = mapped.internal ? " data-link" : "";
       return `<a href="${escapeAttr(mapped.href)}"${titleAttr}${attr}>${text}</a>`;
     };
-    marked.setOptions({
-      gfm: true,
-      breaks: false,
-      renderer,
-    });
+    marked.setOptions({ gfm: true, breaks: false, renderer });
   }
 
   function mapDocHref(href) {
@@ -192,24 +179,39 @@
       }
     }
 
-    // Legacy hash app links
     if (href.startsWith("#/")) {
       const parts = href.replace(/^#\/?/, "").split("/").filter(Boolean);
       if (parts[0]) {
-        const v = parts[0];
-        const p = parts[1] || "intro";
-        return { href: pageHref(v, p), external: false, internal: true, pageId: p };
+        return {
+          href: pageHref(parts[0], parts[1] || "intro"),
+          external: false,
+          internal: true,
+        };
       }
     }
 
     return { href, external: false };
   }
 
+  function flatPageIds() {
+    if (!STATE.nav) return [];
+    return (STATE.nav.sections || []).flatMap((section) =>
+      (section.pages || []).filter((id) => STATE.nav.pages[id])
+    );
+  }
+
+  function currentSectionTitle() {
+    if (!STATE.nav) return "Documentación";
+    for (const section of STATE.nav.sections || []) {
+      if ((section.pages || []).includes(STATE.pageId)) return section.title;
+    }
+    return "Documentación";
+  }
+
   function renderVersionSelect() {
-    const versions = STATE.versionsDoc.versions;
-    els.versionSelect.innerHTML = versions
+    els.versionSelect.innerHTML = STATE.versionsDoc.versions
       .map((v) => {
-        const label = v.channel === "latest" ? `${v.label} (tip)` : v.label;
+        const label = v.channel === "latest" ? `${v.label} · tip` : v.label;
         return `<option value="${v.id}">${label}</option>`;
       })
       .join("");
@@ -220,7 +222,20 @@
     const v = currentVersion();
     const page = STATE.nav?.pages?.[STATE.pageId];
     const pageTitle = page?.title || STATE.pageId;
+    const ids = flatPageIds();
+    const idx = ids.indexOf(STATE.pageId);
+    const sectionTitle = currentSectionTitle();
+
     els.heroTitle.textContent = pageTitle;
+    if (els.sectionLabel) els.sectionLabel.textContent = sectionTitle;
+    if (els.pageStamp) {
+      els.pageStamp.textContent =
+        idx >= 0
+          ? `ficha ${String(idx + 1).padStart(2, "0")} / ${String(ids.length).padStart(2, "0")}`
+          : `id · ${STATE.pageId}`;
+    }
+    if (els.spineMeta) els.spineMeta.textContent = v.label;
+
     if (STATE.pageId === "intro") {
       els.heroLead.textContent =
         "Una paleta YAML, templates Jinja y targets declarativos para themear tus tools — incluida la tuya.";
@@ -228,7 +243,7 @@
       els.heroLead.textContent =
         "Extiende hueman sin tocar el motor: un template Jinja y un target en tu config bastan.";
     } else {
-      els.heroLead.textContent = `Documentación de hueman · ${v.label}`;
+      els.heroLead.textContent = `Manual técnico · revisión ${v.label}`;
     }
 
     const channelLabel =
@@ -236,23 +251,16 @@
     els.heroBadges.innerHTML = [
       `<span class="badge badge--accent">${v.label}</span>`,
       `<span class="badge badge--ok">${channelLabel}</span>`,
-      v.semver ? `<span class="badge">semver ${v.semver}</span>` : "",
-      `<span class="badge">actualizado ${v.updated}</span>`,
+      v.semver ? `<span class="badge">${v.semver}</span>` : "",
+      `<span class="badge">${v.updated}</span>`,
     ]
       .filter(Boolean)
       .join("");
 
-    els.footerVersion.textContent = `Docs ${v.label}`;
+    els.footerVersion.textContent = `rev ${v.label}`;
     els.footerUpdated.textContent = v.updated;
     els.footerUpdated.setAttribute("datetime", v.updated);
     document.title = `${pageTitle} · hueman docs (${v.label})`;
-  }
-
-  function flatPageIds() {
-    if (!STATE.nav) return [];
-    return (STATE.nav.sections || []).flatMap((section) =>
-      (section.pages || []).filter((id) => STATE.nav.pages[id])
-    );
   }
 
   function renderSideNav() {
@@ -260,26 +268,35 @@
       els.sideNav.innerHTML = "";
       return;
     }
+
     els.sideNav.innerHTML = (STATE.nav.sections || [])
-      .map((section) => {
+      .map((section, sectionIdx) => {
+        const num = String(sectionIdx + 1).padStart(2, "0");
         const items = (section.pages || [])
-          .map((pageId) => {
+          .map((pageId, pageIdx) => {
             const meta = STATE.nav.pages[pageId];
             if (!meta) return "";
             const href = pageHref(STATE.versionId, pageId);
             const current = pageId === STATE.pageId ? ' aria-current="page"' : "";
             const ext = EXTEND_PAGES.has(pageId) ? " is-extend" : "";
+            const tick = String(pageIdx + 1).padStart(2, "0");
             return (
               `<li><a href="${href}" data-link class="${ext.trim()}"${current}>` +
-              `${meta.title}</a></li>`
+              `<span class="ledger__tick">${tick}</span>` +
+              `<span class="ledger__label">${meta.title}</span>` +
+              `</a></li>`
             );
           })
           .join("");
+
         return (
-          `<div class="side-nav__section">` +
-          `<p class="side-nav__section-title">${section.title}</p>` +
-          `<ul class="side-nav__list">${items}</ul>` +
-          `</div>`
+          `<section class="ledger__section">` +
+          `<header class="ledger__head">` +
+          `<span class="ledger__num">${num}</span>` +
+          `<h2 class="ledger__title">${section.title}</h2>` +
+          `</header>` +
+          `<ul class="ledger__list">${items}</ul>` +
+          `</section>`
         );
       })
       .join("");
@@ -306,19 +323,44 @@
       `<span class="pager__title">${nextMeta ? nextMeta.title : ""}</span></a>`;
   }
 
+  function renderOutline() {
+    if (!els.outline) return;
+    const headings = [...els.doc.querySelectorAll("h2[id], h3[id]")];
+    if (!headings.length) {
+      els.outline.innerHTML = `<p class="outline__empty">Sin secciones</p>`;
+      return;
+    }
+    els.outline.innerHTML = headings
+      .map((h) => {
+        const depth = h.tagName === "H3" ? " outline__h3" : "";
+        return `<a class="outline__link${depth}" href="#${h.id}">${h.childNodes[0]?.textContent?.trim() || h.id}</a>`;
+      })
+      .join("");
+  }
+
   function updateProgress() {
     if (!els.progress) return;
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
     const ratio = max > 0 ? window.scrollY / max : 0;
-    els.progress.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+    els.progress.style.height = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+
+    if (!els.outline) return;
+    const headings = [...els.doc.querySelectorAll("h2[id], h3[id]")];
+    let active = null;
+    for (const h of headings) {
+      if (h.getBoundingClientRect().top <= 120) active = h.id;
+    }
+    els.outline.querySelectorAll("a").forEach((a) => {
+      a.classList.toggle("is-active", a.getAttribute("href") === `#${active}`);
+    });
   }
 
   function closeMobileNav() {
     STATE.openNav = false;
     document.body.classList.remove("is-nav-open");
     els.navToggle.setAttribute("aria-expanded", "false");
-    els.navToggle.setAttribute("aria-label", "Abrir menú de navegación");
+    els.navToggle.setAttribute("aria-label", "Abrir índice");
     els.backdrop.hidden = true;
   }
 
@@ -326,7 +368,7 @@
     STATE.openNav = true;
     document.body.classList.add("is-nav-open");
     els.navToggle.setAttribute("aria-expanded", "true");
-    els.navToggle.setAttribute("aria-label", "Cerrar menú de navegación");
+    els.navToggle.setAttribute("aria-label", "Cerrar índice");
     els.backdrop.hidden = false;
   }
 
@@ -343,9 +385,7 @@
   function scrollToSection(sectionId) {
     if (!sectionId) return;
     const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ block: "start" });
-    }
+    if (el) el.scrollIntoView({ block: "start" });
   }
 
   async function loadPage(sectionId) {
@@ -357,6 +397,7 @@
     if (!page) {
       els.doc.innerHTML = `<p class="doc__error">Página desconocida: <code>${STATE.pageId}</code></p>`;
       els.doc.setAttribute("aria-busy", "false");
+      renderOutline();
       return;
     }
 
@@ -371,22 +412,21 @@
 
       els.doc.innerHTML = marked.parse(md);
       const first = els.doc.firstElementChild;
-      if (first && first.tagName === "H1") {
-        first.remove();
-      }
+      if (first && first.tagName === "H1") first.remove();
       els.doc.setAttribute("aria-busy", "false");
+      renderOutline();
 
-      if (sectionId) {
-        requestAnimationFrame(() => scrollToSection(sectionId));
-      } else if (window.matchMedia("(max-width: 920px)").matches) {
-        els.main.focus({ preventScroll: true });
-        window.scrollTo({ top: 0 });
-      } else {
+      if (sectionId) requestAnimationFrame(() => scrollToSection(sectionId));
+      else {
+        if (window.matchMedia("(max-width: 900px)").matches) {
+          els.main.focus({ preventScroll: true });
+        }
         window.scrollTo({ top: 0 });
       }
     } catch (err) {
       els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
       els.doc.setAttribute("aria-busy", "false");
+      renderOutline();
     }
   }
 
@@ -404,9 +444,7 @@
 
     if (prevVersion !== STATE.versionId || !STATE.nav) {
       await loadNav(currentVersion());
-      if (!STATE.nav.pages[STATE.pageId]) {
-        STATE.pageId = "intro";
-      }
+      if (!STATE.nav.pages[STATE.pageId]) STATE.pageId = "intro";
     }
 
     const expected = pageHref(STATE.versionId, STATE.pageId);
@@ -429,10 +467,10 @@
       prevVersion !== STATE.versionId ||
       prevPage !== STATE.pageId ||
       els.doc.dataset.page !== STATE.pageId;
+
     if (mustReload) {
       await loadPage(parsed.sectionId);
       els.doc.dataset.page = STATE.pageId;
-      requestAnimationFrame(updateProgress);
     } else if (parsed.sectionId) {
       scrollToSection(parsed.sectionId);
     }
@@ -459,7 +497,7 @@
       versionId = parts[0] || versionId;
       pageId = parts[1] || "intro";
     }
-    setRoute(versionId, pageId, { replace: false });
+    setRoute(versionId, pageId);
     applyRoute().catch((err) => {
       els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
     });
@@ -469,15 +507,12 @@
     try {
       configureMarked();
       STATE.versionsDoc = await fetchJson("data/versions.json");
-
       const parsed = parseRoute();
       STATE.versionId = parsed.versionId;
       STATE.pageId = parsed.pageId;
 
       els.versionSelect.addEventListener("change", () => {
-        setRoute(els.versionSelect.value, STATE.pageId || "intro", {
-          replace: false,
-        });
+        setRoute(els.versionSelect.value, STATE.pageId || "intro");
         applyRoute().catch((err) => {
           els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
         });
@@ -499,8 +534,8 @@
     } catch (err) {
       els.doc.innerHTML =
         `<p class="doc__error">${err.message}</p>` +
-        `<p class="doc__error">Sirve la carpeta <code>website/</code> por HTTP ` +
-        `(por ejemplo <code>python3 -m http.server 8765 --directory website</code>).</p>`;
+        `<p class="doc__error">Sirve <code>website/</code> por HTTP ` +
+        `(ej. <code>python3 -m http.server 8765 --directory website</code>).</p>`;
     }
   }
 
