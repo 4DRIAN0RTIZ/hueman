@@ -103,6 +103,10 @@
           <div class="masthead__ids">
             <span class="stamp" id="page-stamp">—</span>
             <div class="masthead__badges" id="hero-badges" aria-live="polite"></div>
+            <p class="masthead__updated">
+              Actualizado
+              <time id="hero-updated" datetime="">—</time>
+            </p>
           </div>
           <p class="masthead__eyebrow" id="section-label">Documentación</p>
           <h1 class="masthead__title" id="hero-title">hueman</h1>
@@ -111,6 +115,8 @@
             themear tus tools — incluida la tuya.
           </p>
         </header>
+
+        <div class="notice-slot" id="version-notice"></div>
 
         <div class="split">
           <article class="doc" id="doc" aria-busy="true">
@@ -125,7 +131,7 @@
             <div class="outline__foot">
               <p id="footer-version">—</p>
               <p>
-                act.
+                Actualizado
                 <time id="footer-updated" datetime="">—</time>
               </p>
             </div>
@@ -142,6 +148,7 @@
     </div>
 
     <script src="assets/js/marked.min.js" defer></script>
+    <script src="assets/js/releases.js" defer></script>
     <script src="assets/js/app.js" defer></script>
   </body>
 </html>

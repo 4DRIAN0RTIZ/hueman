@@ -1178,3 +1178,172 @@ a:hover {
 .colophon a:hover {
   color: var(--accent);
 }
+
+/* ===== RELEASE INFO: current version, notice, changelog ===== */
+.badge--current {
+  padding: 0.3rem 0.95rem;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.masthead__updated {
+  margin: 0;
+  color: var(--fg-soft);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+.masthead__updated time {
+  color: var(--fg);
+}
+
+.notice-slot {
+  padding-top: 2.25rem;
+  max-width: var(--measure);
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--fg-soft);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.notice strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.notice a {
+  color: var(--accent);
+  text-underline-offset: 0.2em;
+}
+
+.notice a:focus-visible {
+  outline: 1.5px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.notice--dev {
+  align-items: center;
+  border-left-color: var(--line-strong);
+  background: transparent;
+  color: var(--mute);
+  font-size: 0.8rem;
+}
+
+.notice__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent);
+  align-self: center;
+}
+
+.notice-slot + .split {
+  padding-top: 1.75rem;
+}
+
+.release {
+  padding-top: 2rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--line);
+}
+
+.release:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.doc .release h2,
+.doc .release h2:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.9rem;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.release__date {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--mute);
+}
+
+.release__tag {
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.release__tag--dev {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--mute);
+}
+
+.release.is-current {
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+}
+
+.doc .release__group {
+  margin: 1.5rem 0 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.release__items {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.release__items li {
+  margin: 0.3rem 0;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0 0.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--code-bg);
+  color: var(--mute);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  vertical-align: 0.1em;
+}
+
+@media (max-width: 900px) {
+  .notice-slot {
+    padding-top: 1.5rem;
+  }
+}
