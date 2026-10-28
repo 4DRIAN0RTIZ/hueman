@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from engine.config import ConfigError, HuemanConfig  # noqa: E402
+from engine.config import VAR_NAME_RE, ConfigError, HuemanConfig  # noqa: E402
 from engine.fsutil import atomic_write_text  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
 from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
@@ -226,9 +226,24 @@ class Hueman:
         print(f"Targets configurados: {len(self.config.targets)} ({existing}/{total} outputs existentes en disco)")
 
 
+def _var_arg(text: str):
+    """argparse type for --var NAME=VALUE; returns (name, value)."""
+    name, sep, value = text.partition("=")
+    if not sep or not VAR_NAME_RE.fullmatch(name):
+        raise argparse.ArgumentTypeError(
+            f"invalid form {text!r}: expected NAME=VALUE with NAME matching [A-Za-z_][A-Za-z0-9_]*"
+        )
+    return name, value
+
+
 def main():
     parser = argparse.ArgumentParser(description="Gestor centralizado de temas (standalone)")
     parser.add_argument("--config", help="Ruta a hueman.config.yaml")
+    parser.add_argument(
+        "--var", action="append", type=_var_arg, default=[], metavar="NAME=VALUE",
+        help="Define o sobreescribe una variable de 'vars:' para ${NAME} en las rutas "
+        "del config (repetible).",
+    )
     sub = parser.add_subparsers(dest="command")
 
     set_p = sub.add_parser("set", help="Aplicar un tema")
@@ -259,7 +274,7 @@ def main():
         sys.exit(1)
 
     try:
-        tc = Hueman(HuemanConfig(config_path))
+        tc = Hueman(HuemanConfig(config_path, dict(args.var)))
     except ConfigError as e:
         print(f"Config invalida: {e}", file=sys.stderr)
         sys.exit(1)
