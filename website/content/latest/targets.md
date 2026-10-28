@@ -25,6 +25,18 @@ y sin error (exit 0). Una variable de plantilla ausente se renderiza vacía.
 Solo falla (warning + exit 1) una ruta de `extra_vars` inexistente o la sección
 de `json_scheme_upsert`.
 
+### Guardas de salida
+
+- `skip_if_missing_parent: true` — omite cada output cuyo directorio padre no
+  existe.
+- `skip_unless_path_exists: RUTA | [RUTA, ...]` — omite el target entero (sin
+  escribir ni disparar reload) salvo que existan todas las rutas. Ej.: solo
+  tocar el JSON de Windhawk si existe
+  `/mnt/c/Windows/System32/schtasks.exe`.
+
+El `reload` de un target solo corre si realmente se escribió al menos un
+output (en `--dry-run` nunca corre).
+
 ## Overwrite
 
 Genera el archivo completo. Escritura atómica (temp + `fsync` + replace).
@@ -91,6 +103,10 @@ contra `catppuccin-mocha`. Las rutas de salida las declara cada usuario.
 - `is_dark` — booleano con el mismo criterio  
 
 ## Extender
+
+Para herramientas idiosincráticas (propias, poco comunes) usa `template_dirs`
+en tu config en vez de pedir que se agreguen a los templates empaquetados.
+
 
 Guía paso a paso: [Agregar soporte a una tool](guides/add-a-tool.md).
 Ejemplo con reload fuera del proceso: [Termux y proot](guides/termux.md).
