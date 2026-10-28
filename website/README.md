@@ -1,7 +1,21 @@
-# Hueman documentation site (content)
+# Hueman documentation site
 
-Static documentation for the future portal (`#15`–`#19`). This directory holds
-**versioned content and manifests only**; the HTML shell lands in issue `#17`.
+Static documentation portal (`#15`–`#19`): versioned Markdown content plus a
+zero-build HTML shell that loads it in the browser.
+
+## Preview locally
+
+Serve **this directory** over HTTP (fetch does not work from `file://`):
+
+```sh
+python3 -m http.server 8765 --directory website
+# open http://127.0.0.1:8765/
+```
+
+Deep links use query params (section anchors keep the URL hash):
+`?v=latest&p=add-tool`, `?v=v0.1.0&p=cli#checklist-rapido`.
+
+Legacy `#/latest/add-tool` hashes are still accepted and rewritten.
 
 ## Versions
 
@@ -59,8 +73,17 @@ with a Jinja template + a declarative target, without touching Python.
 5. Validate: every nav id resolves or is intentionally omitted; internal links
    and anchors work; changelog sections for that tag exist in `CHANGELOG.md`.
 
-## Out of scope here
+## Shell layout
 
-- Portal chrome, CSS, version selector UI (`#17`, `#18`).
-- OpenWiki (`openwiki/`) is generated evidence, not the user-facing site.
-- Changing the Python CLI or engine.
+| Path | Role |
+|------|------|
+| `index.html` | Portal chrome |
+| `assets/css/site.css` | Layout, typography, responsive nav |
+| `assets/js/app.js` | Version/page router, Markdown render, nav |
+| `assets/js/marked.min.js` | Vendored Markdown parser (no build step) |
+| `data/versions.json` | Version registry |
+| `data/changelog.md` | Changelog copy for the portal |
+| `content/<version>/` | Versioned Markdown + `nav.json` |
+
+OpenWiki (`openwiki/`) remains generated evidence, not this user-facing site.
+The shell does not change the Python CLI.

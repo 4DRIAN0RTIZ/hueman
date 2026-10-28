@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="carbon">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Documentación de hueman: paletas YAML, templates Jinja y targets declarativos para themear tus tools."
+    />
+    <title>hueman — documentación</title>
+    <script>
+      // Apply the stored (or system) theme before first paint to avoid a flash.
+      (function () {
+        var themes = ["carbon", "ocre", "pizarra", "cal"];
+        var theme = "carbon";
+        try {
+          var stored = localStorage.getItem("hueman-docs-theme");
+          if (themes.indexOf(stored) !== -1) theme = stored;
+          else if (matchMedia("(prefers-color-scheme: light)").matches) theme = "cal";
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/site.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-180.png" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="bar" role="banner">
+      <div class="bar__progress" aria-hidden="true">
+        <div class="bar__progress-fill" id="read-progress"></div>
+      </div>
+
+      <div class="bar__inner">
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-controls="index"
+          aria-expanded="false"
+          aria-label="Abrir índice"
+        >
+          <span></span><span></span>
+        </button>
+
+        <a class="brand" href="?" aria-label="hueman, inicio de la documentación">
+          <img class="brand__mark" src="assets/img/logo.png" alt="" width="317" height="198" />
+          <span class="brand__word">hueman</span>
+          <span class="brand__meta" id="spine-meta">docs</span>
+        </a>
+
+        <div class="bar__cluster">
+          <label class="version-picker">
+            <span class="version-picker__label">rev</span>
+            <select id="version-select" aria-label="Versión de la documentación"></select>
+          </label>
+
+          <div class="themes" role="radiogroup" aria-label="Tema de color" id="themes">
+            <button type="button" role="radio" class="theme theme--carbon" data-theme-set="carbon" aria-label="Carbón" title="Carbón"></button>
+            <button type="button" role="radio" class="theme theme--ocre" data-theme-set="ocre" aria-label="Ocre" title="Ocre"></button>
+            <button type="button" role="radio" class="theme theme--pizarra" data-theme-set="pizarra" aria-label="Pizarra" title="Pizarra"></button>
+            <button type="button" role="radio" class="theme theme--cal" data-theme-set="cal" aria-label="Cal" title="Cal"></button>
+          </div>
+
+          <a
+            class="bar__link"
+            href="agent-guide.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            >para agentes</a
+          >
+          <a
+            class="bar__link"
+            href="https://github.com/4DRIAN0RTIZ/hueman"
+            rel="noopener noreferrer"
+            target="_blank"
+            >fuente ↗</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <div class="board">
+      <nav class="index" id="index" aria-label="Índice">
+        <header class="index__head">
+          <p class="index__kicker">Índice</p>
+        </header>
+        <div id="side-nav" class="ledger"></div>
+      </nav>
+
+      <button type="button" class="backdrop" id="nav-backdrop" hidden aria-label="Cerrar índice"></button>
+
+      <main class="stage" id="contenido" tabindex="-1">
+        <header class="masthead" id="hero" data-num="00">
+          <div class="masthead__ids">
+            <span class="stamp" id="page-stamp">—</span>
+            <div class="masthead__badges" id="hero-badges" aria-live="polite"></div>
+          </div>
+          <p class="masthead__eyebrow" id="section-label">Documentación</p>
+          <h1 class="masthead__title" id="hero-title">hueman</h1>
+          <p class="masthead__lead" id="hero-lead">
+            Una paleta YAML, templates Jinja y targets declarativos para
+            themear tus tools — incluida la tuya.
+          </p>
+        </header>
+
+        <div class="split">
+          <article class="doc" id="doc" aria-busy="true">
+            <p class="doc__loading">Cargando…</p>
+          </article>
+
+          <aside class="outline" aria-label="En esta página">
+            <p class="outline__kicker">En esta página</p>
+            <div id="page-outline" class="outline__list">
+              <p class="outline__empty">Sin secciones</p>
+            </div>
+            <div class="outline__foot">
+              <p id="footer-version">—</p>
+              <p>
+                act.
+                <time id="footer-updated" datetime="">—</time>
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <nav class="traverse" id="pager" aria-label="Continuar lectura"></nav>
+
+        <footer class="colophon">
+          <p>hueman · documentación</p>
+          <a href="#contenido">volver arriba ↑</a>
+        </footer>
+      </main>
+    </div>
+
+    <script src="assets/js/marked.min.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
+  </body>
+</html>

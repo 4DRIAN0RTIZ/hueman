@@ -12,13 +12,26 @@ python3 -m pip install -r requirements.txt
 
 ## Obtener hueman
 
-Clona o descarga el repo y ejecuta el CLI desde la raíz:
+Clona el repo y ejecuta el CLI desde la raíz:
 
 ```sh
+git clone <url-del-repo> ~/src/hueman
+cd ~/src/hueman
 python3 hueman.py --help
 ```
 
-Opcional: enlaza o envuelve el script en tu `PATH`.
+(La URL depende de dónde esté alojado el repo.)
+
+Opcional: un wrapper en tu `PATH` para escribir `hueman` en vez de
+`python3 hueman.py`. Por ejemplo `~/.local/bin/hueman`:
+
+```sh
+#!/bin/sh
+exec python3 ~/src/hueman/hueman.py "$@"
+```
+
+Dale permisos con `chmod +x ~/.local/bin/hueman`. Un alias también sirve:
+`alias hueman='python3 ~/src/hueman/hueman.py'`.
 
 ## Config del usuario
 
