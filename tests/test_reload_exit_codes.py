@@ -143,3 +143,55 @@ def test_write_oserror_is_clean_target_error_original_intact(tmp_path, monkeypat
     assert not (tmp_path / "r").exists()
     assert "Permission denied" in caplog.text
     assert [p.name for p in tmp_path.iterdir() if p.name.endswith(".tmp")] == []
+
+
+def _run_cli(tmp_path, monkeypatch, *args):
+    monkeypatch.setattr(
+        "sys.argv", ["hueman", "--config", str(tmp_path / "hueman.yaml"), "set", "one", *args]
+    )
+    with pytest.raises(SystemExit) as exc:
+        hueman.main()
+    return exc.value.code
+
+
+def test_cli_unknown_placeholder_in_reload_fails_before_writing(tmp_path, monkeypatch, capsys):
+    make_app(tmp_path, targets={"a": {}, "b": {"reload": "echo {kitty.nope}"}})
+    assert _run_cli(tmp_path, monkeypatch) == 1
+    err = capsys.readouterr().err
+    assert "Config invalida" in err and "{kitty.nope}" in err
+    assert "Traceback" not in err
+    assert not (tmp_path / "a.out").exists() and not (tmp_path / "b.out").exists()
+    assert not (tmp_path / "state").exists()
+
+
+@pytest.mark.parametrize("extra", [[], ["--dry-run"]])
+def test_cli_unknown_placeholder_in_post_apply_fails_cleanly(tmp_path, monkeypatch, capsys, extra):
+    make_app(tmp_path, targets={"a": {}}, post_apply=["echo {kitty.nope}"])
+    assert _run_cli(tmp_path, monkeypatch, *extra) == 1
+    err = capsys.readouterr().err
+    assert "Config invalida" in err and "{kitty.nope}" in err
+    assert "Traceback" not in err
+    assert not (tmp_path / "a.out").exists() and not (tmp_path / "state").exists()
+
+
+def test_cli_valid_placeholders_still_expand(tmp_path, monkeypatch):
+    marker = tmp_path / "m"
+    make_app(
+        tmp_path, targets={"a": {"reload": f"echo {{name}} {{kitty.c}} > {marker}"}},
+        post_apply=["true {kitty.c}"],
+    )
+    monkeypatch.setattr("sys.argv", ["hueman", "--config", str(tmp_path / "hueman.yaml"), "set", "one"])
+    hueman.main()
+    assert marker.read_text() == "one red\n"
+    assert (tmp_path / "state").read_text() == "one\n"
+
+
+def test_cli_only_validates_just_selected_targets(tmp_path, monkeypatch):
+    make_app(tmp_path, targets={"a": {"reload": "true {kitty.c}"}, "b": {"reload": "echo {kitty.nope}"}})
+    monkeypatch.setattr(
+        "sys.argv", ["hueman", "--config", str(tmp_path / "hueman.yaml"), "set", "one", "--only", "a"]
+    )
+    hueman.main()
+    assert (tmp_path / "a.out").exists() and not (tmp_path / "b.out").exists()
+    assert not (tmp_path / "state").exists()
+    assert _run_cli(tmp_path, monkeypatch, "--only", "b") == 1
