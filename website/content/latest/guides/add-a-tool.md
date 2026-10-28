@@ -231,5 +231,6 @@ cada máquina sigue declarando sus propios `outputs`.
 
 - [Targets y render](../targets.md) — modos y campos al detalle  
 - [Paletas](../palettes.md) — secciones y precedencia  
+- [Termux y proot](termux.md) — ejemplo de target cuyo reload ocurre fuera del proceso  
 - [Agregar una paleta](add-a-palette.md) — colores nuevos sin tocar templates  
 - `hueman.config.example.yaml` en el repo — esquema comentado  

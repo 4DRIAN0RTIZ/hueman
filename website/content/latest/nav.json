@@ -11,7 +11,7 @@
     },
     {
       "title": "Extender",
-      "pages": ["add-tool", "add-palette"]
+      "pages": ["add-tool", "add-palette", "termux"]
     },
     {
       "title": "Referencia",
@@ -34,6 +34,7 @@
       "file": "guides/add-a-palette.md",
       "title": "Agregar una paleta"
     },
+    "termux": { "file": "guides/termux.md", "title": "Termux y proot" },
     "state-sync": { "file": "state-sync.md", "title": "Sync entre nodos" },
     "architecture": { "file": "architecture.md", "title": "Arquitectura" },
     "troubleshooting": { "file": "troubleshooting.md", "title": "Diagnóstico" },

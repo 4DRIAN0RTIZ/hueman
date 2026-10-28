@@ -41,6 +41,50 @@ No crea archivos nuevos. Estrategias:
   duplica si el regex sigue sin coincidir  
 - `json_scheme_upsert` — schemes JSON (ej. Kitty) sin template  
 
+## Templates empaquetados
+
+Cada `.j2` de `templates/` espera una sección concreta de la paleta. `—` en
+notas significa que no hay nada que añadir.
+
+| Template | Herramienta | `palette_key` | Notas |
+|----------|-------------|---------------|-------|
+| `atuin_theme.toml.j2` | atuin | `polybar` | — |
+| `bottom_theme.toml.j2` | bottom | `polybar` | — |
+| `bspwm_colors.conf.j2` | bspwm | `polybar` | — |
+| `claude_statusline.sh.j2` | status line de Claude Code | `polybar` | — |
+| `dunst_colors.conf.j2` | dunst | `polybar` | — |
+| `fzf_opts.j2` | fzf | `polybar` | — |
+| `fzf_theme.j2` | fzf (cargador) | — | No lee variables de la paleta |
+| `herdr_theme_custom.toml.j2` | herdr | `polybar` | — |
+| `k9s_theme.yaml.j2` | k9s | `polybar` | — |
+| `kitty.conf.j2` | kitty | `kitty` | — |
+| `lazydocker_theme.yml.j2` | lazydocker | — | No lee variables de la paleta |
+| `leaf_theme.toml.j2` | leaf | `polybar` | — |
+| `newt_colors.j2` | newt / whiptail | `polybar` | — |
+| `nvim_nightfox_theme.lua.j2` | Neovim (nightfox) | `kitty` | — |
+| `omp.omp.json.j2` | oh-my-posh | `omp` | `jinja_delimiters: ["[[", "]]"]`: el JSON ya usa `{{ }}` de Go |
+| `opencode_theme.json.j2` | opencode | `polybar` | Requiere `extra_vars`: `active_border_color`, `inactive_border_color`, `color4`, `color5`, `color13`. De dónde salen es tu decisión; la sección `kitty` los tiene |
+| `pi_theme.json.j2` | pi | `pi` | Lee `pi.vars` completo |
+| `polybar_colors.ini.j2` | polybar | `polybar` | — |
+| `posting_theme.yaml.j2` | posting | `polybar` | `extra_vars`: `panel: pi.vars.elevatedBg` |
+| `qutebrowser_github.user.js.j2` | qutebrowser (userstyle GitHub) | `polybar` | — |
+| `qutebrowser_google.user.js.j2` | qutebrowser (userstyle Google) | `polybar` | — |
+| `qutebrowser_hteam.user.js.j2` | qutebrowser (userstyle hteam) | `polybar` | — |
+| `qutebrowser_theme.py.j2` | qutebrowser | `polybar` | — |
+| `rofi_theme.rasi.j2` | rofi | `polybar` | — |
+| `sshub_theme.toml.j2` | sshub | `polybar` | — |
+| `starship_block.toml.j2` | starship | `polybar` | Pensado para `patch`; ver `hueman.config.example.yaml` |
+| `termux_colors.properties.j2` | Termux | `kitty` | Ver [Termux y proot](guides/termux.md) |
+| `tmux.conf.j2` | tmux | `tmux` | — |
+| `tuicr_theme.toml.j2` | tuicr | `polybar` | — |
+| `wezterm_colors.lua.j2` | WezTerm | `kitty` | — |
+| `windhawk_taskbar.json.j2` | Windhawk (barra de tareas) | `polybar` | — |
+| `yazi_theme.toml.j2` | yazi | `polybar` | — |
+| `zen_theme.json.j2` | Zen Browser | `polybar` | — |
+
+El `palette_key` y las `extra_vars` se comprobaron renderizando cada template
+contra `catppuccin-mocha`. Las rutas de salida las declara cada usuario.
+
 ## Filtros Jinja
 
 - `contrast` — `#1a1a1a` o `#f5f5f5` según luminancia del color  
@@ -49,3 +93,4 @@ No crea archivos nuevos. Estrategias:
 ## Extender
 
 Guía paso a paso: [Agregar soporte a una tool](guides/add-a-tool.md).
+Ejemplo con reload fuera del proceso: [Termux y proot](guides/termux.md).
