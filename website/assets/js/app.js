@@ -23,6 +23,8 @@
     heroBadges: document.getElementById("hero-badges"),
     footerVersion: document.getElementById("footer-version"),
     footerUpdated: document.getElementById("footer-updated"),
+    heroUpdated: document.getElementById("hero-updated"),
+    notice: document.getElementById("version-notice"),
     navToggle: document.getElementById("nav-toggle"),
     backdrop: document.getElementById("nav-backdrop"),
     main: document.getElementById("contenido"),
@@ -30,6 +32,8 @@
     masthead: document.getElementById("hero"),
     themes: document.getElementById("themes"),
   };
+
+  const Releases = window.HuemanReleases;
 
   const THEME_KEY = "hueman-docs-theme";
 
@@ -256,14 +260,44 @@
     return "Documentación";
   }
 
+  function versionOptionLabel(v) {
+    return v.channel === "latest"
+      ? `${v.label} · en desarrollo`
+      : `${v.label} · publicada`;
+  }
+
   function renderVersionSelect() {
-    els.versionSelect.innerHTML = STATE.versionsDoc.versions
-      .map((v) => {
-        const label = v.channel === "latest" ? `${v.label} · tip` : v.label;
-        return `<option value="${v.id}">${label}</option>`;
+    const groups = [
+      ["Más reciente", (v) => v.channel === "latest"],
+      ["Publicadas", (v) => v.channel !== "latest"],
+    ];
+    els.versionSelect.innerHTML = groups
+      .map(([title, test]) => {
+        const options = STATE.versionsDoc.versions
+          .filter(test)
+          .map((v) => `<option value="${escapeAttr(v.id)}">${escapeAttr(versionOptionLabel(v))}</option>`)
+          .join("");
+        return options ? `<optgroup label="${title}">${options}</optgroup>` : "";
       })
       .join("");
     els.versionSelect.value = STATE.versionId;
+  }
+
+  function renderVersionNotice() {
+    const v = currentVersion();
+    if (v.channel === "latest") {
+      els.notice.innerHTML =
+        `<p class="notice notice--dev"><span class="notice__dot" aria-hidden="true"></span>` +
+        `Documentación en desarrollo: sigue la rama principal y puede describir cambios aún sin publicar.</p>`;
+      return;
+    }
+    const latest = STATE.versionsDoc.versions.find((x) => x.channel === "latest");
+    const link = latest
+      ? ` <a href="${pageHref(latest.id, STATE.pageId)}" data-link>Ver esta página en ${escapeAttr(latest.label)}</a>`
+      : "";
+    els.notice.innerHTML =
+      `<p class="notice notice--old" role="note">` +
+      `Estás viendo la documentación de <strong>${escapeAttr(v.label)}</strong> — puede estar desactualizada.${link}</p>`;
   }
 
   function renderHeroAndFooter() {
@@ -298,16 +332,18 @@
     const channelLabel =
       v.channel === "latest" ? "latest" : v.status || v.channel || "release";
     els.heroBadges.innerHTML = [
-      `<span class="badge badge--accent">${v.label}</span>`,
+      `<span class="badge badge--current" aria-label="Versión consultada">${v.label}</span>`,
       `<span class="badge badge--ok">${channelLabel}</span>`,
       v.semver ? `<span class="badge">${v.semver}</span>` : "",
-      `<span class="badge">${v.updated}</span>`,
     ]
       .filter(Boolean)
       .join("");
 
+    const updatedText = Releases.formatDate(v.updated);
+    els.heroUpdated.textContent = updatedText;
+    els.heroUpdated.setAttribute("datetime", v.updated);
     els.footerVersion.textContent = `rev ${v.label}`;
-    els.footerUpdated.textContent = v.updated;
+    els.footerUpdated.textContent = updatedText;
     els.footerUpdated.setAttribute("datetime", v.updated);
     document.title = `${pageTitle} · hueman docs (${v.label})`;
   }
@@ -370,6 +406,50 @@
       `<a class="pager__next" href="${next ? pageHref(STATE.versionId, next) : "#"}" data-link ${next ? "" : "hidden"}>` +
       `<span class="pager__dir">Siguiente</span>` +
       `<span class="pager__title">${nextMeta ? nextMeta.title : ""}</span></a>`;
+  }
+
+  function inlineCode(text) {
+    return escapeAttr(text).replace(/`([^`]+)`/g, "<code>$1</code>");
+  }
+
+  function renderChangelog(md, version) {
+    const releases = Releases.filterReleases(Releases.parseChangelog(md), version.semver);
+    if (!releases.length) {
+      return `<p class="doc__error">Sin entradas de changelog para ${escapeAttr(version.label)}.</p>`;
+    }
+    return releases
+      .map((r) => {
+        const current = !r.unreleased && r.version === version.semver;
+        const title = r.unreleased ? "Unreleased" : `v${escapeAttr(r.version)}`;
+        const tag = current
+          ? `<span class="release__tag">esta versión</span>`
+          : r.unreleased
+            ? `<span class="release__tag release__tag--dev">en desarrollo</span>`
+            : "";
+        const date = r.date
+          ? `<time class="release__date" datetime="${escapeAttr(r.date)}">${escapeAttr(Releases.formatDate(r.date))}</time>`
+          : "";
+        const groups = r.groups
+          .map(
+            (g) =>
+              `<h3 class="release__group">${escapeAttr(g.title)}</h3><ul class="release__items">` +
+              g.items
+                .map(
+                  (i) =>
+                    `<li>${inlineCode(i.text)}${i.hash ? ` <code class="chip">${escapeAttr(i.hash)}</code>` : ""}</li>`
+                )
+                .join("") +
+              `</ul>`
+          )
+          .join("");
+        return (
+          `<section class="release${current ? " is-current" : ""}">` +
+          `<h2 id="${r.id}">${title}${tag}${date}` +
+          ` <a class="heading-anchor" href="#${r.id}" aria-label="Enlace a esta sección">#</a></h2>` +
+          `${groups}</section>`
+        );
+      })
+      .join("");
   }
 
   function renderOutline() {
@@ -451,17 +531,16 @@
     }
 
     try {
-      let md;
       if (page.derived || page.file === null) {
-        md = await fetchText("data/changelog.md");
+        const md = await fetchText("data/changelog.md");
+        els.doc.innerHTML = renderChangelog(md, version);
       } else {
         const base = version.contentDir.replace(/\/?$/, "");
-        md = await fetchText(`${base}/${page.file}`);
+        const md = await fetchText(`${base}/${page.file}`);
+        els.doc.innerHTML = marked.parse(md);
+        const first = els.doc.firstElementChild;
+        if (first && first.tagName === "H1") first.remove();
       }
-
-      els.doc.innerHTML = marked.parse(md);
-      const first = els.doc.firstElementChild;
-      if (first && first.tagName === "H1") first.remove();
       els.doc.setAttribute("aria-busy", "false");
       addCopyButtons();
       renderOutline();
@@ -511,6 +590,7 @@
     renderVersionSelect();
     renderSideNav();
     renderHeroAndFooter();
+    renderVersionNotice();
     renderPager();
 
     const mustReload =
