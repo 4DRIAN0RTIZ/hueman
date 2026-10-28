@@ -72,7 +72,7 @@ Reúne antes: ruta del config en uso, salida completa y exit code. Resumen ofici
 | `la paleta '<x>' no tiene la clave '<k>' requerida` | Falta una ruta de `extra_vars` o una clave de `json_scheme_upsert`; target omitido, exit 1 | Añade la clave a la paleta |
 | Valores vacíos en el output | Una variable de template ausente en la sección: Jinja la renderiza vacía, no falla | Contrasta variables del `.j2` con la sección |
 | `{{ ... }}` literales en el output | Delimitadores distintos a los esperados | `jinja_delimiters` del target |
-| Patch duplica el bloque | `marker_regex` sin match y sin `insert_after_section_regex`: el bloque se **añade al final** | Revisa el regex; `(?m)` si usas `^`/`$` en `ensure_after` |
+| Patch duplica el bloque | `marker_regex` sin match y sin `insert_after_section_regex`: el bloque se **añade al final**; si el regex tampoco reconoce el bloque insertado, hueman emite un warning (la causa es el `marker_regex`) | Revisa el regex; `(?m)` si usas `^`/`$` en `ensure_after` |
 | Exit 1 con el tema aplicado | Algún target omitido por error, o `reload_failure: error` y un hook devolvió ≠ 0 | Mensajes `reload fallo (exit N)` / `post_apply fallo` |
 | El reload "no hace nada" | Solo corre con escritura efectiva y sin `--dry-run`; usa `sh -c` | El log registra `reload: <cmd> (exit N)`; que el humano lo corra a mano |
 | `set` aborta por `placeholder desconocido` | `{seccion.clave}` inexistente en `reload`/`post_apply` | Corrige la clave; `${VAR}` de shell no se toca |

@@ -164,3 +164,43 @@ def test_palette_precedence_ignores_missing_custom_dir(tmp_path):
     (packaged / "p.yaml").write_text("src: packaged\n")
     loader = PaletteLoader(packaged, [tmp_path / "does-not-exist"], LOG)
     assert loader.load("p")["src"] == "packaged"
+
+
+class _RecLog:
+    def __init__(self):
+        self.warnings = []
+
+    def warning(self, msg):
+        self.warnings.append(msg)
+
+
+def _splice_runs(regex, rendered, original, runs=1):
+    from types import SimpleNamespace
+    from engine.render import _apply_regex_splice
+    patch = SimpleNamespace(marker_regex=regex, insert_after_section_regex=None,
+                            replacements=[], ensure_after=[])
+    log = _RecLog()
+    content = original
+    for _ in range(runs):
+        content = _apply_regex_splice(content, rendered, patch, log)
+    return content, log.warnings
+
+
+def test_marker_regex_not_matching_own_output_warns_once():
+    content, warns = _splice_runs(r"\[colors\].*?(?=\n\[|\Z)", "color=1\n", "a=1\n")
+    assert content == "a=1\n\ncolor=1\n"
+    assert len(warns) == 1
+    assert "marker_regex" in warns[0]
+
+
+def test_marker_regex_matching_own_output_is_idempotent_without_warning():
+    content, warns = _splice_runs(r"(?s)color=1\n", "color=1\n", "a=1\n", runs=3)
+    assert content.count("color=1") == 1
+    assert warns == []
+
+
+def test_marker_regex_replace_path_does_not_warn():
+    content, warns = _splice_runs(r"\[colors\].*?(?=\n\[|\Z)", "[colors]\nx=2\n",
+                                  "a=1\n[colors]\nx=1\n")
+    assert content == "a=1\n[colors]\nx=2\n"
+    assert warns == []
