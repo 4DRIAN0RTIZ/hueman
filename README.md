@@ -39,25 +39,9 @@ de pedir que se agreguen aquí.
 
 ## Documentación
 
-La documentación completa vive en `website/` (páginas en
-`website/content/latest/`):
+Documentación completa: **[hueman.cuevaneander.tech](https://hueman.cuevaneander.tech)**
 
-- [Qué es hueman](website/content/latest/intro.md)
-- [Instalación](website/content/latest/install.md)
-- [Quickstart](website/content/latest/quickstart.md)
-- [CLI](website/content/latest/cli.md)
-- [Configuración](website/content/latest/configuration.md)
-- [Targets y render](website/content/latest/targets.md)
-- [Paletas](website/content/latest/palettes.md)
-- [Sync entre nodos](website/content/latest/state-sync.md)
-- [Agregar soporte a una tool](website/content/latest/guides/add-a-tool.md)
-- [Agregar una paleta](website/content/latest/guides/add-a-palette.md)
-- [Termux y proot](website/content/latest/guides/termux.md)
-- [Windows y WSL](website/content/latest/guides/windows.md) (scripts de ejemplo en `examples/windows/`)
-- [Arquitectura](website/content/latest/architecture.md)
-- [Diagnóstico](website/content/latest/troubleshooting.md)
-
-Para verla en el navegador:
+Para verla en local (las fuentes están en `website/`):
 
 ```sh
 python3 -m http.server 8765 --directory website
