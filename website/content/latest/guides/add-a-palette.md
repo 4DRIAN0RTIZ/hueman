@@ -13,8 +13,8 @@ palette_dirs:
   - "~/dotfiles/theme/palettes.custom"
 ```
 
-3. `hueman list` debe mostrar `mi-tema`.
-4. `hueman set mi-tema` la aplica.
+3. `python3 hueman.py --config <config> list` debe mostrar `mi-tema`.
+4. `python3 hueman.py --config <config> set mi-tema` la aplica.
 
 Si el nombre coincide con una paleta empaquetada, **gana la custom**.
 
@@ -45,7 +45,10 @@ polybar:
 ```
 
 Mantén las **mismas claves** que usan tus templates. Una clave que el
-template pide y la paleta no trae hace fallar ese target (warning + exit 1).
+template pide y la paleta no trae se renderiza **vacía**, sin error. Solo falla
+(warning + exit 1) una ruta de `extra_vars` o la sección de
+`json_scheme_upsert`. Si `palette_key` no es sección de la paleta, el target se
+omite sin aviso.
 
 ## Upstream
 
