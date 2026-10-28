@@ -15,6 +15,7 @@ targets:
     mode: overwrite
     outputs:
       - "~/.termux/colors.properties"
+    # En proot, apunta al archivo real de Termux, no a un symlink.
     # Solo si hueman corre en Termux (no en proot): ver más abajo.
     # reload: "termux-reload-settings"
 ```
@@ -32,10 +33,16 @@ En un distro proot (por ejemplo Debian o Arch bajo `proot-distro`) no existe
 `termux-reload-settings`, así que un `reload` directo falla. Dos piezas lo
 resuelven:
 
-1. El `~/.termux/colors.properties` del proot debe ser el **mismo archivo**
-   que el de Termux: un symlink hacia el archivo del lado Termux, o ambos
-   apuntando a un archivo compartido de tus dotfiles.
+1. `outputs` debe apuntar al **archivo real** que lee Termux, visto desde el
+   proot. Si el home de Termux está montado dentro del proot (por ejemplo en
+   `~/baseTermux`), usa `~/baseTermux/.termux/colors.properties`.
 2. Un watcher del lado Termux vigila el mtime y recarga.
+
+> **No uses un symlink como output.** hueman escribe de forma atómica
+> (archivo temporal + `os.replace`), y si el destino es un symlink lo
+> **reemplaza por un archivo normal** y deja intacto el archivo al que
+> apuntaba. Termux seguiría leyendo el archivo viejo. Apunta `outputs` al
+> archivo final, no a un enlace.
 
 Guarda esto como `~/.termux/theme-watcher` en **Termux** (no en el proot) y
 dale permisos con `chmod +x`:
@@ -73,7 +80,7 @@ En este caso omite `reload` en el target: el watcher se encarga.
 - [ ] La paleta trae la sección `kitty` con las 19 claves.
 - [ ] `outputs` apunta a `~/.termux/colors.properties` y el directorio
       `~/.termux` existe (o deja que hueman lo cree).
-- [ ] En proot: el archivo es el mismo que ve Termux (symlink o dotfiles).
+- [ ] En proot: `outputs` es el archivo real que lee Termux, no un symlink.
 - [ ] El watcher está en el lado Termux, es ejecutable y corre
       (`cat ~/.termux/.theme-watcher.pid`).
 
