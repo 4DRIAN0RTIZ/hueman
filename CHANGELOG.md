@@ -6,11 +6,13 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Fail early with a clean error on unknown placeholders (#31) (1d4ded3)
 - Warn when marker_regex does not match the block it inserted (#30) (74a4558)
 - Package newt_colors for whiptail palette (e6d0a6a)
 
 ### Documentation
 
+- Link the full documentation site from the README (#32) (9d0f641)
 - Warn that symlinked outputs are replaced, not followed (#29) (10db85b)
 - Add a Windows and WSL guide with example scripts (#28) (95d80ff)
 - Make the README a general overview (#27) (59bc81d)
