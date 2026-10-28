@@ -53,6 +53,7 @@ La documentación completa vive en `website/` (páginas en
 - [Agregar soporte a una tool](website/content/latest/guides/add-a-tool.md)
 - [Agregar una paleta](website/content/latest/guides/add-a-palette.md)
 - [Termux y proot](website/content/latest/guides/termux.md)
+- [Windows y WSL](website/content/latest/guides/windows.md) (scripts de ejemplo en `examples/windows/`)
 - [Arquitectura](website/content/latest/architecture.md)
 - [Diagnóstico](website/content/latest/troubleshooting.md)
 
