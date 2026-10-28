@@ -29,8 +29,8 @@ de máquina). Esquema comentado: `hueman.config.example.yaml`.
 Los comandos aceptan `{name}` (alias `{palette}`) y `{seccion.clave}` (lookup
 con punto en la paleta activa, ej. `{kitty.color4}`). El valor se inserta con
 `shlex.quote`. `${VAR}`, `$(...)` y llaves sin punto (ej. `find -exec {} +`)
-quedan intactas. Un `{seccion.clave}` inexistente lanza `ValueError` sin
-capturar: `set` aborta con traceback.
+quedan intactas. Un `{seccion.clave}` inexistente da un error limpio
+`Config invalida` (exit 1) antes de escribir nada.
 
 ```yaml
 reload: "python3 ~/x.py --name {name} --color {kitty.color4}"

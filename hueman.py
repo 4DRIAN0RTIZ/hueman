@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from engine.config import VAR_NAME_RE, ConfigError, HuemanConfig  # noqa: E402
 from engine.fsutil import atomic_write_text  # noqa: E402
 from engine.palettes import PaletteLoader  # noqa: E402
-from engine.reload import expand_command, run_post_apply, run_reload  # noqa: E402
+from engine.reload import PlaceholderError, expand_command, run_post_apply, run_reload  # noqa: E402
 from engine.statesource import ReadResult, State, build_source  # noqa: E402
 from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
 
@@ -75,6 +75,13 @@ class Hueman:
         `publish=False` (usado por `sync`) aplica sin publicar estado nuevo."""
         selected = self._select_targets(only)
         palette = self.palettes.load(name)
+        # Validar placeholders de reload/post_apply antes de escribir nada.
+        for target in selected:
+            if target.reload:
+                expand_command(target.reload, name, palette)
+        post_apply = None
+        if not only:
+            post_apply = [expand_command(c, name, palette) for c in self.config.post_apply]
         failed = []
         for target in selected:
             env = self._jinja_env(target.jinja_delimiters)
@@ -99,7 +106,6 @@ class Hueman:
         if only:
             return failed
 
-        post_apply = [expand_command(c, name, palette) for c in self.config.post_apply]
         if dry_run:
             for cmd in post_apply:
                 print(f"[DRY RUN] post_apply: {cmd}")
@@ -284,6 +290,9 @@ def main():
             failed = tc.set_theme(args.name, args.dry_run, only=only)
         except UnknownTargetError as e:
             print(str(e), file=sys.stderr)
+            sys.exit(1)
+        except PlaceholderError as e:
+            print(f"Config invalida: {e}", file=sys.stderr)
             sys.exit(1)
         if failed:
             print(f"Targets con errores: {', '.join(failed)}", file=sys.stderr)

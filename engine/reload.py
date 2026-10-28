@@ -13,6 +13,10 @@ from .render import _dig
 _PLACEHOLDER = re.compile(r"(?<!\$)\{([A-Za-z_]\w*(?:\.\w+)*)\}")
 
 
+class PlaceholderError(ValueError):
+    """Un `{seccion.clave}` de reload/post_apply no existe en la paleta."""
+
+
 def expand_command(cmd: str, name: str, palette: dict) -> str:
     """Sustituye `{name}`/`{palette}` y `{a.b}` (lookup en la paleta activa)
     por su valor con shlex.quote. Un `{a.b}` que no resuelve es un error."""
@@ -25,7 +29,7 @@ def expand_command(cmd: str, name: str, palette: dict) -> str:
         try:
             value = _dig(palette, key)
         except (KeyError, TypeError):
-            raise ValueError(f"placeholder desconocido {{{key}}} en comando: {cmd}")
+            raise PlaceholderError(f"placeholder desconocido {{{key}}} en comando: {cmd}")
         return shlex.quote(str(value))
 
     return _PLACEHOLDER.sub(repl, cmd)
