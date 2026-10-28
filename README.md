@@ -178,7 +178,7 @@ en un `set` completo y real: no en `--dry-run`, no con `--only`. `status` y
 - `engine/reload.py` — ejecuta el comando de reload de cada target (best-effort) + los `post_apply` globales.
 - `engine/config.py` — carga `hueman.config.yaml` y monta el logger.
 
-`palettes/` y `templates/` traen ~24 paletas estéticas genéricas y templates para las herramientas más comunes (kitty, tmux, polybar, nvim/nightfox, dunst, bspwm, yazi, qutebrowser, rofi, fzf, atuin, oh-my-posh, wezterm, starship). Para targets idiosincráticos (herramientas propias, poco comunes) usá `template_dirs` en tu config en vez de pedir que se agreguen acá.
+`palettes/` y `templates/` traen ~24 paletas estéticas genéricas y templates para las herramientas más comunes (kitty, tmux, polybar, nvim/nightfox, dunst, bspwm, yazi, qutebrowser, rofi, fzf, atuin, oh-my-posh, wezterm, starship, Termux). Para targets idiosincráticos (herramientas propias, poco comunes) usá `template_dirs` en tu config en vez de pedir que se agreguen acá.
 
 ## Diferencias de comportamiento a tener en cuenta si venís de un motor viejo basado en detección de host/entorno
 
