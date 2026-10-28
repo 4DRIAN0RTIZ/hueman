@@ -58,7 +58,7 @@ python3 hueman.py --config CFG set PALETTE               # real apply
 
 ## Known sharp edges
 
-- Unknown `palette_key`: if the target's `palette_key` is not a top-level section of the palette, the target is skipped silently (no message, no error). Compare it with the palette's top-level keys.
+- Unknown `palette_key`: if the target's `palette_key` is not a top-level section of the palette, the target is skipped with an INFO line `... la paleta no tiene la seccion '<key>', omitido` (exit 0, not an error). Compare it with the palette's top-level keys.
 - Bad `{section.key}` placeholder in `reload` or `post_apply` is a clean `Config invalida: placeholder desconocido ...` error (exit 1, no traceback), raised before anything is written (no outputs, no `state_file`, no reload); it also applies under `--dry-run`. With `--only`, only the selected targets' `reload` is validated. `{name}` and `{palette}` are always valid; shell `${VAR}` is left alone.
 - Non-idempotent `regex_splice`: if `marker_regex` (or the `marker_begin`/`marker_end` pair) does not match the file, the rendered block is appended at the end. If the appended block then still does not match the marker, every run appends another copy. Verify the marker matches an existing block, and use `(?m)` when anchoring with `^`/`$`.
 - Missing template variables render as empty text, not an error. Missing `extra_vars` paths or `json_scheme_upsert` keys skip that target and make the exit code 1.

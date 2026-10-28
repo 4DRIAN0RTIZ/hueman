@@ -204,3 +204,49 @@ def test_marker_regex_replace_path_does_not_warn():
                                   "a=1\n[colors]\nx=1\n")
     assert content == "a=1\n[colors]\nx=2\n"
     assert warns == []
+
+
+class _InfoLog:
+    def __init__(self):
+        self.infos = []
+
+    def info(self, msg):
+        self.infos.append(msg)
+
+    def warning(self, msg):
+        raise AssertionError(f"no debe avisar: {msg}")
+
+
+def test_overwrite_unknown_palette_key_logs_info_and_skips(tmp_path):
+    env = env_with(tmp_path, **{"t.j2": "x"})
+    out = tmp_path / "o"
+    target = Target(name="pi", template="t.j2", palette_key="pi", outputs=[out])
+    log = _InfoLog()
+    assert render_target(env, target, "n", {"kitty": {}}, False, log) is False
+    assert not out.exists()
+    assert len(log.infos) == 1
+    assert "pi" in log.infos[0] and "la paleta no tiene la seccion 'pi'" in log.infos[0]
+
+
+def test_patch_unknown_palette_key_logs_info_and_skips(tmp_path):
+    env = env_with(tmp_path, **{"t.j2": "x"})
+    out = tmp_path / "o"
+    out.write_text("orig\n")
+    target = Target(name="omp", template="t.j2", palette_key="omp", outputs=[out],
+                    mode="patch", patch=PatchSpec(strategy="marker_regex",
+                                                  marker_regex="x"))
+    log = _InfoLog()
+    assert render_target(env, target, "n", {"kitty": {}}, False, log) is False
+    assert out.read_text() == "orig\n"
+    assert len(log.infos) == 1
+    assert "omp" in log.infos[0] and "la paleta no tiene la seccion 'omp'" in log.infos[0]
+
+
+def test_known_palette_key_does_not_log_missing_section(tmp_path):
+    env = env_with(tmp_path, **{"t.j2": "x"})
+    out = tmp_path / "o"
+    target = Target(name="t", template="t.j2", palette_key="k", outputs=[out])
+    log = _InfoLog()
+    assert render_target(env, target, "n", {"k": {}}, False, log) is True
+    assert out.read_text() == "x"
+    assert not any("no tiene la seccion" in m for m in log.infos)

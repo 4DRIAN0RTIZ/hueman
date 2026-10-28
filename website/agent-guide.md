@@ -68,7 +68,7 @@ Reúne antes: ruta del config en uso, salida completa y exit code. Resumen ofici
 | Paleta no aparece / `Paleta no encontrada` | Archivo no es `.yaml`, directorio ausente de `palette_dirs`, o YAML inválido (`Paleta invalida`, exit 1) | `list`; el error enumera las disponibles |
 | `plantilla '<x>' no encontrada` | Nombre de `.j2` incorrecto o fuera de `template_dirs`/`templates/`; target omitido, exit 1 | Nombre exacto del archivo |
 | Un target no escribe y no hay error | `skip_unless_path_exists` o `skip_if_missing_parent` no se cumplen; `patch` sobre archivo inexistente; `--only` o `--dry-run` | Líneas `INFO` "omitido" / "no existe" |
-| Target omitido **sin ningún mensaje** | `palette_key` no existe como sección en la paleta | Compara `palette_key` con las claves de primer nivel del YAML |
+| Línea `INFO` `... la paleta no tiene la seccion '<key>', omitido` | `palette_key` no existe como sección en la paleta (exit 0, no es error) | Compara `palette_key` con las claves de primer nivel del YAML |
 | `la paleta '<x>' no tiene la clave '<k>' requerida` | Falta una ruta de `extra_vars` o una clave de `json_scheme_upsert`; target omitido, exit 1 | Añade la clave a la paleta |
 | Valores vacíos en el output | Una variable de template ausente en la sección: Jinja la renderiza vacía, no falla | Contrasta variables del `.j2` con la sección |
 | `{{ ... }}` literales en el output | Delimitadores distintos a los esperados | `jinja_delimiters` del target |
