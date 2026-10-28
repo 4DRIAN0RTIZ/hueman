@@ -10,6 +10,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Model versioned content and add-tool guide (5da3c53)
 - Add generated project wiki (ee0c6bb)
 - Add generated project wiki (394c85c)
 
