@@ -11,6 +11,14 @@
 # varias máquinas/perfiles que comparten el mismo tema, simplemente listá
 # todas las rutas ahí.
 
+# Opcional: variables para no repetir rutas. `${repo}` se sustituye solo en
+# `outputs` y `skip_unless_path_exists` de cada target, y en `state_file`,
+# `palette_dirs` y `template_dirs` (nunca en reload, post_apply, patch ni
+# templates). Se pueden sobreescribir con `hueman.py --var repo=<ruta> ...`.
+# vars:
+#   repo: "~/dotfiles"
+# Uso: outputs: ["${repo}/kitty/theme.conf"]
+
 # Dónde persistir el nombre de la paleta activa.
 state_file: "~/.config/hueman/current"
 
