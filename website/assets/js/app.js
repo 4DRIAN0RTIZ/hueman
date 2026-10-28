@@ -27,7 +27,55 @@
     backdrop: document.getElementById("nav-backdrop"),
     main: document.getElementById("contenido"),
     progress: document.getElementById("read-progress"),
+    masthead: document.getElementById("hero"),
+    themes: document.getElementById("themes"),
   };
+
+  const THEME_KEY = "hueman-docs-theme";
+
+  function applyTheme(name) {
+    document.documentElement.setAttribute("data-theme", name);
+    els.themes.querySelectorAll("[data-theme-set]").forEach((btn) => {
+      btn.setAttribute("aria-checked", String(btn.dataset.themeSet === name));
+    });
+  }
+
+  function initThemes() {
+    applyTheme(document.documentElement.getAttribute("data-theme") || "carbon");
+    els.themes.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-theme-set]");
+      if (!btn) return;
+      applyTheme(btn.dataset.themeSet);
+      try {
+        localStorage.setItem(THEME_KEY, btn.dataset.themeSet);
+      } catch (_) {
+        /* storage unavailable: theme applies for this visit only */
+      }
+    });
+  }
+
+  function addCopyButtons() {
+    els.doc.querySelectorAll("pre").forEach((pre) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "copy-btn";
+      btn.textContent = "copiar";
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText((pre.querySelector("code") || pre).innerText.trimEnd());
+          btn.textContent = "copiado";
+          btn.classList.add("is-done");
+          setTimeout(() => {
+            btn.textContent = "copiar";
+            btn.classList.remove("is-done");
+          }, 1400);
+        } catch (_) {
+          btn.textContent = "error";
+        }
+      });
+      pre.appendChild(btn);
+    });
+  }
 
   const EXTEND_PAGES = new Set(["add-tool", "add-palette"]);
 
@@ -227,6 +275,7 @@
     const sectionTitle = currentSectionTitle();
 
     els.heroTitle.textContent = pageTitle;
+    els.masthead.dataset.num = String(idx >= 0 ? idx + 1 : 0).padStart(2, "0");
     if (els.sectionLabel) els.sectionLabel.textContent = sectionTitle;
     if (els.pageStamp) {
       els.pageStamp.textContent =
@@ -343,7 +392,7 @@
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
     const ratio = max > 0 ? window.scrollY / max : 0;
-    els.progress.style.height = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+    els.progress.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
 
     if (!els.outline) return;
     const headings = [...els.doc.querySelectorAll("h2[id], h3[id]")];
@@ -414,6 +463,7 @@
       const first = els.doc.firstElementChild;
       if (first && first.tagName === "H1") first.remove();
       els.doc.setAttribute("aria-busy", "false");
+      addCopyButtons();
       renderOutline();
 
       if (sectionId) requestAnimationFrame(() => scrollToSection(sectionId));
@@ -505,6 +555,7 @@
 
   async function boot() {
     try {
+      initThemes();
       configureMarked();
       STATE.versionsDoc = await fetchJson("data/versions.json");
       const parsed = parseRoute();
