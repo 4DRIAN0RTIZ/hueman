@@ -20,8 +20,8 @@ archivos.
 | `extra_vars` | Mapa nombre → ruta punteada en la paleta |
 | `patch` | Spec de patch si `mode: patch` |
 
-Si `palette_key` no es una sección de la paleta, el target se omite sin log
-y sin error (exit 0). Una variable de plantilla ausente se renderiza vacía.
+Si `palette_key` no es una sección de la paleta, el target se omite con una línea INFO
+`... la paleta no tiene la seccion '<key>', omitido` y sin error (exit 0). Una variable de plantilla ausente se renderiza vacía.
 Solo falla (warning + exit 1) una ruta de `extra_vars` inexistente o la sección
 de `json_scheme_upsert`.
 

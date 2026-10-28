@@ -65,8 +65,16 @@ def _write(path: Path, content: str, dry_run: bool, logger, make_executable: boo
     logger.info(f"Generado: {path}")
 
 
-def render_overwrite(env, target, name, palette, dry_run, logger) -> bool:
+def _missing_palette_section(target, palette, logger) -> bool:
+    """True (con log INFO) si el target apunta a una seccion que la paleta no tiene."""
     if target.palette_key and target.palette_key not in palette:
+        logger.info(f"{target.name}: la paleta no tiene la seccion '{target.palette_key}', omitido")
+        return True
+    return False
+
+
+def render_overwrite(env, target, name, palette, dry_run, logger) -> bool:
+    if _missing_palette_section(target, palette, logger):
         return False
     content = render_template(env, target, name, palette)
     wrote = False
@@ -166,7 +174,7 @@ def _apply_json_scheme_upsert(original: str, kitty: dict, scheme_name: str) -> s
 
 def render_patch(env, target, name, palette, dry_run, logger) -> bool:
     patch = target.patch
-    if target.palette_key and target.palette_key not in palette:
+    if _missing_palette_section(target, palette, logger):
         return False
 
     if patch.strategy == "json_scheme_upsert":

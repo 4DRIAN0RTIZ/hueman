@@ -212,7 +212,7 @@ cada máquina sigue declarando sus propios `outputs`.
 | `missing template …` en tests de config real | El template solo está en custom y algo espera el empaquetado; empaqueta o alinea nombres |
 | Valores vacíos en el archivo | Clave ausente en la paleta o `palette_key` que apunta a una clave equivocada dentro de una sección válida: Jinja renderiza vacío |
 | Se escriben `{{ background }}` literales | Solo con `jinja_delimiters` que no coinciden con los de la plantilla |
-| Target omitido en silencio | `palette_key` que no es sección de la paleta / `skip_unless_path_exists` / padre ausente / patch sobre archivo inexistente |
+| Target omitido | `palette_key` que no es sección de la paleta (INFO `la paleta no tiene la seccion '<key>', omitido`) / `skip_unless_path_exists` / padre ausente / patch sobre archivo inexistente |
 | `Config invalida: placeholder desconocido` | `{seccion.clave}` inexistente en `reload`/`post_apply`: `set` sale con error limpio (exit 1) antes de escribir nada |
 | `set` exit 1 tras reload | `reload_failure: error` y el comando de reload falló |
 | Patch no aplica o se duplica | `marker_regex` sin match: sin `insert_after_section_regex` añade el bloque al final, y se duplica en cada corrida si tu regex no reconoce ese bloque (hueman lo avisa con un warning); o falta `(?m)` si usas `^`/`$` en `ensure_after` |
