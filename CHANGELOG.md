@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+### Bug Fixes
+
+- Package newt_colors for whiptail palette (e6d0a6a)
+
 ### Documentation
 
 - Add generated project wiki (ee0c6bb)
