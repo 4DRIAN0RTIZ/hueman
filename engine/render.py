@@ -84,7 +84,8 @@ def _apply_regex_splice(original: str, rendered: str, patch, logger) -> str:
         # Bloque delimitado por un único regex (ej. una sección TOML entera).
         block = rendered
         pattern = re.compile(patch.marker_regex, re.DOTALL)
-        if pattern.search(original):
+        inserted = not pattern.search(original)
+        if not inserted:
             content = pattern.sub(lambda m: block, original, count=1)
         elif patch.insert_after_section_regex:
             section = re.search(patch.insert_after_section_regex, original, re.DOTALL)
@@ -95,6 +96,12 @@ def _apply_regex_splice(original: str, rendered: str, patch, logger) -> str:
                 content = original.rstrip("\n") + "\n\n" + block
         else:
             content = original.rstrip("\n") + "\n\n" + block
+        # Si el regex no reconoce el bloque recién insertado, se duplicará.
+        if inserted and not pattern.search(content):
+            logger.warning(
+                "marker_regex no reconoce el bloque insertado; "
+                "se volvera a insertar en la siguiente ejecucion"
+            )
     else:
         # Marcadores begin/end literales envolviendo el contenido renderizado.
         marker_begin = patch.marker_begin

@@ -215,7 +215,7 @@ cada máquina sigue declarando sus propios `outputs`.
 | Target omitido en silencio | `palette_key` que no es sección de la paleta / `skip_unless_path_exists` / padre ausente / patch sobre archivo inexistente |
 | `ValueError: placeholder desconocido` | `{seccion.clave}` inexistente en `reload`/`post_apply`: `set` aborta con traceback |
 | `set` exit 1 tras reload | `reload_failure: error` y el comando de reload falló |
-| Patch no aplica o se duplica | `marker_regex` sin match: sin `insert_after_section_regex` añade el bloque al final en cada corrida; o falta `(?m)` si usas `^`/`$` en `ensure_after` |
+| Patch no aplica o se duplica | `marker_regex` sin match: sin `insert_after_section_regex` añade el bloque al final, y se duplica en cada corrida si tu regex no reconoce ese bloque (hueman lo avisa con un warning); o falta `(?m)` si usas `^`/`$` en `ensure_after` |
 | Colores “de fábrica” en newt/whiptail | Faltan elementos en el archivo: el formato reemplaza la paleta entera |
 
 ## 8. Qué no hacer

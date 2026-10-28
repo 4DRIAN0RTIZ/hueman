@@ -50,7 +50,8 @@ No crea archivos nuevos. Estrategias:
   con `replacements` y `ensure_after` opcionales. Con `marker_regex`, si no
   hay match y no hay `insert_after_section_regex` (o su regex tampoco
   coincide), el bloque se añade al final del archivo; repetir `set` lo
-  duplica si el regex sigue sin coincidir  
+  duplica si el regex no reconoce el bloque insertado (hueman lo avisa con un
+  warning: el problema es tu `marker_regex`, no un ancla faltante)  
 - `json_scheme_upsert` — schemes JSON (ej. Kitty) sin template  
 
 ## Templates empaquetados
