@@ -14,3 +14,15 @@
 | Sync no aplica | `status` drift; remoto inalcanzable; revision local ≥ remota |
 
 Más contexto al extender tools: [Agregar soporte a una tool](guides/add-a-tool.md).
+
+## Si vienes de un motor basado en detección de host/entorno
+
+1. **`outputs` es una lista estática, no "descubierta" en cada corrida.** Si
+   listas una ruta que hoy no existe, un target `overwrite` la crea
+   (`mkdir -p` + write). Si antes tu motor omitía en silencio un entorno sin
+   la carpeta, ahora la crea; usa `skip_if_missing_parent` para omitirla.
+2. **El `reload` de un target solo se dispara si ese target escribió algo.**
+   No hay un paso de "reload global" que corra sin importar qué se renderizó.
+3. **No hay detección de hostname/entorno en el motor.** Si tu reload depende
+   de "qué máquina soy", resuélvelo en un script wrapper propio y pásalo como
+   `reload:`; el motor solo ejecuta el comando que le des.

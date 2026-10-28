@@ -32,6 +32,10 @@ escritura efectiva y `post_apply` al final. Persiste el nombre de paleta en
 | `--dry-run` | No escribe, no crea dirs, no reload real; muestra plan |
 | `--only` | Solo targets cuyo nombre matchea (coma o glob `fnmatch`). No escribe state ni corre `post_apply`. Sin match → exit 1 |
 
+Si un target falla porque la paleta no trae una clave que necesita
+(`palette_key` con `extra_vars`, o la sección de `json_scheme_upsert`), se
+omite con un warning que nombra target y clave, el resto sigue y `set` sale 1.
+
 ## `status`
 
 Paleta activa y, con `state_sync`, revisiones y drift (`in sync`, `behind`,

@@ -17,3 +17,10 @@ Capas del CLI (sin lógica por nombre de app):
 Principio: **lo específico de una tool vive en YAML + Jinja**, no en ramas
 Python. Por eso [agregar una tool](guides/add-a-tool.md) no requiere parchear
 el motor.
+
+## Repo autocontenido
+
+El repo es autocontenido a propósito: nada dentro de él importa código fuera
+de sí mismo, salvo el archivo de config externo que cada usuario provee. Un
+repo de dotfiles que lo use solo necesita un wrapper apuntando al CLI y su
+propio `hueman.config.yaml` (ver [Configuración](configuration.md)).
