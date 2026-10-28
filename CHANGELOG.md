@@ -16,6 +16,7 @@ All notable changes to this project are documented here.
 
 ### Features
 
+- Show release info and a per-version changelog (#24) (dd717b8)
 - Add Termux colors template and proot guide (#25) (5884ae4)
 - Add static documentation portal shell (#23) (853085f)
 
