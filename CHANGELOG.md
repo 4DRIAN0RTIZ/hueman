@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Warn when marker_regex does not match the block it inserted (#30) (74a4558)
 - Package newt_colors for whiptail palette (e6d0a6a)
 
 ### Documentation
