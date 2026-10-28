@@ -14,6 +14,10 @@ All notable changes to this project are documented here.
 - Add generated project wiki (ee0c6bb)
 - Add generated project wiki (394c85c)
 
+### Features
+
+- Add static documentation portal shell (#23) (853085f)
+
 ## [0.1.0] - 2026-10-16
 
 ### Bug Fixes
