@@ -10,6 +10,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Add a Windows and WSL guide with example scripts (#28) (95d80ff)
 - Make the README a general overview (#27) (59bc81d)
 - Model versioned content and add-tool guide (5da3c53)
 - Add generated project wiki (ee0c6bb)
