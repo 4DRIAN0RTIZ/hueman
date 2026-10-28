@@ -13,6 +13,7 @@
     versionSelect: document.getElementById("version-select"),
     sideNav: document.getElementById("side-nav"),
     doc: document.getElementById("doc"),
+    pager: document.getElementById("pager"),
     heroTitle: document.getElementById("hero-title"),
     heroLead: document.getElementById("hero-lead"),
     heroBadges: document.getElementById("hero-badges"),
@@ -21,6 +22,7 @@
     navToggle: document.getElementById("nav-toggle"),
     backdrop: document.getElementById("nav-backdrop"),
     main: document.getElementById("contenido"),
+    progress: document.getElementById("read-progress"),
   };
 
   const EXTEND_PAGES = new Set(["add-tool", "add-palette"]);
@@ -246,6 +248,13 @@
     document.title = `${pageTitle} · hueman docs (${v.label})`;
   }
 
+  function flatPageIds() {
+    if (!STATE.nav) return [];
+    return (STATE.nav.sections || []).flatMap((section) =>
+      (section.pages || []).filter((id) => STATE.nav.pages[id])
+    );
+  }
+
   function renderSideNav() {
     if (!STATE.nav) {
       els.sideNav.innerHTML = "";
@@ -274,6 +283,35 @@
         );
       })
       .join("");
+  }
+
+  function renderPager() {
+    if (!els.pager || !STATE.nav) {
+      if (els.pager) els.pager.innerHTML = "";
+      return;
+    }
+    const ids = flatPageIds();
+    const idx = ids.indexOf(STATE.pageId);
+    const prev = idx > 0 ? ids[idx - 1] : null;
+    const next = idx >= 0 && idx < ids.length - 1 ? ids[idx + 1] : null;
+    const prevMeta = prev ? STATE.nav.pages[prev] : null;
+    const nextMeta = next ? STATE.nav.pages[next] : null;
+
+    els.pager.innerHTML =
+      `<a class="pager__prev" href="${prev ? pageHref(STATE.versionId, prev) : "#"}" data-link ${prev ? "" : "hidden"}>` +
+      `<span class="pager__dir">Anterior</span>` +
+      `<span class="pager__title">${prevMeta ? prevMeta.title : ""}</span></a>` +
+      `<a class="pager__next" href="${next ? pageHref(STATE.versionId, next) : "#"}" data-link ${next ? "" : "hidden"}>` +
+      `<span class="pager__dir">Siguiente</span>` +
+      `<span class="pager__title">${nextMeta ? nextMeta.title : ""}</span></a>`;
+  }
+
+  function updateProgress() {
+    if (!els.progress) return;
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const ratio = max > 0 ? window.scrollY / max : 0;
+    els.progress.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
   }
 
   function closeMobileNav() {
@@ -385,6 +423,7 @@
     renderVersionSelect();
     renderSideNav();
     renderHeroAndFooter();
+    renderPager();
 
     const mustReload =
       prevVersion !== STATE.versionId ||
@@ -393,11 +432,13 @@
     if (mustReload) {
       await loadPage(parsed.sectionId);
       els.doc.dataset.page = STATE.pageId;
+      requestAnimationFrame(updateProgress);
     } else if (parsed.sectionId) {
       scrollToSection(parsed.sectionId);
     }
 
     closeMobileNav();
+    updateProgress();
   }
 
   function onDocumentClick(event) {
@@ -447,6 +488,7 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && STATE.openNav) closeMobileNav();
       });
+      window.addEventListener("scroll", updateProgress, { passive: true });
       window.addEventListener("popstate", () => {
         applyRoute().catch((err) => {
           els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
