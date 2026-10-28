@@ -4,7 +4,7 @@ Playbook para ti, agente de código, cuando una persona te pide ayuda con hueman
 
 Para operar hueman tú mismo (aplicar, inspeccionar, diagnosticar) usa la Agent Skill `skills/latest/hueman/SKILL.md`: esta guía enseña a guiar a una persona; la skill enseña a operar hueman.
 
-Docs canónicas: `index.html?v=latest&p=<pageId>` en este mismo sitio. Ids: `intro`, `install`, `quickstart`, `cli`, `configuration`, `targets`, `palettes`, `state-sync`, `add-tool`, `add-palette`, `architecture`, `troubleshooting`, `changelog`.
+Docs canónicas: `index.html?v=latest&p=<pageId>` en este mismo sitio. Ids: `intro`, `install`, `quickstart`, `cli`, `configuration`, `targets`, `palettes`, `state-sync`, `add-tool`, `add-palette`, `termux`, `windows`, `architecture`, `troubleshooting`, `changelog`.
 
 ## La idea en cinco líneas
 
