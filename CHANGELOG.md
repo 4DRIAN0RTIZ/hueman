@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Log when a target is skipped for a missing palette section (#33) (2a90088)
 - Fail early with a clean error on unknown placeholders (#31) (1d4ded3)
 - Warn when marker_regex does not match the block it inserted (#30) (74a4558)
 - Package newt_colors for whiptail palette (e6d0a6a)
