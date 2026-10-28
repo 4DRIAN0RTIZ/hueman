@@ -82,15 +82,15 @@ notas significa que no hay nada que añadir.
 | `qutebrowser_github.user.js.j2` | qutebrowser (userstyle GitHub) | `polybar` | — |
 | `qutebrowser_google.user.js.j2` | qutebrowser (userstyle Google) | `polybar` | — |
 | `qutebrowser_hteam.user.js.j2` | qutebrowser (userstyle hteam) | `polybar` | — |
-| `qutebrowser_theme.py.j2` | qutebrowser | `polybar` | — |
+| `qutebrowser_theme.py.j2` | qutebrowser | `polybar` | En Windows: ver [Windows y WSL](guides/windows.md) |
 | `rofi_theme.rasi.j2` | rofi | `polybar` | — |
 | `sshub_theme.toml.j2` | sshub | `polybar` | — |
 | `starship_block.toml.j2` | starship | `polybar` | Pensado para `patch`; ver `hueman.config.example.yaml` |
 | `termux_colors.properties.j2` | Termux | `kitty` | Ver [Termux y proot](guides/termux.md) |
 | `tmux.conf.j2` | tmux | `tmux` | — |
 | `tuicr_theme.toml.j2` | tuicr | `polybar` | — |
-| `wezterm_colors.lua.j2` | WezTerm | `kitty` | — |
-| `windhawk_taskbar.json.j2` | Windhawk (barra de tareas) | `polybar` | — |
+| `wezterm_colors.lua.j2` | WezTerm | `kitty` | Ver [Windows y WSL](guides/windows.md) |
+| `windhawk_taskbar.json.j2` | Windhawk (barra de tareas) | `polybar` | Ver [Windows y WSL](guides/windows.md) |
 | `yazi_theme.toml.j2` | yazi | `polybar` | — |
 | `zen_theme.json.j2` | Zen Browser | `polybar` | — |
 
