@@ -7,8 +7,8 @@
 # dejándolo en ~/.config/hueman/config.yaml).
 #
 # No hay concepto de "entorno" ni convención de carpetas: cada target
-# declara su lista explícita de archivos de salida (`outputs`). Si tenés
-# varias máquinas/perfiles que comparten el mismo tema, simplemente listá
+# declara su lista explícita de archivos de salida (`outputs`). Si hay
+# varias máquinas/perfiles que comparten el mismo tema, basta con listar
 # todas las rutas ahí.
 
 # Opcional: variables para no repetir rutas. `${repo}` se sustituye solo en
@@ -22,7 +22,7 @@
 # Dónde persistir el nombre de la paleta activa.
 state_file: "~/.config/hueman/current"
 
-# Paletas propias, además de las ~24 empaquetadas dentro de hueman/palettes/.
+# Paletas propias, además de las 25 empaquetadas dentro de hueman/palettes/.
 # Si una paleta custom tiene el mismo nombre que una empaquetada, gana la custom.
 palette_dirs:
   - "~/dotfiles/theme/palettes.custom"
@@ -85,7 +85,7 @@ targets:
       ensure_after:
         - if_missing_regex: '(?m)^palette\s*='
           anchor: "add_newline = false\n"
-          insert: 'palette = "dotfiles"\n'
+          insert: "palette = \"dotfiles\"\n"
     outputs:
       - "~/.config/starship.toml"
 

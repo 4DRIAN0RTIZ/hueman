@@ -39,7 +39,7 @@ compartido entre máquinas).
 
 ## Herramientas empaquetadas
 
-`hueman/palettes/` y `hueman/templates/` traen ~24 paletas estéticas genéricas y templates
+`hueman/palettes/` y `hueman/templates/` traen 25 paletas estéticas genéricas y templates
 para las herramientas más comunes (kitty, tmux, polybar, nvim/nightfox, dunst,
 bspwm, yazi, qutebrowser, rofi, fzf, atuin, oh-my-posh, wezterm, starship,
 Termux). Para targets idiosincráticos usa `template_dirs` en tu config en vez
