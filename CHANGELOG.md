@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Validate logging, mode, patch, post_apply and outputs in config (60a81b0)
 - Harden palette names, config lookup and template rendering (#49) (ded6249)
 - Report unknown placeholders as a clean error (#34) (7e91ea2)
 - Log when a target is skipped for a missing palette section (#33) (2a90088)
@@ -15,6 +16,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Document config validation errors (97722a6)
 - Document hueman init in install, quickstart, CLI and agent guides (cb5ff92)
 - Link the full documentation site from the README (#32) (9d0f641)
 - Warn that symlinked outputs are replaced, not followed (#29) (10db85b)
