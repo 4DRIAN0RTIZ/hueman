@@ -30,6 +30,7 @@ Subcommands at the time of writing: `list`, `status`, `set <palette> [--dry-run]
 ## Standard sequence
 
 ```sh
+hueman --config CFG init                      # write the example config (refuses to overwrite without --force)
 hueman --config CFG list                      # palettes, read-only
 hueman --config CFG status                    # active theme, outputs found on disk
 hueman --config CFG set PALETTE --dry-run     # plan, writes nothing
@@ -49,7 +50,7 @@ hueman --config CFG set PALETTE               # real apply
 ## Safety rules
 
 - Dry-run first, always, and show the paths. Never run a real `set` or `sync` without explicit approval of those paths.
-- Never write real user paths, secrets or machine-specific config into the hueman repo. Use `hueman.config.example.yaml` or a temp fixture, and keep the real config where the user keeps it.
+- Never write real user paths, secrets or machine-specific config into the hueman repo. Use the packaged example (`hueman init`) or a temp fixture, and keep the real config where the user keeps it.
 - Never add hostname/environment detection or per-tool Python branches. Tool-specific logic lives in YAML + Jinja.
 - `mode: patch` never creates a file: a missing output is skipped with an INFO line, not an error. Tell the user instead of creating the file yourself.
 - `reload` (per target, only after an effective write) and `post_apply` (once, at the end of a full `set`) are best-effort shell commands (`sh -c`). A failure logs a warning and does not stop the rest, unless `reload_failure: error`, which makes the exit code 1. Never treat them as validation.
@@ -76,7 +77,7 @@ hueman --config CFG set PALETTE               # real apply
 
 - Keep user additions outside the repo: a directory in `template_dirs` / `palette_dirs` of the user's config. User files win over packaged ones with the same name. Packaging upstream is optional.
 - Template: a `.j2` file that sees only the palette section named by `palette_key`, plus `theme_name` and `extra_vars`. Filters: `contrast`, `is_dark`. Use `jinja_delimiters` if the target format already uses `{{ }}`.
-- Target: an entry under `targets:` with `template`, `palette_key`, `mode` (`overwrite` default, or `patch`), explicit `outputs`. Copy a working target from `hueman.config.example.yaml` instead of inventing keys.
+- Target: an entry under `targets:` with `template`, `palette_key`, `mode` (`overwrite` default, or `patch`), explicit `outputs`. Copy a working target from the config written by `hueman init` instead of inventing keys.
 - Palette: copy a packaged YAML and change values only; keep the keys templates read. Confirm it appears in `list`.
 - Validate with `set PALETTE --dry-run --only NEWTARGET`, show the paths, then get approval for the real run.
 

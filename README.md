@@ -10,9 +10,10 @@ de salida vive en un `hueman.config.yaml` propio, fuera de este repo.
 
 ```sh
 pipx install hueman-cli                               # o: pip install hueman-cli
-cp hueman.config.example.yaml ~/hueman.config.yaml    # ajusta tus targets
-hueman --config ~/hueman.config.yaml set <paleta> --dry-run
-hueman --config ~/hueman.config.yaml set <paleta>
+hueman init                                           # escribe un config de ejemplo en ~/.config/hueman/config.yaml
+# ajusta tus targets en ese archivo, luego:
+hueman set <paleta> --dry-run
+hueman set <paleta>
 ```
 
 Desde el código fuente (requiere Python >= 3.9):
@@ -22,7 +23,7 @@ git clone https://github.com/NeanderTeam/hueman.git
 cd hueman && pip install -e .
 ```
 
-Otros comandos: `list` (paletas), `status` (tema activo) y `sync` (estado
+Otros comandos: `init` (config de ejemplo), `list` (paletas), `status` (tema activo) y `sync` (estado
 compartido entre máquinas).
 
 ## Ideas centrales
@@ -63,7 +64,7 @@ y abre `http://localhost:8765`.
 | `hueman/cli.py` | CLI y orquestación (comando `hueman`) |
 | `hueman/engine/` | Config, paletas, targets, render, reload, estado compartido |
 | `hueman/palettes/`, `hueman/templates/` | Paletas YAML y plantillas Jinja2 empaquetadas |
-| `hueman.config.example.yaml` | Ejemplo comentado de config externa |
+| `hueman/data/hueman.config.example.yaml` | Ejemplo comentado de config externa (lo escribe `hueman init`) |
 | `tests/` | Suite de tests |
 | `website/` | Sitio de documentación |
 

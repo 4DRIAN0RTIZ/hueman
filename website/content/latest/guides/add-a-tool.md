@@ -202,7 +202,7 @@ Cuando el template es genérico y reutilizable:
 6. El usuario solo necesita el target en **su** config; el template ya viaja
    con la herramienta.
 
-Los targets empaquetados de ejemplo viven en `hueman.config.example.yaml`;
+Los targets empaquetados de ejemplo viven en `hueman/data/hueman.config.example.yaml` (o `hueman init`);
 cada máquina sigue declarando sus propios `outputs`.
 
 ## 7. Errores frecuentes
@@ -234,4 +234,4 @@ cada máquina sigue declarando sus propios `outputs`.
 - [Termux y proot](termux.md) — ejemplo de target cuyo reload ocurre fuera del proceso  
 - [Windows y WSL](windows.md) — ejemplo de targets en Windows con `vars` y parcheo de configs existentes  
 - [Agregar una paleta](add-a-palette.md) — colores nuevos sin tocar templates  
-- `hueman.config.example.yaml` en el repo — esquema comentado  
+- `hueman/data/hueman.config.example.yaml` (o `hueman init`) en el repo — esquema comentado  

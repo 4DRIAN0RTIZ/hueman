@@ -121,7 +121,7 @@ targets:
   en [Configuración](../configuration.md)).
 
 Instalación única de la tarea, desde un PowerShell como Administrador, con los
-ejemplos del repo `examples/windows/` (`install-windhawk-taskbar-task.ps1` y
+ejemplos del repo ([`examples/windows/`](https://github.com/NeanderTeam/hueman/tree/main/examples/windows)) (`install-windhawk-taskbar-task.ps1` y
 `windhawk-taskbar-apply.ps1`, en la misma carpeta):
 
 ```powershell

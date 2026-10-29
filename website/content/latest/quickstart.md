@@ -6,8 +6,17 @@
 
 ## 1. Config mínima
 
-Guarda esto como `~/dotfiles/theme/hueman.config.yaml`. Dos targets con
-templates empaquetados, cada uno con su lista explícita de `outputs`:
+Crea el directorio y genera un config de ejemplo con `hueman init`
+(también acepta la ruta por defecto, `~/.config/hueman/config.yaml`, sin
+`--config`):
+
+```sh
+mkdir -p ~/dotfiles/theme
+hueman --config ~/dotfiles/theme/hueman.config.yaml init
+```
+
+Ese archivo trae muchos targets; para este quickstart déjalo con solo dos
+(o reemplázalo por esto), cada uno con su lista explícita de `outputs`:
 
 ```yaml
 state_file: "~/.config/hueman/current"   # dónde recordar la paleta activa

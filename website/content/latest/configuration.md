@@ -1,7 +1,7 @@
 # Configuración
 
 Archivo YAML del **usuario** (no vive dentro del repo de hueman como verdad
-de máquina). Esquema comentado: `hueman.config.example.yaml`.
+de máquina). Esquema comentado: `hueman init` (`hueman/data/hueman.config.example.yaml`).
 
 ## Claves de nivel superior
 

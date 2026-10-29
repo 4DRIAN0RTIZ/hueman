@@ -1,6 +1,7 @@
 # CLI
 
 ```text
+hueman [--config RUTA] init [--force]
 hueman [--config RUTA] [--var NOMBRE=VALOR ...] list
 hueman [--config RUTA] [--var NOMBRE=VALOR ...] status
 hueman [--config RUTA] [--var NOMBRE=VALOR ...] set <paleta> [--dry-run] [--only NOMBRE[,NOMBRE...]]
@@ -17,9 +18,18 @@ Van antes del subcomando.
 | `--version` | Imprime la versión instalada y sale |
 | `--var NOMBRE=VALOR` | Define o sobreescribe una variable de `vars:` para `${NOMBRE}` en las claves de rutas. Repetible. Ej.: `hueman --var repo=~/dotfiles set <paleta>`. Una forma inválida (sin `=` o nombre inválido) sale con exit 2 |
 
+## `init`
+
+Escribe el config de ejemplo empaquetado en la ruta de config resuelta
+(`--config`, `HUEMAN_CONFIG`, `./hueman.config.yaml` o
+`~/.config/hueman/config.yaml`), creando los directorios que falten. Funciona
+sin config previo. Si el archivo ya existe sale con exit 1 y no lo toca, salvo
+con `--force`.
+
 ## `list`
 
-Paletas disponibles (empaquetadas + `palette_dirs`), orden alfabético.
+Paletas disponibles (empaquetadas + `palette_dirs`), orden alfabético. Sin
+config existente lista solo las empaquetadas.
 
 ## `set <paleta>`
 
