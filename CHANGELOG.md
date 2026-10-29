@@ -17,11 +17,17 @@ All notable changes to this project are documented here.
 
 ### CI
 
+- Add Dependabot for actions and pip (606acb4)
 - Run pytest on a Python 3.9-3.13 matrix (adfad6a)
 - Harden release workflow (env-passed outputs, SHA-pinned actions, ff-only sync-dev) (68b7507)
 
+### Chore
+
+- Make the roadmap issue template neutral (7c1e714)
+
 ### Documentation
 
+- Add security policy, contributing guide and PR template (6e98e91)
 - Document retrying a failed publish (cdfb827)
 - Bump skill version to 0.2.0 and sync website changelog (ed98e36)
 - Correct palette_key claim, drop logging note, cover real errors in troubleshooting (e45d150)
