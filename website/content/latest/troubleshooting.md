@@ -2,7 +2,16 @@
 
 | Problema | Qué mirar |
 |----------|-----------|
-| No encuentra config | Orden `--config` / `HUEMAN_CONFIG` / `~/.config/hueman/config.yaml` (el cwd no se busca) |
+| `Config no encontrada: <ruta>` | Sale con exit 1. Crea uno con `hueman init`, o usa `--config` / `HUEMAN_CONFIG`. Orden `--config` / `HUEMAN_CONFIG` / `~/.config/hueman/config.yaml` (el cwd no se busca) |
+| `Paleta no encontrada: <nombre>. Disponibles: ...` | El nombre no coincide con ningún YAML en `palette_dirs` ni en las empaquetadas; revisa `hueman list` |
+| `Paleta invalida <ruta>: ...` | El YAML de la paleta no parsea o su raíz no es un mapeo |
+| `Nombre de paleta invalido: '...'` | Solo se aceptan letras, dígitos, `.`, `_` y `-`, y debe empezar por letra o dígito |
+| `Config invalida: <ruta>: YAML invalido: ...` / `se esperaba un mapeo YAML en la raiz` | El config no parsea o su raíz no es un mapeo |
+| `Config invalida: ... variable '${nombre}' no definida` / `vars.<nombre> ...` | Variable `${...}` sin definir en `vars`, nombre inválido, valor que no es string o que contiene otra `${...}` |
+| `Config invalida: ... reload_failure debe ser 'warn' o 'error'` | Valor fuera de las dos políticas permitidas |
+| `<target>: plantilla '<nombre>' no encontrada` | El template no existe en `template_dirs` ni entre los empaquetados; el target cuenta como fallido |
+| `Targets con errores: a, b` | Resumen final (exit 1) con los targets que fallaron; el detalle va en los logs previos |
+| `Ya existe: <ruta> (usa --force para sobrescribir)` | `hueman init` no pisa un config existente |
 | Paleta no listada | Nombre de archivo, `palette_dirs`, YAML válido |
 | Template no encontrado | Nombre exacto, `template_dirs`, empaquetado vs custom |
 | Archivo no cambia | `--dry-run`, `--only`, skip guards, `palette_key` que no es sección de la paleta (INFO `la paleta no tiene la seccion '<key>', omitido`, exit 0), patch sin match |

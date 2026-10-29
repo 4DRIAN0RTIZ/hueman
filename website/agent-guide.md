@@ -50,7 +50,7 @@ hueman --config <ruta> set <paleta>            # aplica
 
 Resolución de la ruta, en orden: `--config`, variable `HUEMAN_CONFIG`, `~/.config/hueman/config.yaml`. El directorio actual no se busca (un config puede ejecutar comandos). Si no existe: `Config no encontrada: <ruta>`, exit 1. YAML o esquema inválidos: `Config invalida: ...`, exit 1, sin traceback.
 
-Claves de primer nivel (`p=configuration`): `state_file`, `palette_dirs`, `template_dirs`, `reload_failure`, `state_sync` (`type: git` con `repo`/`remote`/`branch`/`workdir`/`timeout`, o `type: file` con `path`), `targets`, `post_apply`. El código lee además `logging` (`level`, `file`), que `p=configuration` no documenta: confírmalo en `hueman/engine/config.py` antes de recomendarlo.
+Claves de primer nivel (`p=configuration`): `state_file`, `palette_dirs`, `template_dirs`, `reload_failure`, `state_sync` (`type: git` con `repo`/`remote`/`branch`/`workdir`/`timeout`, o `type: file` con `path`), `targets`, `post_apply`.
 
 ## Extender
 
