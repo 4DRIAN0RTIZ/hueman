@@ -23,6 +23,7 @@ All notable changes to this project are documented here.
 
 ### Chore
 
+- Remove release.sh, releases are cut by the workflow (b0bf932)
 - Make the roadmap issue template neutral (7c1e714)
 
 ### Documentation
