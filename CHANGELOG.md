@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Documentation
+
+- Freeze v0.3.0 documentation snapshot (9b9de6a)
+
 ## [0.3.0] - 2026-10-29
 
 ### CI
