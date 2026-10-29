@@ -1,7 +1,9 @@
 # Paletas
 
 YAML bajo `hueman/palettes/` (empaquetadas) y `palette_dirs` (custom). El nombre de
-la paleta es el stem del archivo.
+la paleta es el stem del archivo y solo admite letras, dígitos, `.`, `_` y `-`
+(debe empezar por letra o dígito, sin `..`): rutas como `/abs/x` o `../x` se
+rechazan antes de tocar el disco.
 
 ## Precedencia
 

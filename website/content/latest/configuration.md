@@ -21,8 +21,12 @@ de máquina). Esquema comentado: `hueman init` (`hueman/data/hueman.config.examp
 
 1. `--config`  
 2. `HUEMAN_CONFIG`  
-3. `./hueman.config.yaml`  
-4. `~/.config/hueman/config.yaml`  
+3. `~/.config/hueman/config.yaml`  
+
+El directorio actual **no** se busca a propósito: un config puede ejecutar
+comandos (`reload`, `post_apply`), y ejecutar hueman dentro de un repo ajeno
+no debe cargar el `hueman.config.yaml` que ese repo traiga. Si quieres un
+config junto a tu proyecto, pásalo explícitamente con `--config`.
 
 ## Placeholders en `reload` / `post_apply`
 

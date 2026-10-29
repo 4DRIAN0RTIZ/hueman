@@ -147,7 +147,6 @@ class HuemanConfig:
         env_path = os.environ.get("HUEMAN_CONFIG")
         if env_path:
             return Path(env_path).expanduser()
-        cwd_candidate = Path.cwd() / "hueman.config.yaml"
-        if cwd_candidate.exists():
-            return cwd_candidate
+        # el directorio actual NO se busca a proposito: un config puede ejecutar
+        # comandos (post_apply/reload) y no debe cargarse desde un repo ajeno
         return Path("~/.config/hueman/config.yaml").expanduser()

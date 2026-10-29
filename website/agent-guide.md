@@ -48,7 +48,7 @@ hueman --config <ruta> set <paleta>            # aplica
 
 ## Configuración en una pantalla
 
-Resolución de la ruta, en orden: `--config`, variable `HUEMAN_CONFIG`, `./hueman.config.yaml`, `~/.config/hueman/config.yaml`. Si no existe: `Config no encontrada: <ruta>`, exit 1. YAML o esquema inválidos: `Config invalida: ...`, exit 1, sin traceback.
+Resolución de la ruta, en orden: `--config`, variable `HUEMAN_CONFIG`, `~/.config/hueman/config.yaml`. El directorio actual no se busca (un config puede ejecutar comandos). Si no existe: `Config no encontrada: <ruta>`, exit 1. YAML o esquema inválidos: `Config invalida: ...`, exit 1, sin traceback.
 
 Claves de primer nivel (`p=configuration`): `state_file`, `palette_dirs`, `template_dirs`, `reload_failure`, `state_sync` (`type: git` con `repo`/`remote`/`branch`/`workdir`/`timeout`, o `type: file` con `path`), `targets`, `post_apply`. El código lee además `logging` (`level`, `file`), que `p=configuration` no documenta: confírmalo en `hueman/engine/config.py` antes de recomendarlo.
 
@@ -76,7 +76,7 @@ Reúne antes: ruta del config en uso, salida completa y exit code. Resumen ofici
 | Exit 1 con el tema aplicado | Algún target omitido por error, o `reload_failure: error` y un hook devolvió ≠ 0 | Mensajes `reload fallo (exit N)` / `post_apply fallo` |
 | El reload "no hace nada" | Solo corre con escritura efectiva y sin `--dry-run`; usa `sh -c` | El log registra `reload: <cmd> (exit N)`; que el humano lo corra a mano |
 | `set` o `sync` falla con `Config invalida: placeholder desconocido` (antes de escribir nada; `sync` no avanza la revision) | `{seccion.clave}` inexistente en `reload`/`post_apply` | Corrige la clave; `${VAR}` de shell no se toca |
-| `sync` no aplica | Remoto inalcanzable, sin estado, o revisión local >= remota (nunca aplica caché) | `status`, línea `Drift:` (`in sync`, `behind`, `ahead`, `no remote state`, `remote unreachable`); la carpeta de `type: file` no se crea |
+| `sync` no aplica | Remoto inalcanzable, sin estado, paleta remota inexistente localmente (aviso, exit 0, no avanza la revisión) o con nombre inválido, o revisión local >= remota (nunca aplica caché) | `status`, línea `Drift:` (`in sync`, `behind`, `ahead`, `no remote state`, `remote unreachable`); la carpeta de `type: file` no se crea |
 
 ## Reglas para ti
 

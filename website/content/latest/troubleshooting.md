@@ -2,7 +2,7 @@
 
 | Problema | Qué mirar |
 |----------|-----------|
-| No encuentra config | Orden `--config` / `HUEMAN_CONFIG` / cwd / XDG |
+| No encuentra config | Orden `--config` / `HUEMAN_CONFIG` / `~/.config/hueman/config.yaml` (el cwd no se busca) |
 | Paleta no listada | Nombre de archivo, `palette_dirs`, YAML válido |
 | Template no encontrado | Nombre exacto, `template_dirs`, empaquetado vs custom |
 | Archivo no cambia | `--dry-run`, `--only`, skip guards, `palette_key` que no es sección de la paleta (INFO `la paleta no tiene la seccion '<key>', omitido`, exit 0), patch sin match |
@@ -11,7 +11,7 @@
 | `Config invalida: placeholder desconocido` | `{seccion.clave}` inexistente en `reload` o `post_apply`: `set` (y `sync`, sin avanzar la revision) sale con error limpio (exit 1) antes de escribir nada |
 | Bloque duplicado en un patch | `marker_regex` sin match ni `insert_after_section_regex`: añade el bloque al final en cada corrida; hueman registra un warning si tu `marker_regex` no reconoce el bloque que insertó |
 | Exit 1 con tema aplicado | Targets omitidos por error, o `reload_failure: error` |
-| Sync no aplica | `status` drift; remoto inalcanzable; revision local ≥ remota |
+| Sync no aplica | `status` drift; remoto inalcanzable; revision local ≥ remota; paleta remota inexistente en este nodo (aviso, exit 0) |
 
 Más contexto al extender tools: [Agregar soporte a una tool](guides/add-a-tool.md).
 

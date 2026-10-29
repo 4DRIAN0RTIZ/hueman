@@ -100,6 +100,10 @@ contra `catppuccin-mocha`. Las rutas de salida las declara cada usuario.
 
 ## Filtros Jinja
 
+Los templates se ejecutan en un sandbox de Jinja (no alcanzan internals de
+Python como `__class__`); una operación bloqueada hace fallar ese target con
+error limpio. Aun así, revisa los templates de terceros antes de usarlos.
+
 - `contrast` — `#1a1a1a` o `#f5f5f5` según luminancia del color  
 - `is_dark` — booleano con el mismo criterio  
 
