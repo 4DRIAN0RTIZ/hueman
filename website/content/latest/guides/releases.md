@@ -1,7 +1,7 @@
 # Releases y reintento de publish
 
-Las releases salen del workflow `release.yml` al fusionar `dev` en `main`
-(o con `./release.sh` desde `main`). El workflow tiene estos jobs:
+Las releases salen del workflow `release.yml` al fusionar `dev` en `main`.
+El workflow tiene estos jobs:
 
 | Job | Qué hace |
 |---|---|
@@ -44,6 +44,3 @@ twine upload dist/*
 `sync-dev` falla a propósito si `dev` avanzó con commits que `main` no
 tiene (por ejemplo del bot del changelog). Resuélvelo a mano fusionando
 `main` en `dev` y no fuerces el push.
-
-`release.sh` no cambia: sigue calculando la versión, generando el changelog
-y creando el tag localmente, con `--push` opcional.
