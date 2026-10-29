@@ -14,8 +14,8 @@ de máquina). Esquema comentado: `hueman init` (`hueman/data/hueman.config.examp
 | `reload_failure` | `warn` (default) o `error` para hooks |
 | `state_sync` | Opt-in sync multi-nodo (`type: git` \| `file`) |
 | `targets` | Mapa nombre → target |
-| `post_apply` | Lista de comandos al final de un `set` completo |
-| `logging` | `level` (default `INFO`) y `file` (ruta opcional; se añade un log a archivo además de stderr) |
+| `post_apply` | Lista de comandos (strings) al final de un `set` completo; un string suelto se rechaza |
+| `logging` | `level` (default `INFO`) y `file` (ruta opcional; se añade un log a archivo además de stderr). `level` debe ser DEBUG, INFO, WARNING, ERROR o CRITICAL; el directorio de `file` debe existir y ser escribible |
 
 ## Resolución del archivo
 
