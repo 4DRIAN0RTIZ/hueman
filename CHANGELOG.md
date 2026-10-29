@@ -23,6 +23,7 @@ All notable changes to this project are documented here.
 
 ### Chore
 
+- Skip merge commits in the changelog (0ad038a)
 - Remove release.sh, releases are cut by the workflow (b0bf932)
 - Make the roadmap issue template neutral (7c1e714)
 
@@ -60,10 +61,6 @@ All notable changes to this project are documented here.
 
 - Skip the TOML check where tomllib is unavailable (8cc9a86)
 - Cover the git timeout against a real hung remote (#35) (1fe2de0)
-
-### Merge
-
-- Sync dev into feat/init-command (8d88567)
 
 ## [0.1.0] - 2026-10-16
 
