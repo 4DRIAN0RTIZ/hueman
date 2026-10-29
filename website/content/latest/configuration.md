@@ -68,7 +68,8 @@ mantienes en tu repo de dotfiles.
 2. Enlaza ese directorio como `~/.config/hueman`
    (`ln -s ~/dotfiles/hueman ~/.config/hueman`); así `set` encuentra el config
    sin flags.
-3. Opcional: un wrapper `bin/hueman` con `exec python3 /ruta/a/hueman.py "$@"`.
+3. Opcional: un wrapper propio si necesitas fijar el intérprete, por ejemplo
+   `exec python3 -m hueman "$@"` desde un entorno concreto.
 
 Errores de esquema o YAML inválido → mensaje claro y exit 1 (sin traceback).
 

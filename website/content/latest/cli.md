@@ -1,10 +1,10 @@
 # CLI
 
 ```text
-hueman.py [--config RUTA] [--var NOMBRE=VALOR ...] list
-hueman.py [--config RUTA] [--var NOMBRE=VALOR ...] status
-hueman.py [--config RUTA] [--var NOMBRE=VALOR ...] set <paleta> [--dry-run] [--only NOMBRE[,NOMBRE...]]
-hueman.py [--config RUTA] [--var NOMBRE=VALOR ...] sync [-q|--quiet]
+hueman [--config RUTA] [--var NOMBRE=VALOR ...] list
+hueman [--config RUTA] [--var NOMBRE=VALOR ...] status
+hueman [--config RUTA] [--var NOMBRE=VALOR ...] set <paleta> [--dry-run] [--only NOMBRE[,NOMBRE...]]
+hueman [--config RUTA] [--var NOMBRE=VALOR ...] sync [-q|--quiet]
 ```
 
 ## Opciones globales
@@ -14,7 +14,8 @@ Van antes del subcomando.
 | Opción | Efecto |
 |--------|--------|
 | `--config RUTA` | Archivo de configuración (ver [Configuración](configuration.md)) |
-| `--var NOMBRE=VALOR` | Define o sobreescribe una variable de `vars:` para `${NOMBRE}` en las claves de rutas. Repetible. Ej.: `hueman.py --var repo=~/dotfiles set <paleta>`. Una forma inválida (sin `=` o nombre inválido) sale con exit 2 |
+| `--version` | Imprime la versión instalada y sale |
+| `--var NOMBRE=VALOR` | Define o sobreescribe una variable de `vars:` para `${NOMBRE}` en las claves de rutas. Repetible. Ej.: `hueman --var repo=~/dotfiles set <paleta>`. Una forma inválida (sin `=` o nombre inválido) sale con exit 2 |
 
 ## `list`
 

@@ -13,8 +13,8 @@ palette_dirs:
   - "~/dotfiles/theme/palettes.custom"
 ```
 
-3. `python3 hueman.py --config <config> list` debe mostrar `mi-tema`.
-4. `python3 hueman.py --config <config> set mi-tema` la aplica.
+3. `hueman --config <config> list` debe mostrar `mi-tema`.
+4. `hueman --config <config> set mi-tema` la aplica.
 
 Si el nombre coincide con una paleta empaquetada, **gana la custom**.
 
@@ -52,7 +52,7 @@ omite sin aviso.
 
 ## Upstream
 
-Para empaquetar: añade el YAML bajo `palettes/` en un PR (`feat(palettes): …`).
+Para empaquetar: añade el YAML bajo `hueman/palettes/` en un PR (`feat(palettes): …`).
 Sin rutas de usuario ni secretos.
 
 ## Ver también

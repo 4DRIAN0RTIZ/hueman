@@ -3,7 +3,7 @@
 # Este archivo NO vive dentro de hueman/ — cada usuario/máquina trae el
 # suyo (por convención, junto al repo de dotfiles que va a themear, ej.
 # "~/dotfiles/theme/hueman.config.yaml"), y se lo pasa a la herramienta
-# con `hueman.py --config <ruta>` (o vía la variable HUEMAN_CONFIG, o
+# con `hueman --config <ruta>` (o vía la variable HUEMAN_CONFIG, o
 # dejándolo en ~/.config/hueman/config.yaml).
 #
 # No hay concepto de "entorno" ni convención de carpetas: cada target
@@ -14,7 +14,7 @@
 # Opcional: variables para no repetir rutas. `${repo}` se sustituye solo en
 # `outputs` y `skip_unless_path_exists` de cada target, y en `state_file`,
 # `palette_dirs` y `template_dirs` (nunca en reload, post_apply, patch ni
-# templates). Se pueden sobreescribir con `hueman.py --var repo=<ruta> ...`.
+# templates). Se pueden sobreescribir con `hueman --var repo=<ruta> ...`.
 # vars:
 #   repo: "~/dotfiles"
 # Uso: outputs: ["${repo}/kitty/theme.conf"]

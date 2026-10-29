@@ -9,10 +9,17 @@ de salida vive en un `hueman.config.yaml` propio, fuera de este repo.
 ## Quickstart
 
 ```sh
-python3 -m pip install -r requirements.txt            # Jinja2 + PyYAML
+pipx install hueman-cli                               # o: pip install hueman-cli
 cp hueman.config.example.yaml ~/hueman.config.yaml    # ajusta tus targets
-python3 hueman.py --config ~/hueman.config.yaml set <paleta> --dry-run
-python3 hueman.py --config ~/hueman.config.yaml set <paleta>
+hueman --config ~/hueman.config.yaml set <paleta> --dry-run
+hueman --config ~/hueman.config.yaml set <paleta>
+```
+
+Desde el código fuente (requiere Python >= 3.9):
+
+```sh
+git clone https://github.com/NeanderTeam/hueman.git
+cd hueman && pip install -e .
 ```
 
 Otros comandos: `list` (paletas), `status` (tema activo) y `sync` (estado
@@ -31,7 +38,7 @@ compartido entre máquinas).
 
 ## Herramientas empaquetadas
 
-`palettes/` y `templates/` traen ~24 paletas estéticas genéricas y templates
+`hueman/palettes/` y `hueman/templates/` traen ~24 paletas estéticas genéricas y templates
 para las herramientas más comunes (kitty, tmux, polybar, nvim/nightfox, dunst,
 bspwm, yazi, qutebrowser, rofi, fzf, atuin, oh-my-posh, wezterm, starship,
 Termux). Para targets idiosincráticos usa `template_dirs` en tu config en vez
@@ -53,16 +60,16 @@ y abre `http://localhost:8765`.
 
 | Ruta | Contenido |
 |---|---|
-| `hueman.py` | CLI y orquestación |
-| `engine/` | Config, paletas, targets, render, reload, estado compartido |
-| `palettes/`, `templates/` | Paletas YAML y plantillas Jinja2 empaquetadas |
+| `hueman/cli.py` | CLI y orquestación (comando `hueman`) |
+| `hueman/engine/` | Config, paletas, targets, render, reload, estado compartido |
+| `hueman/palettes/`, `hueman/templates/` | Paletas YAML y plantillas Jinja2 empaquetadas |
 | `hueman.config.example.yaml` | Ejemplo comentado de config externa |
 | `tests/` | Suite de tests |
 | `website/` | Sitio de documentación |
 
 El repo es autocontenido: nada dentro importa código fuera de sí mismo, salvo
 el config externo que cada usuario provee. Un repo de dotfiles solo necesita
-un wrapper apuntando aquí y su propio `hueman.config.yaml`.
+tener `hueman` instalado y su propio `hueman.config.yaml`.
 
 ## Licencia
 
