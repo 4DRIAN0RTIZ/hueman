@@ -37,7 +37,18 @@ jobs:
           LATEST_TAG="$(git tag --list 'v*' --sort=-v:refname | head -n 1 || true)"
           echo "Ultimo tag: ${LATEST_TAG:-ninguno}"
           echo "Version calculada: $VERSION"
-          if [[ -z "$VERSION" || "$VERSION" == "$LATEST_TAG" ]]; then
+          # git-cliff bumps the patch for any commit (even docs-only ones), so
+          # only release when something user-facing landed since the last tag.
+          # A manual run (workflow_dispatch) skips this check.
+          RELEASABLE=true
+          if [[ "$GITHUB_EVENT_NAME" != "workflow_dispatch" && -n "$LATEST_TAG" ]]; then
+            if ! git log "$LATEST_TAG..HEAD" --format='%s%n%b' \
+                | grep -qE '^(feat|fix|perf)(\([^)]*\))?!?:|^BREAKING CHANGE'; then
+              RELEASABLE=false
+              echo "Sin commits feat/fix/perf desde $LATEST_TAG: no hay release."
+            fi
+          fi
+          if [[ -z "$VERSION" || "$VERSION" == "$LATEST_TAG" || "$RELEASABLE" != "true" ]]; then
             echo "released=false" >> "$GITHUB_OUTPUT"
           else
             echo "version=$VERSION" >> "$GITHUB_OUTPUT"
