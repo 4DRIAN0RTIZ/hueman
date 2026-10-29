@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## [Unreleased]
+## [0.2.0] - 2026-10-29
 
 ### Bug Fixes
 
@@ -29,6 +29,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Freeze the v0.2.0 docs snapshot and sync the site changelog (b035527)
 - Move the docs freeze procedure to CONTRIBUTING and drop website/README.md (8182ec7)
 - Drop the deploy section from the website readme (360306f)
 - Make the site deploy-ready (canonical, Open Graph, robots, deploy notes) (2e3c25f)
