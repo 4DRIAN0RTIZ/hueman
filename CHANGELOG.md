@@ -27,6 +27,10 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Move the docs freeze procedure to CONTRIBUTING and drop website/README.md (8182ec7)
+- Drop the deploy section from the website readme (360306f)
+- Make the site deploy-ready (canonical, Open Graph, robots, deploy notes) (2e3c25f)
+- Add update and uninstall instructions (a83ef61)
 - Add security policy, contributing guide and PR template (6e98e91)
 - Document retrying a failed publish (cdfb827)
 - Bump skill version to 0.2.0 and sync website changelog (ed98e36)
