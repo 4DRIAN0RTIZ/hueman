@@ -1,0 +1,48 @@
+{
+  "title": "hueman",
+  "sections": [
+    {
+      "title": "Empezar",
+      "pages": ["intro", "install", "quickstart"]
+    },
+    {
+      "title": "Usar",
+      "pages": ["cli", "configuration", "targets", "palettes", "state-sync"]
+    },
+    {
+      "title": "Extender",
+      "pages": ["add-tool", "add-palette", "termux", "windows", "releases"]
+    },
+    {
+      "title": "Referencia",
+      "pages": ["architecture", "troubleshooting", "changelog"]
+    }
+  ],
+  "pages": {
+    "intro": { "file": "intro.md", "title": "Qué es hueman" },
+    "install": { "file": "install.md", "title": "Instalación" },
+    "quickstart": { "file": "quickstart.md", "title": "Quickstart" },
+    "cli": { "file": "cli.md", "title": "CLI" },
+    "configuration": { "file": "configuration.md", "title": "Configuración" },
+    "targets": { "file": "targets.md", "title": "Targets y render" },
+    "palettes": { "file": "palettes.md", "title": "Paletas" },
+    "add-tool": {
+      "file": "guides/add-a-tool.md",
+      "title": "Agregar soporte a una tool"
+    },
+    "add-palette": {
+      "file": "guides/add-a-palette.md",
+      "title": "Agregar una paleta"
+    },
+    "termux": { "file": "guides/termux.md", "title": "Termux y proot" },
+    "windows": { "file": "guides/windows.md", "title": "Windows y WSL" },
+    "releases": {
+      "file": "guides/releases.md",
+      "title": "Releases y reintento de publish"
+    },
+    "state-sync": { "file": "state-sync.md", "title": "Sync entre nodos" },
+    "architecture": { "file": "architecture.md", "title": "Arquitectura" },
+    "troubleshooting": { "file": "troubleshooting.md", "title": "Diagnóstico" },
+    "changelog": { "file": null, "title": "Changelog", "derived": "CHANGELOG.md" }
+  }
+}

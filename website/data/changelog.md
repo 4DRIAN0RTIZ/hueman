@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Use a real newline in the starship ensure_after example (536a64c)
 - Validate logging, mode, patch, post_apply and outputs in config (60a81b0)
 - Harden palette names, config lookup and template rendering (#49) (ded6249)
 - Report unknown placeholders as a clean error (#34) (7e91ea2)
@@ -14,8 +15,29 @@ All notable changes to this project are documented here.
 - Warn when marker_regex does not match the block it inserted (#30) (74a4558)
 - Package newt_colors for whiptail palette (e6d0a6a)
 
+### CI
+
+- Add Dependabot for actions and pip (606acb4)
+- Run pytest on a Python 3.9-3.13 matrix (adfad6a)
+- Harden release workflow (env-passed outputs, SHA-pinned actions, ff-only sync-dev) (68b7507)
+
+### Chore
+
+- Skip merge commits in the changelog (0ad038a)
+- Remove release.sh, releases are cut by the workflow (b0bf932)
+- Make the roadmap issue template neutral (7c1e714)
+
 ### Documentation
 
+- Move the docs freeze procedure to CONTRIBUTING and drop website/README.md (8182ec7)
+- Drop the deploy section from the website readme (360306f)
+- Make the site deploy-ready (canonical, Open Graph, robots, deploy notes) (2e3c25f)
+- Add update and uninstall instructions (a83ef61)
+- Add security policy, contributing guide and PR template (6e98e91)
+- Document retrying a failed publish (cdfb827)
+- Bump skill version to 0.2.0 and sync website changelog (ed98e36)
+- Correct palette_key claim, drop logging note, cover real errors in troubleshooting (e45d150)
+- Unify palette count and neutral tone in example config (1324787)
 - Document config validation errors (97722a6)
 - Document hueman init in install, quickstart, CLI and agent guides (cb5ff92)
 - Link the full documentation site from the README (#32) (9d0f641)
@@ -37,11 +59,8 @@ All notable changes to this project are documented here.
 
 ### Testing
 
+- Skip the TOML check where tomllib is unavailable (8cc9a86)
 - Cover the git timeout against a real hung remote (#35) (1fe2de0)
-
-### Merge
-
-- Sync dev into feat/init-command (8d88567)
 
 ## [0.1.0] - 2026-10-16
 
