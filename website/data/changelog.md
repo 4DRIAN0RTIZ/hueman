@@ -6,13 +6,42 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Validate logging, mode, patch, post_apply and outputs in config (60a81b0)
+- Harden palette names, config lookup and template rendering (#49) (ded6249)
+- Report unknown placeholders as a clean error (#34) (7e91ea2)
+- Log when a target is skipped for a missing palette section (#33) (2a90088)
+- Fail early with a clean error on unknown placeholders (#31) (1d4ded3)
+- Warn when marker_regex does not match the block it inserted (#30) (74a4558)
 - Package newt_colors for whiptail palette (e6d0a6a)
 
 ### Documentation
 
+- Document config validation errors (97722a6)
+- Document hueman init in install, quickstart, CLI and agent guides (cb5ff92)
+- Link the full documentation site from the README (#32) (9d0f641)
+- Warn that symlinked outputs are replaced, not followed (#29) (10db85b)
+- Add a Windows and WSL guide with example scripts (#28) (95d80ff)
+- Make the README a general overview (#27) (59bc81d)
 - Model versioned content and add-tool guide (5da3c53)
 - Add generated project wiki (ee0c6bb)
 - Add generated project wiki (394c85c)
+
+### Features
+
+- Add hueman init and ship example config as package data (7854f43)
+- Package hueman for pip as hueman-cli (#36) (d9daeb8)
+- Add vars substitution for output paths (#26) (695b8f2)
+- Show release info and a per-version changelog (#24) (dd717b8)
+- Add Termux colors template and proot guide (#25) (5884ae4)
+- Add static documentation portal shell (#23) (853085f)
+
+### Testing
+
+- Cover the git timeout against a real hung remote (#35) (1fe2de0)
+
+### Merge
+
+- Sync dev into feat/init-command (8d88567)
 
 ## [0.1.0] - 2026-10-16
 

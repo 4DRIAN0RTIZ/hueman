@@ -3,9 +3,9 @@ name: hueman
 description: "Operate hueman, a Python CLI (`hueman`) that turns one YAML palette plus Jinja2 templates into config files for the user's apps. Use when the user mentions hueman or asks to apply, switch, inspect or sync a hueman theme, to find out why a hueman target was skipped, or to add a template, target or palette to a hueman setup. Do NOT use when hueman is not mentioned, or when the user only wants some colors in a one-off config file."
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   compatible-with:
-    hueman: ">=0.1.0"
+    hueman: ">=0.2.0"
 ---
 
 # hueman
