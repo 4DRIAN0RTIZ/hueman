@@ -1,9 +1,9 @@
-# Termux y proot
+# Termux and proot
 
-Termux lee sus colores de `~/.termux/colors.properties`. hueman puede
-generar ese archivo con la plantilla empaquetada `termux_colors.properties.j2`,
-que usa la sección `kitty` de la paleta (`foreground`, `background`,
-`cursor` y `color0`–`color15`).
+Termux reads its colors from `~/.termux/colors.properties`. hueman can
+generate that file with the packaged template `termux_colors.properties.j2`,
+which uses the palette's `kitty` section (`foreground`, `background`,
+`cursor`, and `color0`–`color15`).
 
 ## Target
 
@@ -15,41 +15,39 @@ targets:
     mode: overwrite
     outputs:
       - "~/.termux/colors.properties"
-    # En proot, apunta al archivo real de Termux, no a un symlink.
-    # Solo si hueman corre en Termux (no en proot): ver más abajo.
+    # In proot, point at the real Termux file, not a symlink.
+    # Only if hueman runs in Termux (not proot): see below.
     # reload: "termux-reload-settings"
 ```
 
-El resultado es un `key=#rrggbb` por línea, sin comillas, precedido por un
-comentario `#`. El archivo se sobreescribe completo en cada `hueman set`.
+The result is one `key=#rrggbb` per line, unquoted, preceded by a `#`
+comment. The file is fully overwritten on every `hueman set`.
 
-`reload` es un comando por target: se ejecuta con `sh -c` solo después de
-una escritura efectiva (no en `--dry-run` ni si todos los outputs se
-omitieron). Un fallo se registra según `reload_failure`.
+`reload` is a per-target command: it runs with `sh -c` only after an
+effective write (not on `--dry-run`, and not if every output was skipped).
+A failure is logged according to `reload_failure`.
 
-## Dentro de proot
+## Inside proot
 
-En un distro proot (por ejemplo Debian o Arch bajo `proot-distro`) no existe
-`termux-reload-settings`, así que un `reload` directo falla. Dos piezas lo
-resuelven:
+In a proot distro (for example Debian or Arch under `proot-distro`) there is
+no `termux-reload-settings`, so a direct `reload` fails. Two pieces fix that:
 
-1. `outputs` debe apuntar al **archivo real** que lee Termux, visto desde el
-   proot. Si el home de Termux está montado dentro del proot (por ejemplo en
-   `~/baseTermux`), usa `~/baseTermux/.termux/colors.properties`.
-2. Un watcher del lado Termux vigila el mtime y recarga.
+1. `outputs` must point at the **real file** Termux reads, as seen from
+   proot. If Termux's home is mounted inside proot (e.g. at `~/baseTermux`),
+   use `~/baseTermux/.termux/colors.properties`.
+2. A watcher on the Termux side watches mtime and reloads.
 
-> **No uses un symlink como output.** hueman escribe de forma atómica
-> (archivo temporal + `os.replace`), y si el destino es un symlink lo
-> **reemplaza por un archivo normal** y deja intacto el archivo al que
-> apuntaba. Termux seguiría leyendo el archivo viejo. Apunta `outputs` al
-> archivo final, no a un enlace.
+> **Do not use a symlink as an output.** hueman writes atomically (temp file
+> + `os.replace`), and if the destination is a symlink it **replaces it with
+> a regular file** and leaves the old target untouched. Termux would keep
+> reading the old file. Point `outputs` at the final file, not a link.
 
-Guarda esto como `~/.termux/theme-watcher` en **Termux** (no en el proot) y
-dale permisos con `chmod +x`:
+Save this as `~/.termux/theme-watcher` on **Termux** (not proot) and
+`chmod +x` it:
 
 ```bash
 #!/data/data/com.termux/files/usr/bin/bash
-# theme-watcher: vigila colors.properties y recarga Termux cuando cambia
+# theme-watcher: watch colors.properties and reload Termux when it changes
 COLORS="$HOME/.termux/colors.properties"
 LOCKFILE="$HOME/.termux/.theme-watcher.pid"
 if [ -f "$LOCKFILE" ] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then exit 0; fi
@@ -66,36 +64,36 @@ while true; do
 done
 ```
 
-El lockfile evita instancias duplicadas. Para arrancarlo con cada sesión,
-agrega al `~/.bashrc` de Termux:
+The lockfile avoids duplicate instances. To start it every session, add to
+Termux's `~/.bashrc`:
 
 ```bash
 ~/.termux/theme-watcher &>/dev/null &
 ```
 
-En este caso omite `reload` en el target: el watcher se encarga.
+In that setup, omit `reload` on the target: the watcher handles it.
 
 ## Checklist
 
-- [ ] La paleta trae la sección `kitty` con las 19 claves.
-- [ ] `outputs` apunta a `~/.termux/colors.properties` y el directorio
-      `~/.termux` existe (o deja que hueman lo cree).
-- [ ] En proot: `outputs` es el archivo real que lee Termux, no un symlink.
-- [ ] El watcher está en el lado Termux, es ejecutable y corre
+- [ ] The palette has a `kitty` section with all 19 keys.
+- [ ] `outputs` points at `~/.termux/colors.properties` and the `~/.termux`
+      directory exists (or let hueman create it).
+- [ ] In proot: `outputs` is the real file Termux reads, not a symlink.
+- [ ] The watcher lives on the Termux side, is executable, and is running
       (`cat ~/.termux/.theme-watcher.pid`).
 
-## Diagnóstico
+## Diagnosis
 
-- **Los colores no cambian en Termux**: reinicia la sesión o ejecuta
-  `termux-reload-settings` a mano. Si eso funciona, el problema es el watcher.
-- **`reload` falla en proot con exit 127**: `termux-reload-settings` no existe
-  ahí; quita `reload` y usa el watcher.
-- **El watcher no arranca**: un `.theme-watcher.pid` huérfano se ignora si el
-  proceso ya no existe; revisa permisos de ejecución y la ruta del shebang.
-- **Clave faltante**: si una paleta propia omite `cursor` o `colorN`, ese
-  target falla (warning y exit 1); copia las claves de una paleta empaquetada.
+- **Colors do not change in Termux**: restart the session or run
+  `termux-reload-settings` by hand. If that works, the watcher is the problem.
+- **`reload` fails in proot with exit 127**: `termux-reload-settings` is not
+  there; drop `reload` and use the watcher.
+- **Watcher does not start**: a stale `.theme-watcher.pid` is ignored if the
+  process is gone; check execute permissions and the shebang path.
+- **Missing key**: if a custom palette omits `cursor` or `colorN`, that
+  target fails (warning and exit 1); copy keys from a packaged palette.
 
-## Ver también
+## See also
 
-- [Targets y render](../targets.md)
-- [Agregar una paleta](add-a-palette.md)
+- [Targets and render](../targets.md)
+- [Add a palette](add-a-palette.md)

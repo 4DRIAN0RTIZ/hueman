@@ -1,87 +1,95 @@
-# hueman
+<p align="center">
+  <img src="website/assets/img/logo.png" alt="hueman" width="128" />
+</p>
 
-Gestor centralizado de temas: una **paleta de color (YAML)** alimenta
-**templates Jinja2** que generan la configuración real de tus herramientas
-(kitty, tmux, nvim, starship, Windows Terminal, lo que declares en tu propio
-config). Sin dependencias de ningún gestor de dotfiles: todo el mapeo de rutas
-de salida vive en un `hueman.config.yaml` propio, fuera de este repo.
+<h1 align="center">hueman</h1>
+
+<p align="center"><strong>One palette. Every tool.</strong></p>
+
+<p align="center">
+One theme for your terminal, editor, prompt, and the rest of your setup.<br />
+You own the map — which file each app uses — and one command paints it everywhere.<br />
+Not a dotfiles manager: output paths live in your own <code>hueman.config.yaml</code>,
+outside this repo.
+</p>
 
 ## Quickstart
 
 ```sh
-pipx install hueman-cli                               # o: pip install hueman-cli
-hueman init                                           # escribe un config de ejemplo en ~/.config/hueman/config.yaml
-# ajusta tus targets en ese archivo, luego:
-hueman set <paleta> --dry-run
-hueman set <paleta>
+pipx install hueman-cli                               # or: pip install hueman-cli
+hueman init                                           # sample config → ~/.config/hueman/config.yaml
+# point targets/outputs at your paths, then:
+hueman set <palette> --dry-run
+hueman set <palette>
 ```
 
-Desde el código fuente (requiere Python >= 3.9):
+From source (Python >= 3.9):
 
 ```sh
 git clone https://github.com/NeanderTeam/hueman.git
 cd hueman && pip install -e .
 ```
 
-Actualizar: `pipx upgrade hueman-cli` (o `pip install -U hueman-cli`).
-Desinstalar: `pipx uninstall hueman-cli` (o `pip uninstall hueman-cli`); tu config
-y los archivos generados no se borran (detalle en la
-[guía de instalación](https://hueman.cuevaneander.tech/?p=install)).
+Upgrade: `pipx upgrade hueman-cli` (or `pip install -U hueman-cli`).  
+Uninstall: `pipx uninstall hueman-cli` (or `pip uninstall hueman-cli`); your
+config and generated files are left alone (details in the
+[install guide](https://hueman.cuevaneander.tech/?p=install)).
 
-Otros comandos: `init` (config de ejemplo), `list` (paletas), `status` (tema activo) y `sync` (estado
-compartido entre máquinas).
+Other commands: `init` (sample config), `list` (palettes), `status` (active
+theme), `sync` (shared state across machines).
 
-## Ideas centrales
+## Core ideas
 
-- Una paleta, muchos targets; el mapeo de salidas es declarativo.
-- Templates y paletas empaquetados son defaults; los directorios custom ganan.
-- `overwrite` para archivos generados enteros, `patch` para bloques dentro de
-  configs editadas a mano.
-- `reload` por target y `post_apply` global, best-effort, con política
-  `warn` / `error`.
-- Sync opcional de la paleta activa entre máquinas (`state_sync`).
-- Agregar una tool nueva es un template + un target, no un cambio al motor.
+- One palette, many targets; output mapping is declarative.
+- Packaged templates and palettes are defaults; custom dirs win.
+- `overwrite` for full generated files, `patch` for blocks inside hand-edited
+  configs.
+- Per-target `reload` and global `post_apply`, best-effort, with `warn` /
+  `error` policy.
+- Optional sync of the active palette across machines (`state_sync`).
+- Adding a tool is a template + a target, not an engine change.
 
-## Herramientas empaquetadas
+## Packaged tools
 
-`hueman/palettes/` y `hueman/templates/` traen 25 paletas estéticas genéricas y templates
-para las herramientas más comunes (kitty, tmux, polybar, nvim/nightfox, dunst,
-bspwm, yazi, qutebrowser, rofi, fzf, atuin, oh-my-posh, wezterm, starship,
-Termux). Para targets idiosincráticos usa `template_dirs` en tu config en vez
-de pedir que se agreguen aquí.
+`hueman/palettes/` and `hueman/templates/` ship 25 generic palettes and
+templates for common tools (kitty, tmux, polybar, nvim/nightfox, dunst, bspwm,
+yazi, qutebrowser, rofi, fzf, atuin, oh-my-posh, wezterm, starship, Termux,
+herdr, and more). For idiosyncratic targets use `template_dirs` in your config
+instead of asking them to be packaged here.
 
-## Documentación
+## Docs
 
-Documentación completa: **[hueman.cuevaneander.tech](https://hueman.cuevaneander.tech)**
+Full site: **[hueman.cuevaneander.tech](https://hueman.cuevaneander.tech)**  
+(`/` = landing, `?p=intro` = docs)
 
-Para verla en local (las fuentes están en `website/`):
+Local preview (sources under `website/`):
 
 ```sh
 python3 -m http.server 8765 --directory website
 ```
 
-y abre `http://localhost:8765`.
+then open `http://localhost:8765`.
 
-## Soporte
+## Support
 
-¿Un bug o una idea? Abre un issue en
+Bug or idea? Open an issue at
 [github.com/NeanderTeam/hueman/issues](https://github.com/NeanderTeam/hueman/issues).
 
-## Estructura del repo
+## Repo layout
 
-| Ruta | Contenido |
+| Path | Contents |
 |---|---|
-| `hueman/cli.py` | CLI y orquestación (comando `hueman`) |
-| `hueman/engine/` | Config, paletas, targets, render, reload, estado compartido |
-| `hueman/palettes/`, `hueman/templates/` | Paletas YAML y plantillas Jinja2 empaquetadas |
-| `hueman/data/hueman.config.example.yaml` | Ejemplo comentado de config externa (lo escribe `hueman init`) |
-| `tests/` | Suite de tests |
-| `website/` | Sitio de documentación |
+| `hueman/cli.py` | CLI and orchestration (`hueman` command) |
+| `hueman/engine/` | Config, palettes, targets, render, reload, shared state |
+| `hueman/palettes/`, `hueman/templates/` | Packaged YAML palettes and Jinja2 templates |
+| `hueman/data/hueman.config.example.yaml` | Commented external config example (`hueman init`) |
+| `tests/` | Test suite |
+| `website/` | Landing + documentation site |
 
-El repo es autocontenido: nada dentro importa código fuera de sí mismo, salvo
-el config externo que cada usuario provee. Un repo de dotfiles solo necesita
-tener `hueman` instalado y su propio `hueman.config.yaml`.
+The repo is self-contained: nothing inside imports code from outside itself,
+except the external config each user provides. A dotfiles repo only needs
+`hueman` installed and its own `hueman.config.yaml`.
 
-## Licencia
+## License
 
-MIT, ver [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

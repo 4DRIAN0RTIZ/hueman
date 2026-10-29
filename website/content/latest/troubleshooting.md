@@ -1,38 +1,38 @@
-# Diagnóstico
+# Troubleshooting
 
-| Problema | Qué mirar |
-|----------|-----------|
-| `Config no encontrada: <ruta>` | Sale con exit 1. Crea uno con `hueman init`, o usa `--config` / `HUEMAN_CONFIG`. Orden `--config` / `HUEMAN_CONFIG` / `~/.config/hueman/config.yaml` (el cwd no se busca) |
-| `Paleta no encontrada: <nombre>. Disponibles: ...` | El nombre no coincide con ningún YAML en `palette_dirs` ni en las empaquetadas; revisa `hueman list` |
-| `Paleta invalida <ruta>: ...` | El YAML de la paleta no parsea o su raíz no es un mapeo |
-| `Nombre de paleta invalido: '...'` | Solo se aceptan letras, dígitos, `.`, `_` y `-`, y debe empezar por letra o dígito |
-| `Config invalida: <ruta>: YAML invalido: ...` / `se esperaba un mapeo YAML en la raiz` | El config no parsea o su raíz no es un mapeo |
-| `Config invalida: ... variable '${nombre}' no definida` / `vars.<nombre> ...` | Variable `${...}` sin definir en `vars`, nombre inválido, valor que no es string o que contiene otra `${...}` |
-| `Config invalida: ... reload_failure debe ser 'warn' o 'error'` | Valor fuera de las dos políticas permitidas |
-| `<target>: plantilla '<nombre>' no encontrada` | El template no existe en `template_dirs` ni entre los empaquetados; el target cuenta como fallido |
-| `Targets con errores: a, b` | Resumen final (exit 1) con los targets que fallaron; el detalle va en los logs previos |
-| `Ya existe: <ruta> (usa --force para sobrescribir)` | `hueman init` no pisa un config existente |
-| Paleta no listada | Nombre de archivo, `palette_dirs`, YAML válido |
-| Template no encontrado | Nombre exacto, `template_dirs`, empaquetado vs custom |
-| Archivo no cambia | `--dry-run`, `--only`, skip guards, `palette_key` que no es sección de la paleta (INFO `la paleta no tiene la seccion '<key>', omitido`, exit 0), patch sin match |
-| Valores vacíos en la salida | Variable ausente en el contexto: Jinja la renderiza como cadena vacía, sin error. Revisa `palette_key` y los nombres de clave |
-| `{{ … }}` literales | Solo con `jinja_delimiters` distintos de `{{ }}`: la plantilla usa otros delimitadores |
-| `Config invalida: ... logging.level` / `logging.file` / `mode` / `patch` / `post_apply` / `outputs` | Valor inválido en el config: `level` desconocido, directorio de `file` inexistente o sin permiso, `mode` distinto de `overwrite`/`patch`, `mode: patch` sin sección `patch`, `post_apply` u `outputs` que no son una lista de strings. Sale con exit 1 y un mensaje de una línea, sin traceback |
-| `Config invalida: placeholder desconocido` | `{seccion.clave}` inexistente en `reload` o `post_apply`: `set` (y `sync`, sin avanzar la revision) sale con error limpio (exit 1) antes de escribir nada |
-| Bloque duplicado en un patch | `marker_regex` sin match ni `insert_after_section_regex`: añade el bloque al final en cada corrida; hueman registra un warning si tu `marker_regex` no reconoce el bloque que insertó |
-| Exit 1 con tema aplicado | Targets omitidos por error, o `reload_failure: error` |
-| Sync no aplica | `status` drift; remoto inalcanzable; revision local ≥ remota; paleta remota inexistente en este nodo (aviso, exit 0) |
+| Problem | What to check |
+|---------|----------------|
+| `Config no encontrada: <path>` | Exit 1. Create one with `hueman init`, or use `--config` / `HUEMAN_CONFIG`. Order: `--config` / `HUEMAN_CONFIG` / `~/.config/hueman/config.yaml` (cwd is not searched) |
+| `Paleta no encontrada: <name>. Disponibles: ...` | Name matches no YAML in `palette_dirs` or packaged palettes; see `hueman list` |
+| `Paleta invalida <path>: ...` | Palette YAML does not parse or its root is not a mapping |
+| `Nombre de paleta invalido: '...'` | Only letters, digits, `.`, `_`, `-`; must start with a letter or digit |
+| `Config invalida: <path>: YAML invalido: ...` / `se esperaba un mapeo YAML en la raiz` | Config does not parse or root is not a mapping |
+| `Config invalida: ... variable '${name}' no definida` / `vars.<name> ...` | Undefined `${...}` in `vars`, invalid name, non-string value, or nested `${...}` |
+| `Config invalida: ... reload_failure debe ser 'warn' o 'error'` | Value outside the two allowed policies |
+| `<target>: plantilla '<name>' no encontrada` | Template missing from `template_dirs` and packaged set; target counts as failed |
+| `Targets con errores: a, b` | Final summary (exit 1) of failed targets; detail is in earlier logs |
+| `Ya existe: <path> (usa --force para sobrescribir)` | `hueman init` will not overwrite an existing config |
+| Palette not listed | File name, `palette_dirs`, valid YAML |
+| Template not found | Exact name, `template_dirs`, packaged vs custom |
+| File does not change | `--dry-run`, `--only`, skip guards, `palette_key` that is not a palette section (INFO `la paleta no tiene la seccion '<key>', omitido`, exit 0), patch with no match |
+| Empty values in the output | Missing context variable: Jinja renders an empty string, no error. Check `palette_key` and key names |
+| Literal `{{ … }}` | Only with `jinja_delimiters` other than `{{ }}`: the template uses different delimiters |
+| `Config invalida: ... logging.level` / `logging.file` / `mode` / `patch` / `post_apply` / `outputs` | Invalid config value: unknown `level`, missing/unwritable `file` directory, `mode` not `overwrite`/`patch`, `mode: patch` without a `patch` section, `post_apply` or `outputs` that is not a list of strings. Exit 1, one-line message, no traceback |
+| `Config invalida: placeholder desconocido` | Unknown `{section.key}` in `reload` or `post_apply`: `set` (and `sync`, without advancing revision) exits clean (exit 1) before writing |
+| Duplicated block in a patch | `marker_regex` with no match and no `insert_after_section_regex`: appends the block on every run; hueman warns if your `marker_regex` does not recognize the block it inserted |
+| Exit 1 with theme applied | Targets skipped on error, or `reload_failure: error` |
+| Sync does not apply | `status` drift; remote unreachable; local revision ≥ remote; remote palette missing on this node (notice, exit 0) |
 
-Más contexto al extender tools: [Agregar soporte a una tool](guides/add-a-tool.md).
+More context when extending tools: [Add support for a tool](guides/add-a-tool.md).
 
-## Si vienes de un motor basado en detección de host/entorno
+## If you come from a host/environment detection engine
 
-1. **`outputs` es una lista estática, no "descubierta" en cada corrida.** Si
-   listas una ruta que hoy no existe, un target `overwrite` la crea
-   (`mkdir -p` + write). Si antes tu motor omitía en silencio un entorno sin
-   la carpeta, ahora la crea; usa `skip_if_missing_parent` para omitirla.
-2. **El `reload` de un target solo se dispara si ese target escribió algo.**
-   No hay un paso de "reload global" que corra sin importar qué se renderizó.
-3. **No hay detección de hostname/entorno en el motor.** Si tu reload depende
-   de "qué máquina soy", resuélvelo en un script wrapper propio y pásalo como
-   `reload:`; el motor solo ejecuta el comando que le des.
+1. **`outputs` is a static list, not "discovered" each run.** If you list a path
+   that does not exist yet, an `overwrite` target creates it (`mkdir -p` +
+   write). If your old engine silently skipped an environment without that
+   folder, this one creates it; use `skip_if_missing_parent` to skip.
+2. **A target's `reload` only runs if that target wrote something.** There is
+   no global reload step that runs regardless of what rendered.
+3. **No hostname/environment detection in the engine.** If your reload depends
+   on "which machine am I", resolve that in your own wrapper script and pass it
+   as `reload:`; the engine only runs the command you give it.

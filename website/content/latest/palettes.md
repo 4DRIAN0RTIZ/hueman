@@ -1,26 +1,26 @@
-# Paletas
+# Palettes
 
-YAML bajo `hueman/palettes/` (empaquetadas) y `palette_dirs` (custom). El nombre de
-la paleta es el stem del archivo y solo admite letras, dígitos, `.`, `_` y `-`
-(debe empezar por letra o dígito, sin `..`): rutas como `/abs/x` o `../x` se
-rechazan antes de tocar el disco.
+YAML under `hueman/palettes/` (packaged) and `palette_dirs` (custom). The palette
+name is the file stem and only allows letters, digits, `.`, `_`, and `-`
+(must start with a letter or digit, no `..`): paths like `/abs/x` or `../x` are
+rejected before touching disk.
 
-## Precedencia
+## Precedence
 
-Custom por nombre gana sobre empaquetada.
+Custom by name wins over packaged.
 
-## Secciones habituales
+## Common sections
 
-- `meta` — nombre legible  
-- `kitty` — terminal completo (ANSI, cursor, tabs, …); lo usan también Termux, WezTerm y Neovim  
-- `polybar` — tokens semánticos UI (`background`, `primary`, …); lo leen la mayoría de templates  
-- `tmux`, `pi` (con `pi.vars`) y `omp` — una por herramienta  
+- `meta` — human-readable name  
+- `kitty` — full terminal (ANSI, cursor, tabs, …); also used by Termux, WezTerm, and Neovim  
+- `polybar` — semantic UI tokens (`background`, `primary`, …); most templates read this  
+- `tmux`, `pi` (with `pi.vars`), and `omp` — one per tool  
 
-Los templates solo ven la sección de su `palette_key` (más `theme_name` y
+Templates only see the section for their `palette_key` (plus `theme_name` and
 `extra_vars`).
 
-Qué template lee cada sección: [Templates empaquetados](targets.md).
+Which template reads which section: [Packaged templates](targets.md).
 
-## Agregar la tuya
+## Add your own
 
-[Agregar una paleta](guides/add-a-palette.md).
+[Add a palette](guides/add-a-palette.md).

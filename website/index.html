@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="carbon">
+<html lang="en" data-theme="carbon">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Documentación de hueman: paletas YAML, templates Jinja y targets declarativos para themear tus tools."
+      id="meta-description"
+      content="One palette. Every tool. Apply one theme across your terminal, editor, prompt, and the rest of your setup — in a single command."
     />
     <link rel="canonical" href="https://hueman.cuevaneander.tech/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="hueman" />
-    <meta property="og:title" content="hueman — documentación" />
+    <meta property="og:title" id="og-title" content="hueman: one palette, every tool" />
     <meta
       property="og:description"
-      content="Paletas YAML, templates Jinja y targets declarativos para themear tus tools."
+      id="og-description"
+      content="One theme for your terminal, editor, prompt, and the rest of your setup. You own the map; one command paints it everywhere."
     />
     <meta property="og:url" content="https://hueman.cuevaneander.tech/" />
     <meta property="og:image" content="https://hueman.cuevaneander.tech/assets/img/logo.png" />
-    <title>hueman — documentación</title>
+    <title id="doc-title">hueman: one palette, every tool</title>
     <script>
       // Apply the stored (or system) theme before first paint to avoid a flash.
       (function () {
@@ -41,11 +43,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-180.png" />
   </head>
-  <body>
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <body data-view="landing">
+    <a class="skip-link" id="skip-link" href="#landing-main">Skip to content</a>
 
     <header class="bar" role="banner">
-      <div class="bar__progress" aria-hidden="true">
+      <div class="bar__progress" aria-hidden="true" data-docs-only>
         <div class="bar__progress-fill" id="read-progress"></div>
       </div>
 
@@ -56,28 +58,31 @@
           id="nav-toggle"
           aria-controls="index"
           aria-expanded="false"
-          aria-label="Abrir índice"
+          aria-label="Open index"
+          data-docs-only
         >
           <span></span><span></span>
         </button>
 
-        <a class="brand" href="?" aria-label="hueman, inicio de la documentación">
+        <a class="brand" href="./" id="brand-home" aria-label="hueman home">
           <img class="brand__mark" src="assets/img/logo.png" alt="" width="317" height="198" />
           <span class="brand__word">hueman</span>
-          <span class="brand__meta" id="spine-meta">docs</span>
+          <span class="brand__meta" id="spine-meta" hidden></span>
         </a>
 
         <div class="bar__cluster">
-          <label class="version-picker">
+          <a class="bar__link" href="?p=intro" data-link data-landing-only>docs</a>
+
+          <label class="version-picker" data-docs-only>
             <span class="version-picker__label">rev</span>
-            <select id="version-select" aria-label="Versión de la documentación"></select>
+            <select id="version-select" aria-label="Documentation version"></select>
           </label>
 
-          <div class="themes" role="radiogroup" aria-label="Tema de color" id="themes">
-            <button type="button" role="radio" class="theme theme--carbon" data-theme-set="carbon" aria-label="Carbón" title="Carbón"></button>
-            <button type="button" role="radio" class="theme theme--ocre" data-theme-set="ocre" aria-label="Ocre" title="Ocre"></button>
-            <button type="button" role="radio" class="theme theme--pizarra" data-theme-set="pizarra" aria-label="Pizarra" title="Pizarra"></button>
-            <button type="button" role="radio" class="theme theme--cal" data-theme-set="cal" aria-label="Cal" title="Cal"></button>
+          <div class="themes" role="radiogroup" aria-label="Color theme" id="themes">
+            <button type="button" role="radio" class="theme theme--carbon" data-theme-set="carbon" aria-label="Carbon" title="Carbon"></button>
+            <button type="button" role="radio" class="theme theme--ocre" data-theme-set="ocre" aria-label="Ochre" title="Ochre"></button>
+            <button type="button" role="radio" class="theme theme--pizarra" data-theme-set="pizarra" aria-label="Slate" title="Slate"></button>
+            <button type="button" role="radio" class="theme theme--cal" data-theme-set="cal" aria-label="Lime" title="Lime"></button>
           </div>
 
           <a
@@ -85,28 +90,196 @@
             href="agent-guide.md"
             target="_blank"
             rel="noopener noreferrer"
-            >para agentes</a
+            data-docs-only
+            >for agents</a
           >
           <a
             class="bar__link"
             href="https://github.com/NeanderTeam/hueman"
             rel="noopener noreferrer"
             target="_blank"
-            >fuente ↗</a
+            >source ↗</a
           >
         </div>
       </div>
     </header>
 
-    <div class="board">
-      <nav class="index" id="index" aria-label="Índice">
+    <!-- ===== LANDING ===== -->
+    <div id="landing" class="landing">
+      <main id="landing-main" class="landing__main" tabindex="-1">
+        <section class="landing__hero" aria-labelledby="landing-title">
+          <p class="landing__kicker" id="landing-kicker">MIT · open source</p>
+          <h1 id="landing-title" class="landing__title">
+            One palette.<br />
+            <em>Every tool.</em>
+          </h1>
+          <p class="landing__lead">
+            One theme for your terminal, editor, prompt, and the rest of your setup.
+            You own the map; one command paints it everywhere.
+          </p>
+
+          <div class="landing__cta">
+            <a class="btn btn--primary" href="?p=intro" data-link>Read the docs</a>
+            <a class="btn btn--ghost" href="?p=quickstart" data-link>Quickstart</a>
+            <a
+              class="btn btn--ghost"
+              href="https://github.com/NeanderTeam/hueman"
+              rel="noopener noreferrer"
+              target="_blank"
+              >GitHub ↗</a
+            >
+          </div>
+
+          <div class="landing__install" aria-label="Install">
+            <code class="landing__cmd" id="install-cmd">pipx install hueman-cli</code>
+            <button type="button" class="btn btn--copy" id="copy-install" data-copy="pipx install hueman-cli">
+              copy
+            </button>
+          </div>
+        </section>
+
+        <section class="landing__section" aria-labelledby="problem-title">
+          <div class="landing__grid landing__grid--2">
+            <div class="landing__card landing__card--problem">
+              <p class="landing__eyebrow">Before</p>
+              <h2 id="problem-title" class="landing__h">Four apps. Four themes.</h2>
+              <p>
+                Kitty on mocha. Neovim on gruvbox. Starship on something else.
+                Every change by hand. The setup works — it just doesn’t look like one.
+              </p>
+            </div>
+            <div class="landing__card landing__card--solution">
+              <p class="landing__eyebrow">After</p>
+              <h2 class="landing__h">One palette. One command.</h2>
+              <pre class="landing__term" tabindex="0"><code>$ hueman set catppuccin-mocha
+INFO: Generated: ~/.config/kitty/theme.conf
+INFO: Generated: ~/.config/tmux/theme.conf
+INFO: Active theme: catppuccin-mocha</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="landing__section" aria-labelledby="what-title">
+          <p class="landing__eyebrow">What it is</p>
+          <h2 id="what-title" class="landing__h">Your control. Color in sync.</h2>
+          <div class="landing__grid landing__grid--3">
+            <article class="landing__card">
+              <h3 class="landing__h3">Declarative</h3>
+              <p>Output paths live in your <code>hueman.config.yaml</code>. No guessed routes, no lock-in to a dotfiles manager.</p>
+            </article>
+            <article class="landing__card">
+              <h3 class="landing__h3">Overwrite + patch</h3>
+              <p>Full generated files, or blocks inside configs you still edit by hand.</p>
+            </article>
+            <article class="landing__card">
+              <h3 class="landing__h3">Extensible</h3>
+              <p>Add a tool with a Jinja template and a target. No engine fork required.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="landing__section" aria-labelledby="control-title">
+          <p class="landing__eyebrow">Control</p>
+          <h2 id="control-title" class="landing__h">You own the map. It paints the color.</h2>
+          <div class="landing__split">
+            <div>
+              <p class="landing__prose">
+                Paths, targets, and templates are yours. You decide which file
+                each tool touches, what gets fully overwritten, and what gets
+                patched in place. hueman doesn’t invent your layout — it runs
+                the one you already built.
+              </p>
+              <p class="landing__prose">
+                Switch palettes and one command regenerates the whole map.
+                Another app is another target and, if you need it, another
+                template — without touching the engine.
+              </p>
+            </div>
+            <blockquote class="landing__quote">
+              One source of truth for color. The rest of the setup stays yours,
+              down to the path.
+            </blockquote>
+          </div>
+        </section>
+
+        <section class="landing__section" aria-labelledby="tools-title">
+          <p class="landing__eyebrow">Shipped</p>
+          <h2 id="tools-title" class="landing__h">Works with — plus whatever you add</h2>
+          <p class="landing__sub">
+            Starter templates for common tools. Anything idiosyncratic goes in
+            your <code>template_dirs</code>.
+          </p>
+          <ul class="landing__chips" aria-label="Tools with a packaged template">
+            <li><img class="landing__chip-icon" src="assets/img/tools/kitty.svg" alt="" width="14" height="14" />kitty</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/tmux.svg" alt="" width="14" height="14" />tmux</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/nvim.svg" alt="" width="14" height="14" />nvim</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/starship.svg" alt="" width="14" height="14" />starship</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/wezterm.svg" alt="" width="14" height="14" />wezterm</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/yazi.png" alt="" width="14" height="14" />yazi</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/rofi.svg" alt="" width="14" height="14" />rofi</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/polybar.png" alt="" width="14" height="14" />polybar</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/qutebrowser.svg" alt="" width="14" height="14" />qutebrowser</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/fzf.svg" alt="" width="14" height="14" />fzf</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/atuin.png" alt="" width="14" height="14" />atuin</li>
+            <li><img class="landing__chip-icon landing__chip-icon--chalk" src="assets/img/tools/oh-my-posh.svg" alt="" width="14" height="14" />oh-my-posh</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/dunst.svg" alt="" width="14" height="14" />dunst</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/bspwm.svg" alt="" width="14" height="14" />bspwm</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/termux.svg" alt="" width="14" height="14" />termux</li>
+            <li><img class="landing__chip-icon landing__chip-icon--ink" src="assets/img/tools/k9s.png" alt="" width="14" height="14" />k9s</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/bottom.svg" alt="" width="14" height="14" />bottom</li>
+            <li><img class="landing__chip-icon" src="assets/img/tools/lazydocker.png" alt="" width="14" height="14" />lazydocker</li>
+            <li><img class="landing__chip-icon landing__chip-icon--ink" src="assets/img/tools/herdr.png" alt="" width="14" height="14" />herdr</li>
+            <li><img class="landing__chip-icon landing__chip-icon--chalk" src="assets/img/tools/windhawk.png" alt="" width="14" height="14" />windhawk</li>
+            <li class="landing__chip--custom"><img class="landing__chip-icon" src="assets/img/tools/custom.svg" alt="" width="14" height="14" />custom</li>
+          </ul>
+          <p class="landing__sub">
+            25 generic palettes shipped (catppuccin, gruvbox, nord, kanagawa…).
+          </p>
+        </section>
+
+        <section class="landing__section landing__section--end" aria-labelledby="start-title">
+          <p class="landing__eyebrow">Get started</p>
+          <h2 id="start-title" class="landing__h">Three steps</h2>
+          <ol class="landing__steps">
+            <li>
+              <code>pipx install hueman-cli</code>
+            </li>
+            <li>
+              <code>hueman init</code>
+              <span> — writes a sample config; point the <code>outputs</code> at your paths</span>
+            </li>
+            <li>
+              <code>hueman set catppuccin-mocha</code>
+            </li>
+          </ol>
+          <div class="landing__cta">
+            <a class="btn btn--primary" href="?p=install" data-link>Install</a>
+            <a class="btn btn--ghost" href="?p=quickstart" data-link>Quickstart</a>
+            <a class="btn btn--ghost" href="?p=add-tool" data-link>Add a tool</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="landing__foot">
+        <p>hueman · MIT</p>
+        <p>
+          <a href="?p=intro" data-link>docs</a>
+          ·
+          <a href="https://github.com/NeanderTeam/hueman" rel="noopener noreferrer" target="_blank">source</a>
+        </p>
+      </footer>
+    </div>
+
+    <!-- ===== DOCS SHELL ===== -->
+    <div class="board" id="docs-shell" hidden>
+      <nav class="index" id="index" aria-label="Index">
         <header class="index__head">
-          <p class="index__kicker">Índice</p>
+          <p class="index__kicker">Index</p>
         </header>
         <div id="side-nav" class="ledger"></div>
       </nav>
 
-      <button type="button" class="backdrop" id="nav-backdrop" hidden aria-label="Cerrar índice"></button>
+      <button type="button" class="backdrop" id="nav-backdrop" hidden aria-label="Close index"></button>
 
       <main class="stage" id="contenido" tabindex="-1">
         <header class="masthead" id="hero" data-num="00">
@@ -114,15 +287,15 @@
             <span class="stamp" id="page-stamp">—</span>
             <div class="masthead__badges" id="hero-badges" aria-live="polite"></div>
             <p class="masthead__updated">
-              Actualizado
+              Updated
               <time id="hero-updated" datetime="">—</time>
             </p>
           </div>
-          <p class="masthead__eyebrow" id="section-label">Documentación</p>
+          <p class="masthead__eyebrow" id="section-label">Documentation</p>
           <h1 class="masthead__title" id="hero-title">hueman</h1>
           <p class="masthead__lead" id="hero-lead">
-            Una paleta YAML, templates Jinja y targets declarativos para
-            themear tus tools — incluida la tuya.
+            One palette. Every tool. You own the map; one command paints it
+            everywhere.
           </p>
         </header>
 
@@ -130,29 +303,31 @@
 
         <div class="split">
           <article class="doc" id="doc" aria-busy="true">
-            <p class="doc__loading">Cargando…</p>
+            <p class="doc__loading">Loading…</p>
           </article>
 
-          <aside class="outline" aria-label="En esta página">
-            <p class="outline__kicker">En esta página</p>
+          <aside class="outline" aria-label="On this page">
+            <p class="outline__kicker">On this page</p>
             <div id="page-outline" class="outline__list">
-              <p class="outline__empty">Sin secciones</p>
+              <p class="outline__empty">No sections</p>
             </div>
             <div class="outline__foot">
               <p id="footer-version">—</p>
               <p>
-                Actualizado
+                Updated
                 <time id="footer-updated" datetime="">—</time>
               </p>
             </div>
           </aside>
         </div>
 
-        <nav class="traverse" id="pager" aria-label="Continuar lectura"></nav>
+        <nav class="traverse" id="pager" aria-label="Continue reading"></nav>
 
         <footer class="colophon">
-          <p>hueman · documentación</p>
-          <a href="#contenido">volver arriba ↑</a>
+          <p>
+            <a href="./" id="colophon-home">hueman</a> · docs
+          </p>
+          <a href="#contenido">back to top ↑</a>
         </footer>
       </main>
     </div>

@@ -8,6 +8,10 @@ All notable changes to this project are documented here.
 
 - Only cut a release when feat, fix or perf commits landed (c6c2d5e)
 
+### Features
+
+- Add product landing and English docs (ccc861d)
+
 ## [0.2.1] - 2026-10-29
 
 ### Documentation

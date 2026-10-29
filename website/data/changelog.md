@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### CI
+
+- Only cut a release when feat, fix or perf commits landed (c6c2d5e)
+
+## [0.2.1] - 2026-10-29
+
+### Documentation
+
+- Sync the site changelog with the v0.2.0 release (a580c2a)
+
 ## [0.2.0] - 2026-10-29
 
 ### Bug Fixes

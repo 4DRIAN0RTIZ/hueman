@@ -1,33 +1,34 @@
-# Agregar una paleta
+# Add a palette
 
-Una paleta es un YAML con secciones de color. hueman lista y carga por
-**nombre de archivo** (sin `.yaml`). El nombre solo admite letras, dígitos,
-`.`, `_` y `-`, y debe empezar por letra o dígito (sin `..`, `/` ni espacios);
-`hueman set` rechaza cualquier otro con `Nombre de paleta invalido` (exit 1).
+A palette is a YAML file of color sections. hueman lists and loads by
+**file name** (without `.yaml`). The name may only contain letters, digits,
+`.`, `_`, and `-`, and must start with a letter or digit (no `..`, `/`, or
+spaces); `hueman set` rejects anything else with `Nombre de paleta invalido`
+(exit 1).
 
-## Camino local
+## Local path
 
-1. Crea `~/dotfiles/theme/palettes.custom/mi-tema.yaml`.
-2. Declara el directorio:
+1. Create `~/dotfiles/theme/palettes.custom/my-theme.yaml`.
+2. Declare the directory:
 
 ```yaml
 palette_dirs:
   - "~/dotfiles/theme/palettes.custom"
 ```
 
-3. `hueman --config <config> list` debe mostrar `mi-tema`.
-4. `hueman --config <config> set mi-tema` la aplica.
+3. `hueman --config <config> list` should show `my-theme`.
+4. `hueman --config <config> set my-theme` applies it.
 
-Si el nombre coincide con una paleta empaquetada, **gana la custom**.
+If the name matches a packaged palette, **the custom one wins**.
 
-## Forma mínima útil
+## Useful minimal shape
 
-Casi todos los templates genéricos leen la sección `polybar`. Los de terminal
-leen `kitty`. Copia una paleta empaquetada y cambia hex:
+Almost every generic template reads the `polybar` section. Terminal templates
+read `kitty`. Copy a packaged palette and change the hex values:
 
 ```yaml
 meta:
-  name: mi-tema
+  name: my-theme
 
 kitty:
   foreground: "#e0e0e0"
@@ -46,18 +47,18 @@ polybar:
   muted: "#7f849c"
 ```
 
-Mantén las **mismas claves** que usan tus templates. Una clave que el
-template pide y la paleta no trae se renderiza **vacía**, sin error. Solo falla
-(warning + exit 1) una ruta de `extra_vars` o la sección de
-`json_scheme_upsert`. Si `palette_key` no es sección de la paleta, el target se
-omite con un log INFO (`la paleta no tiene la seccion '<key>', omitido`) y exit 0.
+Keep the **same keys** your templates use. A key the template asks for and the
+palette does not provide renders **empty**, with no error. Only an
+`extra_vars` path or a `json_scheme_upsert` section fails (warning + exit 1).
+If `palette_key` is not a section of the palette, the target is skipped with an
+INFO log (`la paleta no tiene la seccion '<key>', omitido`) and exit 0.
 
 ## Upstream
 
-Para empaquetar: añade el YAML bajo `hueman/palettes/` en un PR (`feat(palettes): …`).
-Sin rutas de usuario ni secretos.
+To ship it: add the YAML under `hueman/palettes/` in a PR (`feat(palettes): …`).
+No user paths or secrets.
 
-## Ver también
+## See also
 
-- [Agregar soporte a una tool](add-a-tool.md)
-- [Paletas](../palettes.md)
+- [Add support for a tool](add-a-tool.md)
+- [Palettes](../palettes.md)

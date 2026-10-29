@@ -1,38 +1,37 @@
-# Instalación
+# Install
 
-## Requisitos
+## Requirements
 
-- Python 3.9 o superior
-- Las dependencias (Jinja2 y PyYAML) se instalan solas con el paquete
+- Python 3.9 or newer
+- Dependencies (Jinja2 and PyYAML) install with the package
 
-## Instalar
+## Install
 
-El paquete se llama `hueman-cli`; instala el comando `hueman`. Para una
-herramienta de línea de comandos lo recomendado es `pipx`, que la aísla en su
-propio entorno:
+The package is `hueman-cli`; it provides the `hueman` command. For a CLI tool,
+`pipx` is recommended — it isolates the install in its own environment:
 
 ```sh
 pipx install hueman-cli
 ```
 
-O con pip:
+Or with pip:
 
 ```sh
 python3 -m pip install hueman-cli
 ```
 
-Verifica:
+Verify:
 
 ```sh
 hueman --version
 hueman --help
 ```
 
-También funciona `python3 -m hueman` si el comando no está en tu `PATH`.
+`python3 -m hueman` also works if the command is not on your `PATH`.
 
-## Desde el código fuente
+## From source
 
-Para contribuir, o si todavía no hay paquete publicado en tu índice:
+To contribute, or if the package is not on your index yet:
 
 ```sh
 git clone https://github.com/NeanderTeam/hueman.git
@@ -41,77 +40,76 @@ pip install -e .
 hueman --version
 ```
 
-La versión sale de los tags de git. En un checkout de desarrollo, `./init.sh`
-corre smoke tests y la suite.
+The version comes from git tags. On a development checkout, `./init.sh` runs
+smoke checks and the test suite.
 
-## Config del usuario
+## User config
 
-hueman **no** trae tu mapeo de máquinas. Necesitas un config propio:
-`hueman init` escribe uno de ejemplo (comentado) en la ruta por defecto, sin
-sobrescribir uno existente salvo con `--force`:
+hueman **does not** ship your machine map. You need your own config:
+`hueman init` writes a commented example to the default path, and will not
+overwrite an existing file unless you pass `--force`:
 
 ```sh
 hueman init
 ```
 
-hueman busca el config en este orden de precedencia:
+hueman resolves the config in this order:
 
-1. `hueman --config /ruta/al/config.yaml`
-2. variable `HUEMAN_CONFIG`
+1. `hueman --config /path/to/config.yaml`
+2. `HUEMAN_CONFIG` environment variable
 3. `~/.config/hueman/config.yaml`
 
-El directorio actual no se busca (un config puede ejecutar comandos).
+The current working directory is never searched (a config can run commands).
 
-## Verificar
-
-```sh
-hueman --config /ruta/al/config.yaml list
-hueman --config /ruta/al/config.yaml set <paleta> --dry-run
-```
-
-## Actualizar
-
-Usa la misma herramienta con la que instalaste:
+## Verify
 
 ```sh
-pipx upgrade hueman-cli          # si instalaste con pipx
-python3 -m pip install -U hueman-cli   # si instalaste con pip
+hueman --config /path/to/config.yaml list
+hueman --config /path/to/config.yaml set <palette> --dry-run
 ```
 
-Comprueba la versión con `hueman --version`. Tu config no se toca; para ver
-qué cambió entre versiones, revisa el [changelog](changelog.md).
+## Upgrade
 
-## Desinstalar
+Use the same tool you installed with:
 
 ```sh
-pipx uninstall hueman-cli        # si instalaste con pipx
-python3 -m pip uninstall hueman-cli    # si instalaste con pip
+pipx upgrade hueman-cli          # if you used pipx
+python3 -m pip install -U hueman-cli   # if you used pip
 ```
 
-Desinstalar solo quita el paquete. **No** borra nada de lo que hueman escribió
-fuera de él:
+Check the version with `hueman --version`. Your config is left alone; see the
+[changelog](changelog.md) for what changed between releases.
 
-- **Tu config**: `~/.config/hueman/config.yaml` (o la ruta que usabas con
-  `--config` o `HUEMAN_CONFIG`).
-- **El tema activo**: el `state_file` (por defecto `~/.config/hueman/current`)
-  y, si usas `state_sync`, su revisión en `<state_file>.revision`.
-- **El repo de estado de `state_sync` tipo `git`**: un repo bare propio en
-  `$XDG_STATE_HOME/hueman/state-sync/` (por defecto
-  `~/.local/state/hueman/state-sync/`), salvo que definas `workdir`. La rama
-  `hueman-state` del remoto tampoco se borra.
-- **Los archivos generados** en cada `outputs` de tus targets (kitty, tmux,
-  etc.), más el archivo de `logging.file` si lo configuraste. Los targets en
-  modo `patch` modifican un bloque dentro de un archivo tuyo: hueman no lo
-  revierte.
+## Uninstall
 
-Para encontrarlos, mira tu config *antes* de desinstalar: las rutas están en
-`outputs`, `state_file`, `logging.file` y `state_sync`. `hueman status` indica
-cuántos outputs existen en disco. Después borra a mano lo que ya no quieras:
+```sh
+pipx uninstall hueman-cli        # if you used pipx
+python3 -m pip uninstall hueman-cli    # if you used pip
+```
+
+Uninstall only removes the package. It **does not** delete anything hueman
+wrote outside it:
+
+- **Your config**: `~/.config/hueman/config.yaml` (or the path you used with
+  `--config` / `HUEMAN_CONFIG`).
+- **Active theme**: the `state_file` (default `~/.config/hueman/current`) and,
+  if you use `state_sync`, its revision at `<state_file>.revision`.
+- **`state_sync` git workdir**: a bare repo under
+  `$XDG_STATE_HOME/hueman/state-sync/` (default
+  `~/.local/state/hueman/state-sync/`), unless you set `workdir`. The remote
+  `hueman-state` branch is not deleted either.
+- **Generated files** under each target `outputs` (kitty, tmux, …), plus
+  `logging.file` if you set one. `patch` targets change a block inside a file
+  you own: hueman does not roll that back.
+
+To find them, read your config *before* uninstalling: paths live in `outputs`,
+`state_file`, `logging.file`, and `state_sync`. `hueman status` reports how many
+outputs exist on disk. Then delete what you no longer want by hand:
 
 ```sh
 rm -r ~/.config/hueman
-rm -r ~/.local/state/hueman      # solo si usaste state_sync tipo git
+rm -r ~/.local/state/hueman      # only if you used git state_sync
 ```
 
-Revisa antes de borrar: si tus targets generan configs que otras herramientas
-siguen usando, esas conservarán el último tema aplicado.
+Check before deleting: if your targets generate configs other tools still use,
+those keep the last applied theme.

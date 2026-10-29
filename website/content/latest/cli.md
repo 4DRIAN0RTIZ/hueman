@@ -1,69 +1,69 @@
 # CLI
 
 ```text
-hueman [--config RUTA] init [--force]
-hueman [--config RUTA] [--var NOMBRE=VALOR ...] list
-hueman [--config RUTA] [--var NOMBRE=VALOR ...] status
-hueman [--config RUTA] [--var NOMBRE=VALOR ...] set <paleta> [--dry-run] [--only NOMBRE[,NOMBRE...]]
-hueman [--config RUTA] [--var NOMBRE=VALOR ...] sync [-q|--quiet]
+hueman [--config PATH] init [--force]
+hueman [--config PATH] [--var NAME=VALUE ...] list
+hueman [--config PATH] [--var NAME=VALUE ...] status
+hueman [--config PATH] [--var NAME=VALUE ...] set <palette> [--dry-run] [--only NAME[,NAME...]]
+hueman [--config PATH] [--var NAME=VALUE ...] sync [-q|--quiet]
 ```
 
-## Opciones globales
+## Global options
 
-Van antes del subcomando.
+These go before the subcommand.
 
-| Opción | Efecto |
+| Option | Effect |
 |--------|--------|
-| `--config RUTA` | Archivo de configuración (ver [Configuración](configuration.md)) |
-| `--version` | Imprime la versión instalada y sale |
-| `--var NOMBRE=VALOR` | Define o sobreescribe una variable de `vars:` para `${NOMBRE}` en las claves de rutas. Repetible. Ej.: `hueman --var repo=~/dotfiles set <paleta>`. Una forma inválida (sin `=` o nombre inválido) sale con exit 2 |
+| `--config PATH` | Config file (see [Configuration](configuration.md)) |
+| `--version` | Print the installed version and exit |
+| `--var NAME=VALUE` | Define or override a `vars:` value for `${NAME}` in path keys. Repeatable. Example: `hueman --var repo=~/dotfiles set <palette>`. Invalid form (no `=` or invalid name) exits 2 |
 
 ## `init`
 
-Escribe el config de ejemplo empaquetado en la ruta de config resuelta
-(`--config`, `HUEMAN_CONFIG`, `./hueman.config.yaml` o
-`~/.config/hueman/config.yaml`), creando los directorios que falten. Funciona
-sin config previo. Si el archivo ya existe sale con exit 1 y no lo toca, salvo
-con `--force`.
+Writes the packaged example config to the resolved config path
+(`--config`, `HUEMAN_CONFIG`, `./hueman.config.yaml`, or
+`~/.config/hueman/config.yaml`), creating missing directories. Works without an
+existing config. If the file already exists, exits 1 and leaves it alone unless
+`--force`.
 
 ## `list`
 
-Paletas disponibles (empaquetadas + `palette_dirs`), orden alfabético. Sin
-config existente lista solo las empaquetadas.
+Available palettes (packaged + `palette_dirs`), alphabetical. Without a config
+file, lists packaged ones only.
 
-## `set <paleta>`
+## `set <palette>`
 
-Renderiza todos los targets, escribe salidas, corre `reload` por target con
-escritura efectiva y `post_apply` al final. Persiste el nombre de paleta en
-`state_file`. Con `state_sync`, publica `{palette, revision}` (no en
-`--dry-run` ni `--only`).
+Renders every target, writes outputs, runs `reload` per target that actually
+wrote, then `post_apply`. Persists the palette name in `state_file`. With
+`state_sync`, publishes `{palette, revision}` (not on `--dry-run` or `--only`).
 
-| Flag | Efecto |
+| Flag | Effect |
 |------|--------|
-| `--dry-run` | No escribe, no crea dirs, no reload real; muestra plan |
-| `--only` | Solo targets cuyo nombre matchea (coma o glob `fnmatch`). No escribe state ni corre `post_apply`. Sin match → exit 1 |
+| `--dry-run` | No writes, no dirs, no real reload; prints the plan |
+| `--only` | Only targets whose name matches (comma or `fnmatch` glob). Does not write state or run `post_apply`. No match → exit 1 |
 
-Si un target falla porque la paleta no trae una clave que necesita
-(`palette_key` con `extra_vars`, o la sección de `json_scheme_upsert`), se
-omite con un warning que nombra target y clave, el resto sigue y `set` sale 1.
+If a target fails because the palette lacks a key it needs (`palette_key` with
+`extra_vars`, or the `json_scheme_upsert` section), it is skipped with a warning
+that names the target and key; the rest continue and `set` exits 1.
 
 ## `status`
 
-Paleta activa y, con `state_sync`, revisiones y drift (`in sync`, `behind`,
+Active palette and, with `state_sync`, revisions and drift (`in sync`, `behind`,
 `ahead`, `no remote state`, `remote unreachable`).
 
 ## `sync`
 
-Pull de estado remoto y aplica si la revision remota es mayor. Pensado para
-startup de shell (`-q`). Sin red / sin `state_sync` → exit 0 con aviso. Un placeholder desconocido en
-`reload`/`post_apply` da el mismo error limpio `Config invalida` (exit 1, sin
-traceback) y la revision no avanza. Si la paleta remota no existe localmente
-(o su nombre es inválido), `sync` avisa, no avanza la revisión y sale con 0.
+Pulls remote state and applies when the remote revision is higher. Meant for
+shell startup (`-q`). No network / no `state_sync` → exit 0 with a notice. An
+unknown placeholder in `reload`/`post_apply` yields the same clean
+`Config invalida` error (exit 1, no traceback) and the revision does not
+advance. If the remote palette is missing locally (or its name is invalid),
+`sync` warns, does not advance the revision, and exits 0.
 
-## Códigos de salida (resumen)
+## Exit codes (summary)
 
-- Config o paleta inválida (incluye `${nombre}` sin definir) → 1  
-- `--var` con forma inválida → 2  
-- Target con error de render/escritura → 1  
-- `reload_failure: error` y hook ≠ 0 → 1 (el resto sigue best-effort)  
-- `reload_failure: warn` → 0 aunque el hook falle  
+- Invalid config or palette (including undefined `${name}`) → 1  
+- Invalid `--var` form → 2  
+- Target render/write error → 1  
+- `reload_failure: error` and hook ≠ 0 → 1 (the rest still runs best-effort)  
+- `reload_failure: warn` → 0 even if the hook fails  

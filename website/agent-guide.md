@@ -1,89 +1,160 @@
-# hueman para agentes
+# hueman for agents
 
-Playbook para ti, agente de código, cuando una persona te pide ayuda con hueman. Guíala a instalar, configurar, aplicar un tema y diagnosticar fallos. Si algo de aquí contradice el código o los docs, gana el código: verifícalo.
+Playbook for you, coding agent, when someone asks for help with hueman. Guide
+them to install, configure, apply a theme, and diagnose failures. If anything
+here contradicts the code or the docs, the code wins: verify it.
 
-Para operar hueman tú mismo (aplicar, inspeccionar, diagnosticar) usa la Agent Skill `skills/latest/hueman/SKILL.md`: esta guía enseña a guiar a una persona; la skill enseña a operar hueman.
+To operate hueman yourself (apply, inspect, diagnose), use the Agent Skill
+`skills/latest/hueman/SKILL.md`: this guide teaches you how to guide a person;
+the skill teaches you how to run hueman.
 
-Docs canónicas: `index.html?v=latest&p=<pageId>` en este mismo sitio. Ids: `intro`, `install`, `quickstart`, `cli`, `configuration`, `targets`, `palettes`, `state-sync`, `add-tool`, `add-palette`, `termux`, `windows`, `architecture`, `troubleshooting`, `changelog`.
+Static site under `website/`: the bare URL (`/` or `index.html` with no query) is
+the product **landing**. Docs live in the same `index.html` SPA with
+`?v=<version>&p=<pageId>` (e.g. `?p=intro`, `?v=latest&p=install`). Page ids:
+`intro`, `install`, `quickstart`, `cli`, `configuration`, `targets`, `palettes`,
+`state-sync`, `add-tool`, `add-palette`, `termux`, `windows`, `architecture`,
+`troubleshooting`, `changelog`.
 
-## La idea en cinco líneas
+## The idea in five lines
 
-- hueman es un CLI Python (paquete `hueman-cli`, comando `hueman`): una paleta YAML + plantillas Jinja2 = configs de las apps del usuario.
-- El mapeo "qué template va a qué archivo" lo declara el usuario en su propio `hueman.config.yaml`. hueman no adivina rutas, hostname ni entorno.
-- No es un gestor de dotfiles: no instala, enlaza ni versiona nada. Solo escribe colores en las rutas de `outputs`.
-- Una paleta alimenta muchos targets. Cambiar de tema es un `set`.
-- Soportar una app nueva es un template + un target, no un cambio al motor (`p=intro`, `p=architecture`).
+- **One palette. Every tool.** hueman is a Python CLI (package `hueman-cli`,
+  command `hueman`) that applies one theme across the apps you declare.
+- The map “which template goes to which file” lives in the user’s own
+  `hueman.config.yaml`. hueman does not guess paths, hostname, or environment.
+- It is not a dotfiles manager: it does not install, link, or version anything.
+  It only writes colors to the paths in `outputs`.
+- One palette feeds many targets. Switching theme is a `set`.
+- Supporting a new app is a template + a target, not an engine change
+  (`p=intro`, `p=architecture`).
 
-## Vocabulario, en el orden en que conviene explicarlo
+## Vocabulary, in the order worth explaining
 
-1. **Paleta**: YAML en `hueman/palettes/` (empaquetadas) o `palette_dirs` (del usuario). Su nombre es el archivo sin `.yaml`; a igualdad de nombre gana la del usuario. Secciones típicas: `meta`, `kitty` (`color0`-`color15`, cursor...), `polybar` (`background`, `background_alt`, `foreground`, `primary`, `secondary`, `alert`, `success`, `warning`, `muted`). `p=palettes`
-2. **Template**: `.j2` en `hueman/templates/` o `template_dirs` (gana el del usuario). Solo ve la sección de la paleta dada por `palette_key`, más `theme_name` y `extra_vars`. Filtros: `contrast`, `is_dark`.
-3. **Target**: entrada de `targets:` con `template`, `palette_key`, `mode`, `outputs` (rutas explícitas) y opcionales (`reload`, `reload_failure`, `make_executable`, `skip_if_missing_parent`, `skip_unless_path_exists`, `jinja_delimiters`, `extra_vars`, `patch`). `p=targets`
-4. **Modo**:
-   - `overwrite` (default): el archivo es de hueman; se reemplaza entero, con escritura atómica, y se crean los padres.
-   - `patch`: el archivo es del usuario y hueman solo toca un bloque (`regex_splice` con `marker_regex` o `marker_begin`/`marker_end`; o `json_scheme_upsert`, que usa la sección `kitty` y no necesita template). **Nunca crea el archivo**: si no existe, lo omite.
-5. **`reload` / `post_apply`**: `reload` es un comando por target, solo tras escritura efectiva; `post_apply` corre una vez al final de un `set` completo. Admiten `{name}`/`{palette}` y `{seccion.clave}` (valor de la paleta, con shell-quoting). Son best-effort: un fallo no detiene el resto. `reload_failure` (`warn` por defecto, o `error`) decide si un fallo da exit 1.
-6. **`state_sync`** (opt-in): publica `{palette, revision}` para que otras máquinas converjan con `sync`. Backends `git` (rama huérfana, default `hueman-state`) y `file`. `p=state-sync`
+1. **Palette**: YAML under `hueman/palettes/` (packaged) or `palette_dirs` (user).
+   Name is the file without `.yaml`; on a name clash the user one wins. Typical
+   sections: `meta`, `kitty` (`color0`–`color15`, cursor…), `polybar`
+   (`background`, `background_alt`, `foreground`, `primary`, `secondary`,
+   `alert`, `success`, `warning`, `muted`). `p=palettes`
+2. **Template**: `.j2` under `hueman/templates/` or `template_dirs` (user wins).
+   Sees only the palette section given by `palette_key`, plus `theme_name` and
+   `extra_vars`. Filters: `contrast`, `is_dark`.
+3. **Target**: entry under `targets:` with `template`, `palette_key`, `mode`,
+   `outputs` (explicit paths) and optionals (`reload`, `reload_failure`,
+   `make_executable`, `skip_if_missing_parent`, `skip_unless_path_exists`,
+   `jinja_delimiters`, `extra_vars`, `patch`). `p=targets`
+4. **Mode**:
+   - `overwrite` (default): the file belongs to hueman; fully replaced, atomic
+     write, parents created.
+   - `patch`: the file belongs to the user; hueman only touches a block
+     (`regex_splice` with `marker_regex` or `marker_begin`/`marker_end`; or
+     `json_scheme_upsert`, which uses the `kitty` section and needs no
+     template). **Never creates the file**: if missing, it is skipped.
+5. **`reload` / `post_apply`**: `reload` is per target, only after an effective
+   write; `post_apply` runs once at the end of a full `set`. They accept
+   `{name}`/`{palette}` and `{section.key}` (palette value, shell-quoted).
+   Best-effort: a failure does not stop the rest. `reload_failure` (`warn` by
+   default, or `error`) decides whether a failure yields exit 1.
+6. **`state_sync`** (opt-in): publishes `{palette, revision}` so other machines
+   converge with `sync`. Backends `git` (orphan branch, default `hueman-state`)
+   and `file`. `p=state-sync`
 
-## Primera sesión con el humano
+## First session with the human
 
-Antes de tocar nada, pregúntale (una cosa a la vez) dónde vive o vivirá su config y qué apps quiere themear. `set` escribe **fuera del proyecto**: en cada `outputs` y en `state_file` (default `~/.config/hueman/current`). No ejecutes un `set` real sin su OK explícito sobre la lista de rutas.
+Before touching anything, ask (one thing at a time) where their config lives or
+will live, and which apps they want themed. `set` writes **outside the
+project**: every `outputs` path and `state_file` (default
+`~/.config/hueman/current`). Do not run a real `set` without their explicit OK
+on the path list.
 
-**Instalar** (`p=install`). Requiere Python >= 3.9. Se instala con `pipx install hueman-cli` (recomendado para un CLI) o `pip install hueman-cli`; desde el código fuente: `git clone https://github.com/NeanderTeam/hueman.git && cd hueman && pip install -e .`. Jinja2 y PyYAML vienen como dependencias. El comando es `hueman`, pero no asumas que está en el `PATH`: verifica con `hueman --version` o `command -v hueman`. Si no está, desde un checkout del código fuente usa `python3 -m hueman ...` desde la raíz del repo.
+**Install** (`p=install`). Needs Python >= 3.9. Install with
+`pipx install hueman-cli` (recommended for a CLI) or `pip install hueman-cli`;
+from source: `git clone https://github.com/NeanderTeam/hueman.git && cd hueman && pip install -e .`.
+Jinja2 and PyYAML come as dependencies. The command is `hueman`, but do not
+assume it is on `PATH`: check with `hueman --version` or `command -v hueman`.
+If not, from a source checkout use `python3 -m hueman ...` from the repo root.
 
-**Config.** hueman no trae mapeo de máquinas; parte del ejemplo empaquetado: `hueman init` (con `--config <ruta>` para elegir dónde; no sobrescribe sin `--force`). Pasa siempre `--config <ruta>` para no depender de la resolución implícita.
+**Config.** hueman does not ship a machine map; start from the packaged
+example: `hueman init` (use `--config <path>` to choose where; does not
+overwrite without `--force`). Always pass `--config <path>` so you do not
+depend on implicit resolution.
 
-**Secuencia** (`p=quickstart`, `p=cli`):
+**Sequence** (`p=quickstart`, `p=cli`):
 
 ```sh
-hueman --config <ruta> list                    # paletas, alfabético
-hueman --config <ruta> status                  # tema activo, outputs existentes en disco
-hueman --config <ruta> set <paleta> --dry-run  # plan, sin escribir
-hueman --config <ruta> set <paleta>            # aplica
+hueman --config <path> list                    # palettes, alphabetical
+hueman --config <path> status                  # active theme, outputs on disk
+hueman --config <path> set <palette> --dry-run # plan, no writes
+hueman --config <path> set <palette>           # apply
 ```
 
-- `--dry-run` imprime `[DRY RUN] escribiría <ruta>` por output y los `post_apply` que correrían. No escribe, no crea directorios, no ejecuta `reload`, no guarda `state_file` ni publica estado. Enséñale esa lista y espera su visto bueno.
-- `set <paleta> --only a,b` limita a targets por nombre o glob `fnmatch` (flag repetible). No guarda `state_file`, no corre `post_apply`, no publica. Si nada coincide: exit 1 con los nombres válidos. Úsalo para probar un target nuevo.
-- `sync [-q]` aplica el estado remoto solo si su revisión es mayor; sin red o sin `state_sync` avisa y sale 0.
+- `--dry-run` prints `[DRY RUN] escribiría <path>` per output and the
+  `post_apply` commands that would run. It does not write, create directories,
+  run `reload`, save `state_file`, or publish state. Show that list and wait
+  for approval.
+- `set <palette> --only a,b` limits targets by name or `fnmatch` glob
+  (repeatable flag). Does not save `state_file`, run `post_apply`, or publish.
+  If nothing matches: exit 1 with the valid names. Use it to test a new target.
+- `sync [-q]` applies remote state only if its revision is higher; with no
+  network or no `state_sync` it warns and exits 0.
 
-## Configuración en una pantalla
+## Configuration in one screen
 
-Resolución de la ruta, en orden: `--config`, variable `HUEMAN_CONFIG`, `~/.config/hueman/config.yaml`. El directorio actual no se busca (un config puede ejecutar comandos). Si no existe: `Config no encontrada: <ruta>`, exit 1. YAML o esquema inválidos: `Config invalida: ...`, exit 1, sin traceback.
+Path resolution order: `--config`, `HUEMAN_CONFIG`, `~/.config/hueman/config.yaml`.
+The current directory is not searched (a config can run commands). If missing:
+`Config no encontrada: <path>`, exit 1. Invalid YAML or schema:
+`Config invalida: ...`, exit 1, no traceback.
 
-Claves de primer nivel (`p=configuration`): `state_file`, `palette_dirs`, `template_dirs`, `reload_failure`, `state_sync` (`type: git` con `repo`/`remote`/`branch`/`workdir`/`timeout`, o `type: file` con `path`), `targets`, `post_apply`.
+Top-level keys (`p=configuration`): `state_file`, `palette_dirs`,
+`template_dirs`, `reload_failure`, `state_sync` (`type: git` with
+`repo`/`remote`/`branch`/`workdir`/`timeout`, or `type: file` with `path`),
+`targets`, `post_apply`.
 
-## Extender
+## Extending
 
-- **App nueva**: template en un `template_dirs` del usuario + target en su config. Empieza local; empaquetar upstream es opcional. Prueba con `set <paleta> --dry-run --only <target>` y luego sin `--dry-run`. Guía y checklist: `p=add-tool`.
-- **Paleta nueva**: YAML en un `palette_dirs`; copia una empaquetada y cambia los hex, manteniendo las claves que leen los templates. Verifica con `list`. Guía: `p=add-palette`.
-- Nada de ramas `if tool == ...` en Python: lo específico de cada tool vive en YAML + Jinja.
+- **New app**: template in a user `template_dirs` + target in their config.
+  Start local; packaging upstream is optional. Test with
+  `set <palette> --dry-run --only <target>`, then without `--dry-run`. Guide:
+  `p=add-tool`.
+- **New palette**: YAML in a `palette_dirs`; copy a packaged one and change
+  hex values, keeping the keys templates read. Confirm with `list`. Guide:
+  `p=add-palette`.
+- No `if tool == ...` branches in Python: tool-specific logic lives in YAML +
+  Jinja.
 
-## Diagnóstico: síntoma, causa, comprobación
+## Diagnosis: symptom, cause, check
 
-Reúne antes: ruta del config en uso, salida completa y exit code. Resumen oficial: `p=troubleshooting`.
+Gather first: config path in use, full output, exit code. Official summary:
+`p=troubleshooting`.
 
-| Síntoma | Causa (verificada en código) | Comprobación |
+| Symptom | Cause (verified in code) | Check |
 |---|---|---|
-| `Config no encontrada` | Ninguna ruta del orden de resolución existe | `echo "$HUEMAN_CONFIG"`; `hueman init` o pasa `--config` |
-| Paleta no aparece / `Paleta no encontrada` | Archivo no es `.yaml`, directorio ausente de `palette_dirs`, o YAML inválido (`Paleta invalida`, exit 1) | `list`; el error enumera las disponibles |
-| `plantilla '<x>' no encontrada` | Nombre de `.j2` incorrecto o fuera de `template_dirs`/`hueman/templates/`; target omitido, exit 1 | Nombre exacto del archivo |
-| Un target no escribe y no hay error | `skip_unless_path_exists` o `skip_if_missing_parent` no se cumplen; `patch` sobre archivo inexistente; `--only` o `--dry-run` | Líneas `INFO` "omitido" / "no existe" |
-| Línea `INFO` `... la paleta no tiene la seccion '<key>', omitido` | `palette_key` no existe como sección en la paleta (exit 0, no es error) | Compara `palette_key` con las claves de primer nivel del YAML |
-| `la paleta '<x>' no tiene la clave '<k>' requerida` | Falta una ruta de `extra_vars` o una clave de `json_scheme_upsert`; target omitido, exit 1 | Añade la clave a la paleta |
-| Valores vacíos en el output | Una variable de template ausente en la sección: Jinja la renderiza vacía, no falla | Contrasta variables del `.j2` con la sección |
-| `{{ ... }}` literales en el output | Delimitadores distintos a los esperados | `jinja_delimiters` del target |
-| Patch duplica el bloque | `marker_regex` sin match y sin `insert_after_section_regex`: el bloque se **añade al final**; si el regex tampoco reconoce el bloque insertado, hueman emite un warning (la causa es el `marker_regex`) | Revisa el regex; `(?m)` si usas `^`/`$` en `ensure_after` |
-| Exit 1 con el tema aplicado | Algún target omitido por error, o `reload_failure: error` y un hook devolvió ≠ 0 | Mensajes `reload fallo (exit N)` / `post_apply fallo` |
-| El reload "no hace nada" | Solo corre con escritura efectiva y sin `--dry-run`; usa `sh -c` | El log registra `reload: <cmd> (exit N)`; que el humano lo corra a mano |
-| `set` o `sync` falla con `Config invalida: placeholder desconocido` (antes de escribir nada; `sync` no avanza la revision) | `{seccion.clave}` inexistente en `reload`/`post_apply` | Corrige la clave; `${VAR}` de shell no se toca |
-| `sync` no aplica | Remoto inalcanzable, sin estado, paleta remota inexistente localmente (aviso, exit 0, no avanza la revisión) o con nombre inválido, o revisión local >= remota (nunca aplica caché) | `status`, línea `Drift:` (`in sync`, `behind`, `ahead`, `no remote state`, `remote unreachable`); la carpeta de `type: file` no se crea |
+| `Config no encontrada` | No path in the resolution order exists | `echo "$HUEMAN_CONFIG"`; `hueman init` or pass `--config` |
+| Palette missing / `Paleta no encontrada` | File is not `.yaml`, dir absent from `palette_dirs`, or invalid YAML (`Paleta invalida`, exit 1) | `list`; the error lists available names |
+| `plantilla '<x>' no encontrada` | Wrong `.j2` name or outside `template_dirs`/`hueman/templates/`; target skipped, exit 1 | Exact file name |
+| Target does not write and no error | `skip_unless_path_exists` or `skip_if_missing_parent` not met; `patch` on a missing file; `--only` or `--dry-run` | INFO lines `omitido` / `no existe` |
+| INFO `... la paleta no tiene la seccion '<key>', omitido` | `palette_key` is not a top-level palette section (exit 0, not an error) | Compare `palette_key` with the YAML top-level keys |
+| `la paleta '<x>' no tiene la clave '<k>' requerida` | Missing `extra_vars` path or `json_scheme_upsert` key; target skipped, exit 1 | Add the key to the palette |
+| Empty values in the output | Missing template variable in the section: Jinja renders empty, does not fail | Diff `.j2` variables against the section |
+| Literal `{{ ... }}` in the output | Delimiters other than expected | Target `jinja_delimiters` |
+| Patch duplicates the block | `marker_regex` with no match and no `insert_after_section_regex`: block is **appended**; if the regex still does not match the inserted block, hueman warns (cause is `marker_regex`) | Review the regex; `(?m)` if you use `^`/`$` in `ensure_after` |
+| Exit 1 with theme applied | Some target skipped on error, or `reload_failure: error` and a hook returned ≠ 0 | Messages `reload fallo (exit N)` / `post_apply fallo` |
+| Reload “does nothing” | Only runs after an effective write and without `--dry-run`; uses `sh -c` | Log shows `reload: <cmd> (exit N)`; have the human run it by hand |
+| `set` or `sync` fails with `Config invalida: placeholder desconocido` (before writing; `sync` does not advance revision) | Unknown `{section.key}` in `reload`/`post_apply` | Fix the key; shell `${VAR}` is left alone |
+| `sync` does not apply | Remote unreachable, no state, remote palette missing locally (notice, exit 0, revision not advanced) or invalid name, or local revision >= remote (never applies cache) | `status`, `Drift:` line (`in sync`, `behind`, `ahead`, `no remote state`, `remote unreachable`); `type: file` folder is not created |
 
-## Reglas para ti
+## Rules for you
 
-- No inventes flags, claves, campos de target ni rutas. Si no está aquí, en los docs o en el código, no existe; lee `hueman/cli.py` o `hueman/engine/*.py` y dilo.
-- Propón siempre `--dry-run` primero y muestra las rutas antes de un `set` real. Pide confirmación para todo lo que escriba fuera del proyecto (`set`, `sync`, crear config en `~`).
-- No escribas rutas reales del usuario ni secretos dentro del repo de hueman; usa `hueman.config.example.yaml` o fixtures temporales.
-- `reload` y `post_apply` son best-effort: no los uses como validación; confirma con el log y el exit code.
-- `patch` no crea archivos y `--only` no persiste estado: no prometas lo contrario.
-- No agregues detección de hostname/entorno ni lógica por tool al motor.
-- Si modificas el repo: commits Conventional, ramas desde `dev`, sin editar `CHANGELOG.md` a mano.
+- Do not invent flags, keys, target fields, or paths. If it is not here, in the
+  docs, or in the code, it does not exist; read `hueman/cli.py` or
+  `hueman/engine/*.py` and say so.
+- Always propose `--dry-run` first and show the paths before a real `set`. Ask
+  confirmation for anything that writes outside the project (`set`, `sync`,
+  creating config under `~`).
+- Do not write real user paths or secrets into the hueman repo; use
+  `hueman.config.example.yaml` or temp fixtures.
+- `reload` and `post_apply` are best-effort: do not use them as validation;
+  confirm with the log and exit code.
+- `patch` does not create files and `--only` does not persist state: do not
+  promise otherwise.
+- Do not add hostname/environment detection or per-tool logic to the engine.
+- If you change the repo: Conventional Commits, branches from `dev`, no hand
+  edits to `CHANGELOG.md`.

@@ -1,96 +1,94 @@
-# Agregar soporte a una tool
+# Add support for a tool
 
-hueman no conoce kitty, tmux ni whiptail por nombre. Solo conoce **targets
-declarativos**: un template Jinja, una clave de paleta y una lista de archivos
-de salida. Por eso puedes themear una app nueva **sin tocar el motor Python**.
+hueman does not know kitty, tmux, or whiptail by name. It only knows
+**declarative targets**: a Jinja template, a palette key, and a list of output
+files. That is why you can theme a new app **without touching the Python
+engine**.
 
-Hay dos caminos:
+Two paths:
 
-| Camino | Dónde vive | Cuándo usarlo |
-|--------|------------|---------------|
-| **Local (tuyo)** | tu `hueman.config.yaml` + `template_dirs` | La tool es tuya, experimental, o aún no quieres upstream |
-| **Empaquetado (upstream)** | PR a este repo (`hueman/templates/`, opcionalmente paletas) | La tool es común y quieres que otros la usen sin copiar templates |
+| Path | Where it lives | When to use it |
+|------|----------------|----------------|
+| **Local (yours)** | your `hueman.config.yaml` + `template_dirs` | The tool is yours, experimental, or you are not ready for upstream |
+| **Packaged (upstream)** | PR to this repo (`hueman/templates/`, optionally palettes) | The tool is common and you want others to use it without copying templates |
 
-Empieza siempre por el camino local. Si funciona, opcionalmente súbelo
-empaquetado.
+Always start local. If it works, optionally ship it packaged.
 
-## Checklist rápido
+## Quick checklist
 
-1. Entender **qué archivo de config** consume la tool y su formato.
-2. Elegir **modo**: `overwrite` (archivo entero) o `patch` (solo un bloque).
-3. Elegir **qué colores** de la paleta usar (`palette_key`, casi siempre
-   `polybar` o `kitty`).
-4. Escribir el **template** `.j2`.
-5. Declarar el **target** en tu config con `outputs` reales.
-6. Probar con `set --dry-run` y luego `set --only <nombre>`.
-7. (Opcional) `reload` para que la app recoja el cambio en caliente.
-8. (Opcional) PR para empaquetar el template en el repo.
+1. Know **which config file** the tool reads and its format.
+2. Choose **mode**: `overwrite` (whole file) or `patch` (one block only).
+3. Choose **which palette colors** to use (`palette_key`, almost always
+   `polybar` or `kitty`).
+4. Write the `.j2` **template**.
+5. Declare the **target** in your config with real `outputs`.
+6. Test with `set --dry-run`, then `set --only <name>`.
+7. (Optional) `reload` so the app picks up the change live.
+8. (Optional) PR to package the template in the repo.
 
-## 1. Qué necesita la tool
+## 1. What the tool needs
 
-Anota:
+Note:
 
-- Ruta del archivo de tema o config (ej. `~/.config/miapp/theme.conf`).
-- Si la app **reescribe todo el archivo** o solo una sección.
-- Si acepta **hex** (`#rrggbb`), nombres ANSI, o ambos.
-- Cómo **recarga** el tema (señal, comando, reinicio).
-- Si la app **solo existe en algunas máquinas** (guarda con
+- Path of the theme or config file (e.g. `~/.config/myapp/theme.conf`).
+- Whether the app **rewrites the whole file** or only a section.
+- Whether it accepts **hex** (`#rrggbb`), ANSI names, or both.
+- How it **reloads** the theme (signal, command, restart).
+- Whether the app **only exists on some machines** (guard with
   `skip_unless_path_exists` / `skip_if_missing_parent`).
 
-Si la app lee un archivo de colores completo, usa **overwrite**. Si el usuario
-edita a mano el mismo archivo (starship, algunos TOML), usa **patch**.
+If the app reads a full colors file, use **overwrite**. If the user also edits
+the same file by hand (starship, some TOML), use **patch**.
 
-## 2. Template Jinja
+## 2. Jinja template
 
-Los templates corren en un sandbox de Jinja, pero igual revisa cualquier
-template de terceros antes de usarlo.
+Templates run in a Jinja sandbox, but still review any third-party template
+before use.
 
-Crea un archivo en tu directorio custom, por ejemplo:
+Create a file in your custom directory, for example:
 
 ```text
-~/dotfiles/theme/templates.custom/miapp_theme.conf.j2
+~/dotfiles/theme/templates.custom/myapp_theme.conf.j2
 ```
 
-y decláralo en el config:
+and declare it in the config:
 
 ```yaml
 template_dirs:
   - "~/dotfiles/theme/templates.custom"
 ```
 
-Los `template_dirs` del usuario **ganan** sobre los empaquetados: mismo nombre
-de archivo = se usa el tuyo.
+User `template_dirs` **win** over packaged ones: same file name = yours is used.
 
-### Contexto disponible
+### Available context
 
-- Claves de la sección `palette_key` se expanden en la raíz del template
-  (ej. con `palette_key: polybar` usas `{{ background }}`, `{{ primary }}`, …).
-- `theme_name` siempre está disponible.
-- `extra_vars` en el target puede inyectar rutas punteadas extra de la paleta.
-- Filtros globales: `contrast` (texto legible sobre un fondo) e `is_dark`.
+- Keys from the `palette_key` section expand at the template root
+  (e.g. with `palette_key: polybar` you use `{{ background }}`, `{{ primary }}`, …).
+- `theme_name` is always available.
+- `extra_vars` on the target can inject extra dotted palette paths.
+- Global filters: `contrast` (readable text on a background) and `is_dark`.
 
-Sección semántica mínima que la mayoría de UIs pueden mapear (`polybar` en
-las paletas empaquetadas):
+Minimal semantic section most UIs can map (`polybar` in packaged palettes):
 
-| Clave | Uso típico |
-|-------|------------|
-| `background` | fondo principal |
-| `background_alt` | paneles / elevated |
-| `foreground` | texto |
-| `primary` | acento principal |
-| `secondary` | acento secundario |
-| `alert` | error / crítico |
+| Key | Typical use |
+|-----|-------------|
+| `background` | main background |
+| `background_alt` | panels / elevated |
+| `foreground` | text |
+| `primary` | main accent |
+| `secondary` | secondary accent |
+| `alert` | error / critical |
 | `success` | ok |
-| `warning` | aviso |
-| `muted` | texto secundario |
+| `warning` | warning |
+| `muted` | secondary text |
 
-Si la tool es un emulador de terminal completo, suele convenir `palette_key:
-kitty` (ANSI 0–15, cursor, tabs, …).
+If the tool is a full terminal emulator, `palette_key: kitty` is usually
+better (ANSI 0–15, cursor, tabs, …).
 
-### Ejemplo mínimo (overwrite)
+### Minimal example (overwrite)
 
 ```jinja
-{# Generado por hueman — no editar a mano. #}
+{# Generated by hueman — do not edit by hand. #}
 [colors]
 background = "{{ background }}"
 foreground = "{{ foreground }}"
@@ -99,142 +97,140 @@ danger = "{{ alert }}"
 text_on_accent = "{{ primary | contrast }}"
 ```
 
-### Cabecera y comentarios
+### Headers and comments
 
-- Si el formato de la app **acepta comentarios**, marca el archivo como
-  generado por hueman.
-- Si **no** acepta comentarios (ej. `NEWT_COLORS_FILE`), usa un comentario
-  Jinja `{# ... #}` que **no** se imprime, y no dejes líneas de más en la
-  salida.
+- If the app format **allows comments**, mark the file as generated by hueman.
+- If it **does not** (e.g. `NEWT_COLORS_FILE`), use a Jinja comment
+  `{# ... #}` that **does not** print, and do not leave extra blank lines in
+  the output.
 
-### Delimitadores alternativos
+### Alternate delimiters
 
-Si el destino ya usa `{{ ... }}` (JSON con mustache, etc.), declara
-`jinja_delimiters` en el target, por ejemplo `["[[", "]]"]`, y escribe el
-template con esos delimitadores.
+If the destination already uses `{{ ... }}` (JSON with mustache, etc.), set
+`jinja_delimiters` on the target, e.g. `["[[", "]]"]`, and write the template
+with those delimiters.
 
-## 3. Target en el config
+## 3. Target in the config
 
 ```yaml
 targets:
-  miapp_theme:
-    template: miapp_theme.conf.j2
+  myapp_theme:
+    template: myapp_theme.conf.j2
     palette_key: polybar
     mode: overwrite
     outputs:
-      - "~/.config/miapp/theme.conf"
-    # Solo si miapp está instalada en esta máquina:
-    # skip_unless_path_exists: "~/.config/miapp"
+      - "~/.config/myapp/theme.conf"
+    # Only if myapp is installed on this machine:
+    # skip_unless_path_exists: "~/.config/myapp"
     # skip_if_missing_parent: true
-    reload: "command -v miapp >/dev/null && miapp reload-theme || true"
-    # reload_failure: warn   # o error; hereda el global si se omite
+    reload: "command -v myapp >/dev/null && myapp reload-theme || true"
+    # reload_failure: warn   # or error; inherits global if omitted
 ```
 
-Reglas importantes:
+Important rules:
 
-- **`outputs` es explícito**. hueman no adivina rutas ni hostnames.
-- **`mode: overwrite`** crea padres si hace falta (salvo
-  `skip_if_missing_parent`) y reemplaza el archivo entero con escritura
-  atómica.
-- **`mode: patch`** **no crea** archivos inexistentes: si el destino no
-  existe, se omite. Necesitas un `patch:` válido (`regex_splice` o
+- **`outputs` is explicit**. hueman does not guess paths or hostnames.
+- **`mode: overwrite`** creates parents when needed (unless
+  `skip_if_missing_parent`) and replaces the whole file with an atomic write.
+- **`mode: patch`** **does not create** missing files: if the destination does
+  not exist, it is skipped. You need a valid `patch:` (`regex_splice` or
   `json_scheme_upsert`).
-- Varios `outputs` reciben el **mismo** render (útil para copiar el tema a
-  más de un path).
-- `make_executable: true` si el output es un script.
+- Several `outputs` receive the **same** render (useful to copy the theme to
+  more than one path).
+- `make_executable: true` if the output is a script.
 
-### Patch (cuando no puedes pisar el archivo)
+### Patch (when you cannot overwrite the file)
 
 ```yaml
 targets:
-  miapp_block:
-    template: miapp_block.j2
+  myapp_block:
+    template: myapp_block.j2
     palette_key: polybar
     mode: patch
     patch:
-      marker_begin: "# --- BEGIN hueman miapp ---"
-      marker_end: "# --- END hueman miapp ---"
-      # o marker_regex / insert_after_section_regex; ver config de ejemplo
+      marker_begin: "# --- BEGIN hueman myapp ---"
+      marker_end: "# --- END hueman myapp ---"
+      # or marker_regex / insert_after_section_regex; see the example config
     outputs:
-      - "~/.config/miapp/config.toml"
+      - "~/.config/myapp/config.toml"
 ```
 
-El template debe generar **solo el bloque gestionado**, no el archivo entero.
+The template must generate **only the managed block**, not the whole file.
 
-## 4. Probar
+## 4. Test
 
 ```sh
-# Ver qué se escribiría, sin tocar disco ni disparar reload
+# See what would be written, without touching disk or firing reload
 hueman --config ~/dotfiles/theme/hueman.config.yaml \
-  set mi-paleta --dry-run --only miapp_theme
+  set my-palette --dry-run --only myapp_theme
 
-# Aplicar solo ese target (no cambia el state file ni corre post_apply)
+# Apply only that target (does not change the state file or run post_apply)
 hueman --config ~/dotfiles/theme/hueman.config.yaml \
-  set mi-paleta --only miapp_theme
+  set my-palette --only myapp_theme
 
-# Aplicación completa de tema
-hueman --config ~/dotfiles/theme/hueman.config.yaml set mi-paleta
+# Full theme apply
+hueman --config ~/dotfiles/theme/hueman.config.yaml set my-palette
 ```
 
-Comprueba:
+Check:
 
-- El archivo de salida tiene los hex esperados y **ningún** `{{` sin renderizar.
-- La app muestra el tema (manual o vía `reload`).
-- Un segundo `set` no ensucia el archivo (idempotencia).
-- En una máquina sin la app, las guardas omiten el target sin fallar el resto.
+- The output file has the expected hex and **no** unrendered `{{`.
+- The app shows the theme (manually or via `reload`).
+- A second `set` does not dirty the file (idempotence).
+- On a machine without the app, guards skip the target without failing the rest.
 
-## 5. Reload y post_apply
+## 5. Reload and post_apply
 
-- `reload` corre **por target**, solo si hubo escritura efectiva.
-- `post_apply` corre **una vez** al final de un `set` completo (no con
-  `--only`).
-- Placeholders útiles: `{name}` / `{palette}`, y `{seccion.clave}` dentro de
-  la paleta (van con quoting de shell). `${VAR}` del shell no se toca.
-- Política `reload_failure: warn|error` (global o por target).
+- `reload` runs **per target**, only after an effective write.
+- `post_apply` runs **once** at the end of a full `set` (not with `--only`).
+- Useful placeholders: `{name}` / `{palette}`, and `{section.key}` inside the
+  palette (shell-quoted). Shell `${VAR}` is left alone.
+- Policy `reload_failure: warn|error` (global or per target).
 
-## 6. Subir el soporte upstream (opcional)
+## 6. Ship support upstream (optional)
 
-Cuando el template es genérico y reutilizable:
+When the template is generic and reusable:
 
-1. Copia el `.j2` a `hueman/templates/` en un fork de hueman.
-2. No metas rutas de tu home ni secrets.
-3. Si necesitas claves de paleta **nuevas**, documenta la sección o reutiliza
-   `polybar` / `kitty` para no romper paletas existentes.
-4. Añade o ajusta tests si el repo ya cubre el caso (render, dry-run, etc.).
-5. Abre un PR a `dev` con un commit Conventional (`feat(templates): ...`).
-6. El usuario solo necesita el target en **su** config; el template ya viaja
-   con la herramienta.
+1. Copy the `.j2` into `hueman/templates/` on a hueman fork.
+2. Do not put home paths or secrets in it.
+3. If you need **new** palette keys, document the section or reuse
+   `polybar` / `kitty` so existing palettes keep working.
+4. Add or adjust tests if the repo already covers the case (render, dry-run,
+   etc.).
+5. Open a PR to `dev` with a Conventional commit (`feat(templates): ...`).
+6. Users only need the target in **their** config; the template ships with the
+   tool.
 
-Los targets empaquetados de ejemplo viven en `hueman/data/hueman.config.example.yaml` (o `hueman init`);
-cada máquina sigue declarando sus propios `outputs`.
+Example packaged targets live in `hueman/data/hueman.config.example.yaml` (or
+`hueman init`); each machine still declares its own `outputs`.
 
-## 7. Errores frecuentes
+## 7. Common mistakes
 
-| Síntoma | Causa probable |
+| Symptom | Likely cause |
 |---------|----------------|
-| `missing template …` en tests de config real | El template solo está en custom y algo espera el empaquetado; empaqueta o alinea nombres |
-| Valores vacíos en el archivo | Clave ausente en la paleta o `palette_key` que apunta a una clave equivocada dentro de una sección válida: Jinja renderiza vacío |
-| Se escriben `{{ background }}` literales | Solo con `jinja_delimiters` que no coinciden con los de la plantilla |
-| Target omitido | `palette_key` que no es sección de la paleta (INFO `la paleta no tiene la seccion '<key>', omitido`) / `skip_unless_path_exists` / padre ausente / patch sobre archivo inexistente |
-| `Config invalida: placeholder desconocido` | `{seccion.clave}` inexistente en `reload`/`post_apply`: `set` sale con error limpio (exit 1) antes de escribir nada |
-| `set` exit 1 tras reload | `reload_failure: error` y el comando de reload falló |
-| Patch no aplica o se duplica | `marker_regex` sin match: sin `insert_after_section_regex` añade el bloque al final, y se duplica en cada corrida si tu regex no reconoce ese bloque (hueman lo avisa con un warning); o falta `(?m)` si usas `^`/`$` en `ensure_after` |
-| Colores “de fábrica” en newt/whiptail | Faltan elementos en el archivo: el formato reemplaza la paleta entera |
+| `missing template …` in real-config tests | Template only exists as custom while something expects packaged; package it or align names |
+| Empty values in the file | Missing palette key, or `palette_key` pointing at the wrong key inside a valid section: Jinja renders empty |
+| Literal `{{ background }}` written out | Only with `jinja_delimiters` that do not match the template |
+| Target skipped | `palette_key` that is not a palette section (INFO `la paleta no tiene la seccion '<key>', omitido`) / `skip_unless_path_exists` / missing parent / patch on a missing file |
+| `Config invalida: placeholder desconocido` | Unknown `{section.key}` in `reload`/`post_apply`: `set` exits clean (exit 1) before writing |
+| `set` exit 1 after reload | `reload_failure: error` and the reload command failed |
+| Patch does not apply or duplicates | `marker_regex` with no match: without `insert_after_section_regex` it appends the block, and it duplicates each run if your regex does not recognize that block (hueman warns); or missing `(?m)` if you use `^`/`$` in `ensure_after` |
+| Factory colors in newt/whiptail | Missing entries in the file: the format replaces the whole palette |
 
-## 8. Qué no hacer
+## 8. What not to do
 
-- No agregues ramas `if tool == "…"` en Python: la lógica de la tool va en
-  YAML + Jinja.
-- No hardcodees hostname ni detección mágica de entorno en el motor.
-- No escribas rutas absolutas de un usuario concreto dentro del repo público.
-- No uses `mode: patch` esperando que cree el archivo: primero créalo a mano
-  o usa overwrite.
+- Do not add `if tool == "…"` branches in Python: tool logic goes in YAML +
+  Jinja.
+- Do not hardcode hostname or magic environment detection in the engine.
+- Do not write one user's absolute paths into the public repo.
+- Do not use `mode: patch` expecting it to create the file: create it first by
+  hand, or use overwrite.
 
-## Siguiente lectura
+## Further reading
 
-- [Targets y render](../targets.md) — modos y campos al detalle  
-- [Paletas](../palettes.md) — secciones y precedencia  
-- [Termux y proot](termux.md) — ejemplo de target cuyo reload ocurre fuera del proceso  
-- [Windows y WSL](windows.md) — ejemplo de targets en Windows con `vars` y parcheo de configs existentes  
-- [Agregar una paleta](add-a-palette.md) — colores nuevos sin tocar templates  
-- `hueman/data/hueman.config.example.yaml` (o `hueman init`) en el repo — esquema comentado  
+- [Targets and render](../targets.md) — modes and fields in detail  
+- [Palettes](../palettes.md) — sections and precedence  
+- [Termux and proot](termux.md) — target whose reload happens outside the process  
+- [Windows and WSL](windows.md) — Windows targets with `vars` and patching existing configs  
+- [Add a palette](add-a-palette.md) — new colors without touching templates  
+- `hueman/data/hueman.config.example.yaml` (or `hueman init`) in the repo — commented schema  

@@ -1,132 +1,128 @@
-# Sync entre nodos
+# Sync across nodes
 
-Opt-in vía `state_sync` en el config. Publica `{palette, revision}` para que
-otras máquinas converjan con `hueman sync`. Sin la clave, nada cambia. Los
-ejemplos asumen el comando `hueman` instalado (ver
-[Instalación](install.md)).
+Opt-in via `state_sync` in the config. Publishes `{palette, revision}` so other
+machines can converge with `hueman sync`. Without the key, nothing changes.
+Examples assume the `hueman` command is installed (see [Install](install.md)).
 
 ## Backends
 
-El backend se elige con `state_sync.type`; la interfaz abstracta es
-`StateSource` (`hueman/engine/statesource.py`) y el motor solo la usa a través de
-`build_source`. Un tipo desconocido es un error de config que lista los
-válidos.
+The backend is chosen with `state_sync.type`; the abstract interface is
+`StateSource` (`hueman/engine/statesource.py`) and the engine only uses it through
+`build_source`. An unknown type is a config error that lists the valid ones.
 
 ### `type: git` (default)
 
 ```yaml
 state_sync:
-  type: git                 # default; configs sin `type` siguen igual
-  repo: "~/dotfiles"        # repo del que se toma la URL del remoto
+  type: git                 # default; configs without `type` behave the same
+  repo: "~/dotfiles"        # repo used to resolve the remote URL
   remote: origin            # default
   branch: hueman-state      # default
-  # timeout: 15             # segundos por llamada git (default 15)
+  # timeout: 15             # seconds per git call (default 15)
 ```
 
-- Cada `set` completo publica `{palette, revision}` en la rama huérfana
-  `hueman-state` del remoto: un único commit reescrito y `push
-  --force-with-lease`.
-- Ante rechazo del push se hace fetch: gana la `revision` mayor y el empate lo
-  resuelve el push aceptado, con reintentos acotados.
-- hueman usa un repo git propio (bare) bajo `$XDG_STATE_HOME/hueman/` (o
-  `workdir`) y **no toca tu working tree**.
-- Sin git, remoto o red, `set` aplica en local y avisa.
+- Every full `set` publishes `{palette, revision}` on the orphan
+  `hueman-state` branch of the remote: a single rewritten commit and
+  `push --force-with-lease`.
+- On push rejection it fetches: the higher `revision` wins; ties go to the
+  accepted push, with bounded retries.
+- hueman uses its own bare git repo under `$XDG_STATE_HOME/hueman/` (or
+  `workdir`) and **does not touch your working tree**.
+- Without git, a remote, or network, `set` applies locally and warns.
 
 ### `type: file`
 
 ```yaml
 state_sync:
   type: file
-  path: "~/Sync/hueman.state.yaml"   # carpeta sincronizada por Syncthing/Dropbox
+  path: "~/Sync/hueman.state.yaml"   # folder synced by Syncthing/Dropbox
 ```
 
-Guarda el mismo `{palette, revision}` con escritura atómica; gana la
-`revision` mayor y el empate lo gana la última escritura aceptada. Si la
-carpeta no existe (no montada) cuenta como inalcanzable y no se crea.
+Stores the same `{palette, revision}` with atomic writes; the higher
+`revision` wins and ties go to the last accepted write. If the folder is
+missing (not mounted) it counts as unreachable and is not created.
 
-Backend HTTP: pendiente (requiere definir un protocolo de compare-and-set del
-servidor).
+HTTP backend: pending (needs a server compare-and-set protocol).
 
-### Contrato de un backend
+### Backend contract
 
-Probado por `tests/test_state_source_contract.py`: nunca lanza, tiempos
-acotados, `revision` monótona (mayor gana, empate gana la escritura
-aceptada), `read_result()` distingue "alcanzable pero vacío" de
-"inalcanzable" y `write()` solo devuelve True si el estado quedó publicado.
+Covered by `tests/test_state_source_contract.py`: never throws, bounded time,
+monotonic `revision` (higher wins; ties go to the accepted write),
+`read_result()` distinguishes "reachable but empty" from "unreachable", and
+`write()` only returns True if the state was actually published.
 
-## Comandos
+## Commands
 
-- `set` publica tras aplicar. `--dry-run` y `--only` no escriben ni empujan
-  estado.
-- `sync` aplica solo si la revisión remota es mayor que la local.
-- `status` muestra revisión local, remota y drift.
+- `set` publishes after applying. `--dry-run` and `--only` neither write nor
+  push state.
+- `sync` applies only if the remote revision is higher than local.
+- `status` shows local revision, remote revision, and drift.
 
 ### `sync`
 
-Hace fetch de `hueman-state`. Si la `revision` remota es mayor, aplica la
-paleta (sin publicar una revisión nueva) y guarda la revisión local. Si no,
-no hace nada: sin escrituras ni reload (idempotente). La revisión local vive
-en `<state_file>.revision`; el `state_file` sigue siendo solo el nombre de la
-paleta, y `set` actualiza la revisión al publicar.
+Fetches `hueman-state`. If the remote `revision` is higher, applies the
+palette (without publishing a new revision) and stores the local revision.
+Otherwise it does nothing: no writes, no reload (idempotent). The local
+revision lives at `<state_file>.revision`; `state_file` remains only the
+palette name, and `set` updates the revision when publishing.
 
-Si el estado remoto nombra una paleta que no existe en este nodo, `sync` emite
-un aviso (`la paleta remota '<nombre>' no esta disponible localmente`), no
-escribe nada, no avanza la revisión local y sale con 0 (resultado
-`unknown-palette`), para no romper el arranque del shell. Un estado cuyo nombre
-de paleta es inválido (ruta, `..`) se trata como estado remoto ilegible.
+If remote state names a palette that does not exist on this node, `sync`
+emits a notice (`la paleta remota '<name>' no esta disponible localmente`),
+writes nothing, does not advance the local revision, and exits 0
+(`unknown-palette`), so shell startup is not broken. Remote state whose
+palette name is invalid (path, `..`) is treated as unreadable remote state.
 
-Pensado para el arranque del shell:
+Meant for shell startup:
 
-- Silencioso si no hay cambios; nunca cuelga (cada llamada git tiene
-  timeout, `state_sync.timeout`, 15 s por defecto; ssh con `BatchMode`).
-- Solo sale con código != 0 ante errores reales (paleta inexistente, target
-  fallido según `reload_failure`).
-- Sin red, sin remoto o sin `state_sync` sale 0 con un aviso en stderr;
-  `-q/--quiet` los silencia.
-- Nunca aplica datos de la copia local cuando el remoto es inalcanzable.
+- Quiet when nothing changed; never hangs (each git call has a timeout,
+  `state_sync.timeout`, default 15 s; ssh with `BatchMode`).
+- Only exits non-zero on real errors (missing palette, failed target under
+  `reload_failure`).
+- No network, no remote, or no `state_sync` exits 0 with a stderr notice;
+  `-q/--quiet` silences them.
+- Never applies local-cache data when the remote is unreachable.
 
-### Drift en `status`
+### Drift in `status`
 
-| Drift | Significado |
-|-------|-------------|
-| `in sync` | Local y remoto tienen la misma revisión |
-| `behind` | El remoto es más nuevo: corre `sync` |
-| `ahead` | La local es más nueva y no está publicada |
-| `no remote state` | El remoto es alcanzable pero aún no hay estado |
-| `remote unreachable` | No se pudo leer el remoto; la revisión remota se marca como `local cache` |
+| Drift | Meaning |
+|-------|---------|
+| `in sync` | Local and remote share the same revision |
+| `behind` | Remote is newer: run `sync` |
+| `ahead` | Local is newer and not published |
+| `no remote state` | Remote is reachable but has no state yet |
+| `remote unreachable` | Could not read the remote; remote revision is marked `local cache` |
 
-## Dos máquinas, paso a paso
+## Two machines, step by step
 
-1. En cada nodo, agrega `state_sync` a su config (mismo `repo`/`remote` o el
-   mismo `path` para `type: file`).
-2. En el nodo A corre un `set` completo:
-   `hueman --config RUTA set <paleta>`. La primera vez crea la
-   rama huérfana `hueman-state` y publica la revisión 1.
-3. En el nodo B corre `hueman --config RUTA sync`: aplica la
-   paleta y guarda la revisión local.
-4. `hueman --config RUTA status` en ambos debe mostrar `in sync`.
+1. On each node, add `state_sync` to its config (same `repo`/`remote`, or the
+   same `path` for `type: file`).
+2. On node A run a full `set`:
+   `hueman --config PATH set <palette>`. The first time creates the orphan
+   `hueman-state` branch and publishes revision 1.
+3. On node B run `hueman --config PATH sync`: applies the palette and stores
+   the local revision.
+4. `hueman --config PATH status` on both should show `in sync`.
 
-`set --dry-run` y `set --only` nunca publican, así que no sirven para
-sembrar el estado.
+`set --dry-run` and `set --only` never publish, so they cannot seed state.
 
-## Correr `sync` automáticamente
+## Run `sync` automatically
 
 ```sh
-# 1. Arranque del shell (~/.zshrc o ~/.bashrc)
+# 1. Shell startup (~/.zshrc or ~/.bashrc)
 hueman sync -q
 
-# 2. Timer de usuario de systemd (~/.config/systemd/user/hueman-sync.{service,timer})
-#    [Service] ExecStart=/ruta/a/hueman sync -q
+# 2. systemd user timer (~/.config/systemd/user/hueman-sync.{service,timer})
+#    [Service] ExecStart=/path/to/hueman sync -q
 #    [Timer]   OnBootSec=1min  OnUnitActiveSec=15min
 #    systemctl --user enable --now hueman-sync.timer
 
 # 3. cron
-*/15 * * * * /ruta/a/hueman sync -q
+*/15 * * * * /path/to/hueman sync -q
 
-# 4. Hook de git en tu repo de dotfiles (.git/hooks/post-merge)
+# 4. git hook in your dotfiles repo (.git/hooks/post-merge)
 #!/bin/sh
 hueman sync -q
 ```
 
-Ajusta `hueman` o la ruta absoluta al CLI según tu instalación (`command -v
-hueman`; systemd y cron no cargan el `PATH` de tu shell).
+Adjust `hueman` or the absolute CLI path to your install (`command -v hueman`;
+systemd and cron do not load your shell `PATH`).
