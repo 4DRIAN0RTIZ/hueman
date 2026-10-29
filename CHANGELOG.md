@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Harden palette names, config lookup and template rendering (#49) (ded6249)
 - Report unknown placeholders as a clean error (#34) (7e91ea2)
 - Log when a target is skipped for a missing palette section (#33) (2a90088)
 - Fail early with a clean error on unknown placeholders (#31) (1d4ded3)
