@@ -8,7 +8,7 @@ import time
 
 import pytest
 
-from engine.statesource import ReadResult
+from hueman.engine.statesource import ReadResult
 from test_reload_exit_codes import make_app
 from test_state_branch import BRANCH, dotfiles, git, make_source, remote, sync_cfg  # noqa: F401
 
