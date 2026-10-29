@@ -26,6 +26,7 @@ filter_unconventional = true
 split_commits = false
 commit_preprocessors = []
 commit_parsers = [
+  { message = "^[Mm]erge", skip = true },
   { message = "^feat", group = "Features" },
   { message = "^fix", group = "Bug Fixes" },
   { message = "^perf", group = "Performance" },
