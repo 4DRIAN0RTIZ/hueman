@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="tmux">
+  <!-- Logomark only (cropped from Wikimedia Tmux_logo.svg, CC-ish brand mark) -->
+  <path fill="#1BB91F" d="M0 116h160v29c0 8.286-6.722 15-15 15H15c-8.283 0-15-6.707-15-15v-29z"/>
+  <path fill="#3C3C3C" d="M83 70V0h-6v146h6V70h77v-6H83zM0 15.01C0 6.722 6.722 0 15 0h130c8.283 0 15 6.725 15 15.01V146H0V15.01z"/>
+</svg>

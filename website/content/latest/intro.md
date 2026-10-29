@@ -1,18 +1,18 @@
-# Qué es hueman
+# What is hueman
 
-hueman aplica una **paleta YAML** a las configs de tus apps mediante
-**templates Jinja2**. El mapeo de salidas es **declarativo** y vive en tu
-propio `hueman.config.yaml`: la herramienta no adivina rutas ni depende de un
-gestor de dotfiles concreto.
+**One palette. Every tool.**
 
-Ideas centrales:
+hueman keeps your terminal, editor, prompt, and the rest of your setup on the
+same theme. You own the map — which file each app uses — and one command paints
+it everywhere.
 
-- Una paleta, muchos targets.
-- Templates y paletas empaquetados son defaults; los directorios custom ganan.
-- Overwrite para archivos generados enteros; patch para bloques en configs
-  editadas a mano.
-- Reload y post_apply best-effort, con política `warn` / `error`.
-- Sync opcional de la paleta activa entre máquinas (`state_sync`).
+Core ideas:
 
-La extensión es a propósito simple: **agregar una tool nueva es un template +
-un target**, no un cambio al motor. Guía: [Agregar soporte a una tool](guides/add-a-tool.md).
+- One palette, many targets.
+- Packaged templates and palettes are defaults; your custom dirs win.
+- Overwrite for full generated files; patch for blocks inside hand-edited configs.
+- Reload and post_apply are best-effort, with a `warn` / `error` policy.
+- Optional sync of the active palette across machines (`state_sync`).
+
+Extension stays simple on purpose: **adding a tool is a template + a target**,
+not an engine change. Guide: [Add support for a tool](guides/add-a-tool.md).
