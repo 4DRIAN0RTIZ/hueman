@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Bug Fixes
 
+- Use a real newline in the starship ensure_after example (536a64c)
 - Validate logging, mode, patch, post_apply and outputs in config (60a81b0)
 - Harden palette names, config lookup and template rendering (#49) (ded6249)
 - Report unknown placeholders as a clean error (#34) (7e91ea2)
@@ -16,6 +17,9 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Bump skill version to 0.2.0 and sync website changelog (ed98e36)
+- Correct palette_key claim, drop logging note, cover real errors in troubleshooting (e45d150)
+- Unify palette count and neutral tone in example config (1324787)
 - Document config validation errors (97722a6)
 - Document hueman init in install, quickstart, CLI and agent guides (cb5ff92)
 - Link the full documentation site from the README (#32) (9d0f641)
