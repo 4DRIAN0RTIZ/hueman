@@ -55,6 +55,6 @@ def test_python_m_hueman_version():
 
 
 def test_python_m_hueman_list():
-    r = _run("--config", str(ROOT / "hueman.config.example.yaml"), "list")
+    r = _run("--config", str(ROOT / "hueman" / "data" / "hueman.config.example.yaml"), "list")
     assert r.returncode == 0, r.stderr
     assert "gruvbox" in r.stdout.split()

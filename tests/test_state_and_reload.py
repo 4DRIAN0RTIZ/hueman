@@ -118,7 +118,7 @@ def test_cli_end_to_end_in_subprocess_uses_only_temp_paths(tmp_path, isolated_ho
 
 def test_cli_missing_config_exits_one(tmp_path, monkeypatch, capsys):
     import hueman.cli as hueman
-    monkeypatch.setattr(sys, "argv", ["hueman", "--config", str(tmp_path / "nope.yaml"), "list"])
+    monkeypatch.setattr(sys, "argv", ["hueman", "--config", str(tmp_path / "nope.yaml"), "status"])
     with pytest.raises(SystemExit) as exc:
         hueman.main()
     assert exc.value.code == 1

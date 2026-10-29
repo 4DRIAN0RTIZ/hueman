@@ -16,7 +16,7 @@ LOG = logging.getLogger("t")
 
 
 def _target(output):
-    cfg = yaml.safe_load((ROOT / "hueman.config.example.yaml").read_text())
+    cfg = yaml.safe_load((ROOT / "hueman" / "data" / "hueman.config.example.yaml").read_text())
     data = dict(cfg["targets"]["starship"], outputs=[str(output)])
     return Target.from_dict("starship", data)
 
