@@ -17,23 +17,6 @@ Deep links use query params (section anchors keep the URL hash):
 
 Legacy `#/latest/add-tool` hashes are still accepted and rewritten.
 
-## Deploy
-
-The site is plain static files; there is no build step. Publish the contents of
-`website/` as the web root of `hueman.cuevaneander.tech`:
-
-- Any static file server works. All asset and content paths are relative and
-  routing uses query params, so no rewrite or fallback rule is needed.
-- Serve over HTTPS and make sure `.md`, `.json` and `.js` files are served
-  (the portal fetches `content/`, `data/` and `assets/js/` at runtime).
-- The portal requests `content/` and `data/` with `cache: "no-cache"`, so a
-  revalidating cache is fine; avoid long `max-age` on those paths or visitors
-  will see stale docs after a release.
-- `index.html` points its canonical URL and Open Graph tags at
-  `https://hueman.cuevaneander.tech/`; change them if the domain changes.
-- Smoke test after publishing: open `/`, `/?p=install`, `/?v=v0.1.0&p=cli`
-  and `/robots.txt`.
-
 ## Versions
 
 | id | channel | meaning |
