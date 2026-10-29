@@ -1,43 +1,43 @@
-# Releases y reintento de publish
+# Releases and publish retry
 
-Las releases salen del workflow `release.yml` al fusionar `dev` en `main`.
-El workflow tiene estos jobs:
+Releases come from the `release.yml` workflow when `dev` is merged into `main`.
+Jobs:
 
-| Job | Qué hace |
+| Job | What it does |
 |---|---|
-| `bump` | Calcula la versión con git-cliff, actualiza `CHANGELOG.md`, crea el tag y lo empuja |
-| `release` | Crea el GitHub Release a partir del tag |
-| `publish` | Construye sdist y wheel y los sube a PyPI (Trusted Publishing, entorno `pypi`) |
-| `sync-dev` | Avanza `dev` hasta `main` con `git merge --ff-only` |
+| `bump` | Computes the version with git-cliff, updates `CHANGELOG.md`, creates the tag and pushes it |
+| `release` | Creates the GitHub Release from the tag |
+| `publish` | Builds sdist and wheel and uploads to PyPI (Trusted Publishing, `pypi` environment) |
+| `sync-dev` | Fast-forwards `dev` to `main` with `git merge --ff-only` |
 
-`bump` solo crea una release si desde el último tag hay commits `feat`, `fix`
-o `perf` (o `BREAKING CHANGE`). Un merge a `main` que solo trae docs, CI o
-chores no publica nada. Una corrida manual (`workflow_dispatch`) omite esta
-comprobación.
+`bump` only cuts a release when there are `feat`, `fix`, or `perf` commits
+(or a `BREAKING CHANGE`) since the last tag. A merge to `main` that is only
+docs, CI, or chores publishes nothing. A manual run (`workflow_dispatch`) skips
+that check.
 
-## Reintentar un publish fallido
+## Retry a failed publish
 
-Antes de reintentar, revisa en qué punto falló:
+Before retrying, see where it failed:
 
-- **Falló `publish` pero el tag ya existe.** Abre la ejecución en la pestaña
-  Actions y usa "Re-run failed jobs". Solo se repite `publish`, que hace
-  checkout del tag y reconstruye el mismo código. No hay que tocar el tag ni
-  crear otra versión.
-- **El tag existe y el re-run no es posible** (por ejemplo la ejecución es
-  muy vieja). Lanza `workflow_dispatch` sobre `main` desde Actions. Como
-  `bump` ve que la versión calculada ya coincide con el último tag,
-  responde `released=false` y los demás jobs se saltan: este camino no
-  republica. En ese caso empuja un commit nuevo de tipo `fix:` a `main` para
-  obtener una versión patch nueva, o sube a mano el build del tag (ver abajo).
-- **PyPI ya tiene los archivos de esa versión.** PyPI no permite resubir el
-  mismo nombre de archivo. Confirma en pypi.org/project/hueman qué archivos
-  existen; si ya están todos, no hay nada que reintentar. Si falta alguno,
-  la action usa `skip-existing` solo si se configura; por defecto fallará, y
-  la salida limpia es publicar una versión patch nueva.
-- **Falló `bump` antes de empujar el tag.** No hay nada publicado: relanza
-  el workflow completo con "Re-run all jobs".
+- **`publish` failed but the tag already exists.** Open the run in the Actions
+  tab and use "Re-run failed jobs". Only `publish` runs again: it checks out
+  the tag and rebuilds the same code. Do not move the tag or cut another
+  version.
+- **The tag exists and re-run is not possible** (for example the run is too
+  old). Dispatch `workflow_dispatch` on `main` from Actions. Because `bump`
+  sees the computed version already matches the latest tag, it reports
+  `released=false` and the other jobs are skipped — this path does not
+  republish. Push a new `fix:` commit to `main` for a patch version, or upload
+  the tag build by hand (see below).
+- **PyPI already has the files for that version.** PyPI does not allow
+  re-uploading the same filename. Check pypi.org/project/hueman-cli for which
+  files exist; if they are all there, there is nothing to retry. If one is
+  missing, the action only uses `skip-existing` when configured; by default it
+  fails, and the clean fix is a new patch version.
+- **`bump` failed before pushing the tag.** Nothing was published: re-run the
+  whole workflow with "Re-run all jobs".
 
-Subida manual desde el tag, solo como último recurso:
+Manual upload from the tag, last resort only:
 
 ```bash
 git checkout vX.Y.Z
@@ -46,6 +46,6 @@ python -m build
 twine upload dist/*
 ```
 
-`sync-dev` falla a propósito si `dev` avanzó con commits que `main` no
-tiene (por ejemplo del bot del changelog). Resuélvelo a mano fusionando
-`main` en `dev` y no fuerces el push.
+`sync-dev` fails on purpose if `dev` moved ahead with commits `main` does not
+have (for example from the changelog bot). Fix it by hand by merging `main`
+into `dev`; do not force-push.

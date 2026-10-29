@@ -1,26 +1,26 @@
-# Arquitectura
+# Architecture
 
-Capas del CLI (sin lógica por nombre de app):
+CLI layers (no per-app branching):
 
-| Módulo | Rol |
-|--------|-----|
-| `hueman/cli.py` | CLI y orquestación (entry point `hueman`, también `python3 -m hueman`) |
-| `hueman/engine/config.py` | Carga de config y logger |
-| `hueman/engine/palettes.py` | Precedencia y carga de paletas |
-| `hueman/engine/targets.py` | Modelo declarativo Target / PatchSpec |
+| Module | Role |
+|--------|------|
+| `hueman/cli.py` | CLI and orchestration (entry point `hueman`, also `python3 -m hueman`) |
+| `hueman/engine/config.py` | Config load and logger |
+| `hueman/engine/palettes.py` | Palette precedence and loading |
+| `hueman/engine/targets.py` | Declarative Target / PatchSpec model |
 | `hueman/engine/render.py` | Jinja, overwrite, patch |
-| `hueman/engine/colors.py` | Filtros `contrast` / `is_dark` |
-| `hueman/engine/reload.py` | Ejecución best-effort de hooks |
-| `hueman/engine/fsutil.py` | Escritura atómica |
+| `hueman/engine/colors.py` | `contrast` / `is_dark` filters |
+| `hueman/engine/reload.py` | Best-effort hook execution |
+| `hueman/engine/fsutil.py` | Atomic writes |
 | `hueman/engine/statesource.py` | StateSource (git / file) |
 
-Principio: **lo específico de una tool vive en YAML + Jinja**, no en ramas
-Python. Por eso [agregar una tool](guides/add-a-tool.md) no requiere parchear
-el motor.
+Principle: **tool-specific logic lives in YAML + Jinja**, not Python branches.
+That is why [adding a tool](guides/add-a-tool.md) does not require patching the
+engine.
 
-## Repo autocontenido
+## Self-contained repo
 
-El repo es autocontenido a propósito: nada dentro de él importa código fuera
-de sí mismo, salvo el archivo de config externo que cada usuario provee. Un
-repo de dotfiles que lo use solo necesita tener `hueman` instalado y su
-propio `hueman.config.yaml` (ver [Configuración](configuration.md)).
+The repo is self-contained on purpose: nothing inside it imports code from
+outside itself, except the external config file each user provides. A
+dotfiles repo that uses it only needs `hueman` installed and its own
+`hueman.config.yaml` (see [Configuration](configuration.md)).

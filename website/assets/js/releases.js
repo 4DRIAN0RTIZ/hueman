@@ -78,7 +78,7 @@
     const d = new Date(raw + (/^\d{4}-\d{2}-\d{2}$/.test(raw) ? "T00:00:00Z" : ""));
     if (isNaN(d.getTime())) return raw;
     try {
-      return new Intl.DateTimeFormat("es", {
+      return new Intl.DateTimeFormat("en", {
         day: "numeric",
         month: "long",
         year: "numeric",

@@ -7,6 +7,20 @@
     pageId: null,
     nav: null,
     openNav: false,
+    view: "landing",
+  };
+
+  const META = {
+    landing: {
+      title: "hueman: one palette, every tool",
+      description:
+        "One palette. Every tool. Apply one theme across kitty, nvim, tmux, starship, and whatever you declare — one command.",
+    },
+    docs: {
+      title: "hueman: docs",
+      description:
+        "One palette. Every tool. Docs for applying one theme across your terminal, editor, prompt, and the rest of your setup.",
+    },
   };
 
   const els = {
@@ -31,6 +45,15 @@
     progress: document.getElementById("read-progress"),
     masthead: document.getElementById("hero"),
     themes: document.getElementById("themes"),
+    landing: document.getElementById("landing"),
+    docsShell: document.getElementById("docs-shell"),
+    skipLink: document.getElementById("skip-link"),
+    brandHome: document.getElementById("brand-home"),
+    copyInstall: document.getElementById("copy-install"),
+    landingKicker: document.getElementById("landing-kicker"),
+    metaDescription: document.getElementById("meta-description"),
+    ogTitle: document.getElementById("og-title"),
+    ogDescription: document.getElementById("og-description"),
   };
 
   const Releases = window.HuemanReleases;
@@ -63,14 +86,14 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "copy-btn";
-      btn.textContent = "copiar";
+      btn.textContent = "copy";
       btn.addEventListener("click", async () => {
         try {
           await navigator.clipboard.writeText((pre.querySelector("code") || pre).innerText.trimEnd());
-          btn.textContent = "copiado";
+          btn.textContent = "copied";
           btn.classList.add("is-done");
           setTimeout(() => {
-            btn.textContent = "copiar";
+            btn.textContent = "copy";
             btn.classList.remove("is-done");
           }, 1400);
         } catch (_) {
@@ -96,8 +119,14 @@
     const defaultVersion = STATE.versionsDoc?.default || "latest";
     let versionId = params.get("v");
     let pageId = params.get("p");
+    const hashDocs = location.hash.startsWith("#/");
 
-    if (!versionId && location.hash.startsWith("#/")) {
+    // Bare URL (no v/p, no legacy hash) → product landing.
+    if (!versionId && !pageId && !hashDocs) {
+      return { view: "landing" };
+    }
+
+    if (!versionId && hashDocs) {
       const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
       const known = new Set((STATE.versionsDoc?.versions || []).map((x) => x.id));
       if (parts.length && known.has(parts[0])) {
@@ -110,12 +139,57 @@
     }
 
     return {
+      view: "docs",
       versionId: versionId || defaultVersion,
       pageId: pageId || "intro",
-      sectionId: location.hash.startsWith("#/")
-        ? ""
-        : (location.hash || "").replace(/^#/, ""),
+      sectionId: hashDocs ? "" : (location.hash || "").replace(/^#/, ""),
     };
+  }
+
+  function setMeta(view, pageTitle) {
+    const base = META[view] || META.landing;
+    const title =
+      view === "docs" && pageTitle ? `${pageTitle} · hueman` : base.title;
+    document.title = title;
+    if (els.metaDescription) els.metaDescription.setAttribute("content", base.description);
+    if (els.ogTitle) els.ogTitle.setAttribute("content", title);
+    if (els.ogDescription) els.ogDescription.setAttribute("content", base.description);
+  }
+
+  function setView(view) {
+    STATE.view = view;
+    document.body.dataset.view = view;
+    if (els.landing) els.landing.hidden = view !== "landing";
+    if (els.docsShell) els.docsShell.hidden = view !== "docs";
+    if (els.skipLink) {
+      els.skipLink.setAttribute(
+        "href",
+        view === "landing" ? "#landing-main" : "#contenido"
+      );
+    }
+    if (els.spineMeta) {
+      // Landing: wordmark only. Docs: version label (filled in renderHeroAndFooter).
+      if (view === "landing") {
+        els.spineMeta.textContent = "";
+        els.spineMeta.hidden = true;
+      } else {
+        els.spineMeta.hidden = false;
+      }
+    }
+    if (view === "landing") {
+      closeMobileNav();
+      if (els.progress) els.progress.style.transform = "scaleX(0)";
+      setMeta("landing");
+    }
+  }
+
+  function goHome({ replace = false } = {}) {
+    const next = location.pathname.endsWith("/")
+      ? location.pathname
+      : location.pathname.replace(/index\.html$/i, "") || "./";
+    const url = next || "./";
+    if (replace) history.replaceState(null, "", url);
+    else history.pushState(null, "", url);
   }
 
   function setRoute(versionId, pageId, { replace = false } = {}) {
@@ -130,13 +204,13 @@
 
   async function fetchText(path) {
     const res = await fetch(path, { cache: "no-cache" });
-    if (!res.ok) throw new Error(`No se pudo cargar ${path} (${res.status})`);
+    if (!res.ok) throw new Error(`Failed to load ${path} (${res.status})`);
     return res.text();
   }
 
   async function fetchJson(path) {
     const res = await fetch(path, { cache: "no-cache" });
-    if (!res.ok) throw new Error(`No se pudo cargar ${path} (${res.status})`);
+    if (!res.ok) throw new Error(`Failed to load ${path} (${res.status})`);
     return res.json();
   }
 
@@ -160,7 +234,7 @@
   }
 
   function configureMarked() {
-    if (typeof marked === "undefined") throw new Error("marked.js no cargó");
+    if (typeof marked === "undefined") throw new Error("marked.js failed to load");
     const renderer = new marked.Renderer();
     renderer.heading = function heading({ tokens, depth }) {
       const body = this.parser.parseInline(tokens);
@@ -169,7 +243,7 @@
       if (depth >= 2 && depth <= 3 && id) {
         return (
           `<h${depth} id="${id}">${body}` +
-          ` <a class="heading-anchor" href="#${id}" aria-label="Enlace a esta sección">#</a>` +
+          ` <a class="heading-anchor" href="#${id}" aria-label="Link to this section">#</a>` +
           `</h${depth}>\n`
         );
       }
@@ -253,23 +327,23 @@
   }
 
   function currentSectionTitle() {
-    if (!STATE.nav) return "Documentación";
+    if (!STATE.nav) return "Documentation";
     for (const section of STATE.nav.sections || []) {
       if ((section.pages || []).includes(STATE.pageId)) return section.title;
     }
-    return "Documentación";
+    return "Documentation";
   }
 
   function versionOptionLabel(v) {
     return v.channel === "latest"
-      ? `${v.label} · en desarrollo`
-      : `${v.label} · publicada`;
+      ? `${v.label} · in development`
+      : `${v.label} · released`;
   }
 
   function renderVersionSelect() {
     const groups = [
-      ["Más reciente", (v) => v.channel === "latest"],
-      ["Publicadas", (v) => v.channel !== "latest"],
+      ["Latest", (v) => v.channel === "latest"],
+      ["Released", (v) => v.channel !== "latest"],
     ];
     els.versionSelect.innerHTML = groups
       .map(([title, test]) => {
@@ -288,16 +362,16 @@
     if (v.channel === "latest") {
       els.notice.innerHTML =
         `<p class="notice notice--dev"><span class="notice__dot" aria-hidden="true"></span>` +
-        `Documentación en desarrollo: sigue la rama principal y puede describir cambios aún sin publicar.</p>`;
+        `Docs in development: tracks the main branch and may describe changes not yet released.</p>`;
       return;
     }
     const latest = STATE.versionsDoc.versions.find((x) => x.channel === "latest");
     const link = latest
-      ? ` <a href="${pageHref(latest.id, STATE.pageId)}" data-link>Ver esta página en ${escapeAttr(latest.label)}</a>`
+      ? ` <a href="${pageHref(latest.id, STATE.pageId)}" data-link>View this page on ${escapeAttr(latest.label)}</a>`
       : "";
     els.notice.innerHTML =
       `<p class="notice notice--old" role="note">` +
-      `Estás viendo la documentación de <strong>${escapeAttr(v.label)}</strong> — puede estar desactualizada.${link}</p>`;
+      `You are viewing docs for <strong>${escapeAttr(v.label)}</strong> — it may be outdated.${link}</p>`;
   }
 
   function renderHeroAndFooter() {
@@ -314,30 +388,34 @@
     if (els.pageStamp) {
       els.pageStamp.textContent =
         idx >= 0
-          ? `ficha ${String(idx + 1).padStart(2, "0")} / ${String(ids.length).padStart(2, "0")}`
+          ? `page ${String(idx + 1).padStart(2, "0")} / ${String(ids.length).padStart(2, "0")}`
           : `id · ${STATE.pageId}`;
     }
     if (els.spineMeta) els.spineMeta.textContent = v.label;
 
     if (STATE.pageId === "intro") {
       els.heroLead.textContent =
-        "Una paleta YAML, templates Jinja y targets declarativos para themear tus tools — incluida la tuya.";
+        "One palette. Every tool. You own the map; one command paints it everywhere.";
     } else if (EXTEND_PAGES.has(STATE.pageId)) {
       els.heroLead.textContent =
-        "Extiende hueman sin tocar el motor: un template Jinja y un target en tu config bastan.";
+        "Add another tool without forking the engine — a template and a target in your config.";
     } else {
-      els.heroLead.textContent = `Manual técnico · revisión ${v.label}`;
+      els.heroLead.textContent = `Docs · revision ${v.label}`;
     }
 
-    const channelLabel =
-      v.channel === "latest" ? "latest" : v.status || v.channel || "release";
-    els.heroBadges.innerHTML = [
-      `<span class="badge badge--current" aria-label="Versión consultada">${v.label}</span>`,
-      `<span class="badge badge--ok">${channelLabel}</span>`,
-      v.semver ? `<span class="badge">${v.semver}</span>` : "",
-    ]
-      .filter(Boolean)
-      .join("");
+    // One primary version pill; add a channel hint only when it is not redundant
+    // (label "latest" + channel "latest" used to render two identical badges).
+    const badges = [
+      `<span class="badge badge--current" aria-label="Selected version">${escapeAttr(v.label)}</span>`,
+    ];
+    if (v.channel === "latest") {
+      badges.push(`<span class="badge badge--ok">in development</span>`);
+    } else if (v.status && v.status !== "current") {
+      badges.push(
+        `<span class="badge badge--ok">${escapeAttr(v.status)}</span>`
+      );
+    }
+    els.heroBadges.innerHTML = badges.join("");
 
     const updatedText = Releases.formatDate(v.updated);
     els.heroUpdated.textContent = updatedText;
@@ -401,10 +479,10 @@
 
     els.pager.innerHTML =
       `<a class="pager__prev" href="${prev ? pageHref(STATE.versionId, prev) : "#"}" data-link ${prev ? "" : "hidden"}>` +
-      `<span class="pager__dir">Anterior</span>` +
+      `<span class="pager__dir">Previous</span>` +
       `<span class="pager__title">${prevMeta ? prevMeta.title : ""}</span></a>` +
       `<a class="pager__next" href="${next ? pageHref(STATE.versionId, next) : "#"}" data-link ${next ? "" : "hidden"}>` +
-      `<span class="pager__dir">Siguiente</span>` +
+      `<span class="pager__dir">Next</span>` +
       `<span class="pager__title">${nextMeta ? nextMeta.title : ""}</span></a>`;
   }
 
@@ -415,16 +493,16 @@
   function renderChangelog(md, version) {
     const releases = Releases.filterReleases(Releases.parseChangelog(md), version.semver);
     if (!releases.length) {
-      return `<p class="doc__error">Sin entradas de changelog para ${escapeAttr(version.label)}.</p>`;
+      return `<p class="doc__error">No changelog entries for ${escapeAttr(version.label)}.</p>`;
     }
     return releases
       .map((r) => {
         const current = !r.unreleased && r.version === version.semver;
         const title = r.unreleased ? "Unreleased" : `v${escapeAttr(r.version)}`;
         const tag = current
-          ? `<span class="release__tag">esta versión</span>`
+          ? `<span class="release__tag">this version</span>`
           : r.unreleased
-            ? `<span class="release__tag release__tag--dev">en desarrollo</span>`
+            ? `<span class="release__tag release__tag--dev">in development</span>`
             : "";
         const date = r.date
           ? `<time class="release__date" datetime="${escapeAttr(r.date)}">${escapeAttr(Releases.formatDate(r.date))}</time>`
@@ -445,7 +523,7 @@
         return (
           `<section class="release${current ? " is-current" : ""}">` +
           `<h2 id="${r.id}">${title}${tag}${date}` +
-          ` <a class="heading-anchor" href="#${r.id}" aria-label="Enlace a esta sección">#</a></h2>` +
+          ` <a class="heading-anchor" href="#${r.id}" aria-label="Link to this section">#</a></h2>` +
           `${groups}</section>`
         );
       })
@@ -456,7 +534,7 @@
     if (!els.outline) return;
     const headings = [...els.doc.querySelectorAll("h2[id], h3[id]")];
     if (!headings.length) {
-      els.outline.innerHTML = `<p class="outline__empty">Sin secciones</p>`;
+      els.outline.innerHTML = `<p class="outline__empty">No sections</p>`;
       return;
     }
     els.outline.innerHTML = headings
@@ -468,7 +546,7 @@
   }
 
   function updateProgress() {
-    if (!els.progress) return;
+    if (STATE.view !== "docs" || !els.progress) return;
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
     const ratio = max > 0 ? window.scrollY / max : 0;
@@ -489,7 +567,7 @@
     STATE.openNav = false;
     document.body.classList.remove("is-nav-open");
     els.navToggle.setAttribute("aria-expanded", "false");
-    els.navToggle.setAttribute("aria-label", "Abrir índice");
+    els.navToggle.setAttribute("aria-label", "Open index");
     els.backdrop.hidden = true;
   }
 
@@ -497,7 +575,7 @@
     STATE.openNav = true;
     document.body.classList.add("is-nav-open");
     els.navToggle.setAttribute("aria-expanded", "true");
-    els.navToggle.setAttribute("aria-label", "Cerrar índice");
+    els.navToggle.setAttribute("aria-label", "Close index");
     els.backdrop.hidden = false;
   }
 
@@ -521,10 +599,10 @@
     const version = currentVersion();
     const page = STATE.nav.pages[STATE.pageId];
     els.doc.setAttribute("aria-busy", "true");
-    els.doc.innerHTML = `<p class="doc__loading">Cargando…</p>`;
+    els.doc.innerHTML = `<p class="doc__loading">Loading…</p>`;
 
     if (!page) {
-      els.doc.innerHTML = `<p class="doc__error">Página desconocida: <code>${STATE.pageId}</code></p>`;
+      els.doc.innerHTML = `<p class="doc__error">Unknown page: <code>${STATE.pageId}</code></p>`;
       els.doc.setAttribute("aria-busy", "false");
       renderOutline();
       return;
@@ -561,6 +639,18 @@
 
   async function applyRoute() {
     const parsed = parseRoute();
+
+    if (parsed.view === "landing") {
+      setView("landing");
+      // Keep the address bar clean (drop stray hash / empty search).
+      if (location.search || location.hash) {
+        goHome({ replace: true });
+      }
+      return;
+    }
+
+    setView("docs");
+
     const knownVersions = new Set(STATE.versionsDoc.versions.map((v) => v.id));
     if (!knownVersions.has(parsed.versionId)) {
       parsed.versionId = STATE.versionsDoc.default;
@@ -592,6 +682,7 @@
     renderHeroAndFooter();
     renderVersionNotice();
     renderPager();
+    setMeta("docs", STATE.nav?.pages?.[STATE.pageId]?.title);
 
     const mustReload =
       prevVersion !== STATE.versionId ||
@@ -610,13 +701,21 @@
   }
 
   function onDocumentClick(event) {
+    const home = event.target.closest("#brand-home, #colophon-home");
+    if (home) {
+      event.preventDefault();
+      goHome();
+      applyRoute().catch(showRouteError);
+      return;
+    }
+
     const link = event.target.closest("a[data-link]");
     if (!link) return;
     const href = link.getAttribute("href") || "";
     if (!href.startsWith("?") && !href.startsWith("#/")) return;
     event.preventDefault();
 
-    let versionId = STATE.versionId;
+    let versionId = STATE.versionId || STATE.versionsDoc?.default || "latest";
     let pageId = "intro";
     if (href.startsWith("?")) {
       const params = new URLSearchParams(href.replace(/^\?/, "").split("#")[0]);
@@ -628,25 +727,100 @@
       pageId = parts[1] || "intro";
     }
     setRoute(versionId, pageId);
-    applyRoute().catch((err) => {
+    applyRoute().catch(showRouteError);
+  }
+
+  function showRouteError(err) {
+    setView("docs");
+    if (els.doc) {
       els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
+    }
+  }
+
+  function initLandingActions() {
+    if (!els.copyInstall) return;
+    els.copyInstall.addEventListener("click", async () => {
+      const text = els.copyInstall.dataset.copy || "pipx install hueman-cli";
+      try {
+        await navigator.clipboard.writeText(text);
+        els.copyInstall.textContent = "copied";
+        els.copyInstall.classList.add("is-done");
+        setTimeout(() => {
+          els.copyInstall.textContent = "copy";
+          els.copyInstall.classList.remove("is-done");
+        }, 1400);
+      } catch (_) {
+        els.copyInstall.textContent = "error";
+      }
     });
+  }
+
+  function cmpSemver(a, b) {
+    const pa = String(a).split(".").map((n) => parseInt(n, 10) || 0);
+    const pb = String(b).split(".").map((n) => parseInt(n, 10) || 0);
+    const len = Math.max(pa.length, pb.length);
+    for (let i = 0; i < len; i++) {
+      const d = (pa[i] || 0) - (pb[i] || 0);
+      if (d) return d;
+    }
+    return 0;
+  }
+
+  function formatReleaseLabel(version) {
+    if (!version) return null;
+    const v = String(version).trim();
+    return v.startsWith("v") ? v : `v${v}`;
+  }
+
+  function latestReleaseFromVersions() {
+    const releases = (STATE.versionsDoc?.versions || [])
+      .filter((v) => v.channel === "release" && v.semver)
+      .sort((a, b) => cmpSemver(b.semver, a.semver));
+    if (!releases.length) return null;
+    return formatReleaseLabel(releases[0].label || releases[0].semver);
+  }
+
+  async function latestReleaseLabel() {
+    // Prefer CHANGELOG (tracks every cut, even without a frozen docs snapshot).
+    try {
+      const md = await fetchText("data/changelog.md");
+      const cut = (Releases.parseChangelog(md) || []).find(
+        (r) => !r.unreleased && r.version
+      );
+      if (cut) return formatReleaseLabel(cut.version);
+    } catch (_) {
+      /* fall through */
+    }
+    return latestReleaseFromVersions();
+  }
+
+  async function fillLandingKicker() {
+    if (!els.landingKicker) return;
+    const release = await latestReleaseLabel();
+    els.landingKicker.textContent = release
+      ? `MIT · open source · ${release}`
+      : "MIT · open source";
   }
 
   async function boot() {
     try {
       initThemes();
+      initLandingActions();
       configureMarked();
       STATE.versionsDoc = await fetchJson("data/versions.json");
+      fillLandingKicker().catch(() => {});
       const parsed = parseRoute();
-      STATE.versionId = parsed.versionId;
-      STATE.pageId = parsed.pageId;
+      if (parsed.view === "docs") {
+        STATE.versionId = parsed.versionId;
+        STATE.pageId = parsed.pageId;
+      } else {
+        STATE.versionId = STATE.versionsDoc.default || "latest";
+        STATE.pageId = null;
+      }
 
       els.versionSelect.addEventListener("change", () => {
         setRoute(els.versionSelect.value, STATE.pageId || "intro");
-        applyRoute().catch((err) => {
-          els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
-        });
+        applyRoute().catch(showRouteError);
       });
       els.navToggle.addEventListener("click", toggleMobileNav);
       els.backdrop.addEventListener("click", closeMobileNav);
@@ -656,17 +830,16 @@
       });
       window.addEventListener("scroll", updateProgress, { passive: true });
       window.addEventListener("popstate", () => {
-        applyRoute().catch((err) => {
-          els.doc.innerHTML = `<p class="doc__error">${err.message}</p>`;
-        });
+        applyRoute().catch(showRouteError);
       });
 
       await applyRoute();
     } catch (err) {
+      setView("docs");
       els.doc.innerHTML =
         `<p class="doc__error">${err.message}</p>` +
-        `<p class="doc__error">Sirve <code>website/</code> por HTTP ` +
-        `(ej. <code>python3 -m http.server 8765 --directory website</code>).</p>`;
+        `<p class="doc__error">Serve <code>website/</code> over HTTP ` +
+        `(e.g. <code>python3 -m http.server 8765 --directory website</code>).</p>`;
     }
   }
 

@@ -1,86 +1,86 @@
-# Configuración
+# Configuration
 
-Archivo YAML del **usuario** (no vive dentro del repo de hueman como verdad
-de máquina). Esquema comentado: `hueman init` (`hueman/data/hueman.config.example.yaml`).
+YAML file owned by the **user** (not machine truth inside the hueman repo).
+Commented schema: `hueman init` (`hueman/data/hueman.config.example.yaml`).
 
-## Claves de nivel superior
+## Top-level keys
 
-| Clave | Rol |
-|-------|-----|
-| `vars` | Variables `${nombre}` para las rutas (ver [Variables](#variables)) |
-| `state_file` | Dónde guardar el nombre de la paleta activa |
-| `palette_dirs` | Paletas custom (ganan por nombre) |
-| `template_dirs` | Templates custom (ganan por nombre de archivo) |
-| `reload_failure` | `warn` (default) o `error` para hooks |
-| `state_sync` | Opt-in sync multi-nodo (`type: git` \| `file`) |
-| `targets` | Mapa nombre → target |
-| `post_apply` | Lista de comandos (strings) al final de un `set` completo; un string suelto se rechaza |
-| `logging` | `level` (default `INFO`) y `file` (ruta opcional; se añade un log a archivo además de stderr). `level` debe ser DEBUG, INFO, WARNING, ERROR o CRITICAL; el directorio de `file` debe existir y ser escribible |
+| Key | Role |
+|-----|------|
+| `vars` | `${name}` variables for paths (see [Variables](#variables)) |
+| `state_file` | Where the active palette name is stored |
+| `palette_dirs` | Custom palettes (win by name) |
+| `template_dirs` | Custom templates (win by file name) |
+| `reload_failure` | `warn` (default) or `error` for hooks |
+| `state_sync` | Opt-in multi-node sync (`type: git` \| `file`) |
+| `targets` | Name → target map |
+| `post_apply` | List of command strings after a full `set`; a bare string is rejected |
+| `logging` | `level` (default `INFO`) and optional `file` (file log in addition to stderr). `level` must be DEBUG, INFO, WARNING, ERROR, or CRITICAL; the `file` directory must exist and be writable |
 
-## Resolución del archivo
+## File resolution
 
 1. `--config`  
 2. `HUEMAN_CONFIG`  
 3. `~/.config/hueman/config.yaml`  
 
-El directorio actual **no** se busca a propósito: un config puede ejecutar
-comandos (`reload`, `post_apply`), y ejecutar hueman dentro de un repo ajeno
-no debe cargar el `hueman.config.yaml` que ese repo traiga. Si quieres un
-config junto a tu proyecto, pásalo explícitamente con `--config`.
+The current directory is **intentionally not** searched: a config can run
+commands (`reload`, `post_apply`), and running hueman inside someone else's
+repo must not pick up that repo's `hueman.config.yaml`. If you want a config
+next to a project, pass it explicitly with `--config`.
 
-## Placeholders en `reload` / `post_apply`
+## Placeholders in `reload` / `post_apply`
 
-Los comandos aceptan `{name}` (alias `{palette}`) y `{seccion.clave}` (lookup
-con punto en la paleta activa, ej. `{kitty.color4}`). El valor se inserta con
-`shlex.quote`. `${VAR}`, `$(...)` y llaves sin punto (ej. `find -exec {} +`)
-quedan intactas. Un `{seccion.clave}` inexistente da un error limpio
-`Config invalida` (exit 1) antes de escribir nada.
+Commands accept `{name}` (alias `{palette}`) and `{section.key}` (dotted
+lookup in the active palette, e.g. `{kitty.color4}`). Values are inserted with
+`shlex.quote`. `${VAR}`, `$(...)`, and braces without a dot (e.g.
+`find -exec {} +`) are left alone. An unknown `{section.key}` yields a clean
+`Config invalida` error (exit 1) before writing anything.
 
 ```yaml
 reload: "python3 ~/x.py --name {name} --color {kitty.color4}"
 ```
 
-Con `set --dry-run` se imprimen los `post_apply` ya expandidos.
+With `set --dry-run`, expanded `post_apply` commands are printed.
 
-## Fallos de `reload` / `post_apply`
+## `reload` / `post_apply` failures
 
-Se registra el código de salida de cada comando. `reload_failure` (`warn` por
-defecto, o `error`) decide qué pasa si uno sale != 0; cada target puede
-sobreescribirla, y `post_apply` usa la política global.
+Each command's exit code is logged. `reload_failure` (`warn` by default, or
+`error`) decides what happens when one exits ≠ 0; each target may override it,
+and `post_apply` uses the global policy.
 
-- `warn`: se loguea un warning y `set` sale 0.
-- `error`: se loguea un error, el resto de pasos se ejecuta igual
-  (best-effort) y `set` sale 1.
+- `warn`: log a warning and `set` exits 0.
+- `error`: log an error, the remaining steps still run (best-effort), and
+  `set` exits 1.
 
-Un error de escritura (permisos, disco lleno) es un error limpio del target
-(log + exit 1) y su archivo original queda intacto.
+A write error (permissions, full disk) is a clean target error (log + exit 1)
+and the original file is left intact.
 
 ## State file
 
-`state_file` guarda el nombre de la paleta activa (una línea). Se escribe solo
-en un `set` completo y real: no en `--dry-run`, no con `--only`. `status` y
-`{name}` en los hooks usan ese nombre. Con `state_sync`, la revisión local
-vive aparte en `<state_file>.revision` (ver [Sync entre nodos](state-sync.md)).
+`state_file` stores the active palette name (one line). It is written only on a
+full, real `set`: not on `--dry-run`, not with `--only`. `status` and `{name}`
+in hooks use that name. With `state_sync`, the local revision lives separately
+at `<state_file>.revision` (see [Sync across nodes](state-sync.md)).
 
-## Usar con un repo de dotfiles
+## Using with a dotfiles repo
 
-El motor no sabe nada de tus rutas: todo el mapeo vive en un config que
-mantienes en tu repo de dotfiles.
+The engine knows nothing about your paths: the whole map lives in a config you
+keep in your dotfiles repo.
 
-1. Guarda el config (y tus `palettes.custom/` y `templates.custom/`) en el
-   repo, por ejemplo `~/dotfiles/hueman/config.yaml`.
-2. Enlaza ese directorio como `~/.config/hueman`
-   (`ln -s ~/dotfiles/hueman ~/.config/hueman`); así `set` encuentra el config
-   sin flags.
-3. Opcional: un wrapper propio si necesitas fijar el intérprete, por ejemplo
-   `exec python3 -m hueman "$@"` desde un entorno concreto.
+1. Store the config (and your `palettes.custom/` / `templates.custom/`) in the
+   repo, e.g. `~/dotfiles/hueman/config.yaml`.
+2. Symlink that directory as `~/.config/hueman`
+   (`ln -s ~/dotfiles/hueman ~/.config/hueman`) so `set` finds the config
+   without flags.
+3. Optional: your own wrapper if you need a fixed interpreter, e.g.
+   `exec python3 -m hueman "$@"` from a specific environment.
 
-Errores de esquema o YAML inválido → mensaje claro y exit 1 (sin traceback).
+Schema or invalid YAML errors → clear message and exit 1 (no traceback).
 
 ## Variables
 
-`vars` define valores reutilizables para no repetir rutas completas; así el
-repo de destino se cambia en un solo lugar:
+`vars` defines reusable values so full paths are not repeated; the target repo
+changes in one place:
 
 ```yaml
 vars:
@@ -93,26 +93,26 @@ targets:
       - "${repo}/kitty/theme.conf"
 ```
 
-Reglas:
+Rules:
 
-- `vars` es un mapeo nombre → string. Los nombres siguen `[A-Za-z_][A-Za-z0-9_]*`.
-  Un valor que no sea string, o un nombre inválido, es error de configuración.
-- `${nombre}` se sustituye **solo** en claves de rutas: `outputs` y
-  `skip_unless_path_exists` de cada target, y `state_file`, `palette_dirs` y
-  `template_dirs` de nivel superior. La sustitución ocurre antes de expandir `~`.
-- **No** se sustituye en `reload`, `post_apply`, regex o marcadores de `patch`,
-  `extra_vars` ni en el contenido de los templates (en `reload`/`post_apply`
-  `${VAR}` sigue siendo del shell).
-- Un `${nombre}` no definido en una clave de rutas es un error de configuración
-  (`Config invalida: ...`, exit 1) que nombra la variable y dónde se usó.
-- Los valores pueden llevar `~`, pero no se anidan: un `${...}` dentro del valor
-  de una variable es error.
-- Un `$` que no forma exactamente `${nombre}` (por ejemplo `$HOME`) se deja tal cual.
-- Un valor vacío es válido y se sustituye por una cadena vacía.
-- `--var NOMBRE=VALOR` en la línea de comandos (ver [CLI](cli.md)) sobreescribe
-  o agrega variables a las del archivo.
+- `vars` is a name → string map. Names match `[A-Za-z_][A-Za-z0-9_]*`.
+  A non-string value or invalid name is a config error.
+- `${name}` is substituted **only** in path keys: each target's `outputs` and
+  `skip_unless_path_exists`, and top-level `state_file`, `palette_dirs`, and
+  `template_dirs`. Substitution happens before expanding `~`.
+- **Not** substituted in `reload`, `post_apply`, patch regex/markers,
+  `extra_vars`, or template bodies (in `reload`/`post_apply`, `${VAR}` remains
+  shell).
+- An undefined `${name}` in a path key is a config error
+  (`Config invalida: ...`, exit 1) that names the variable and where it was used.
+- Values may include `~`, but do not nest: a `${...}` inside a variable value
+  is an error.
+- A `$` that is not exactly `${name}` (e.g. `$HOME`) is left as-is.
+- An empty value is valid and substitutes to an empty string.
+- `--var NAME=VALUE` on the command line (see [CLI](cli.md)) overrides or adds
+  variables on top of the file.
 
 ## Targets
 
-Ver [Targets y render](targets.md) y
-[Agregar soporte a una tool](guides/add-a-tool.md).
+See [Targets and render](targets.md) and
+[Add support for a tool](guides/add-a-tool.md).

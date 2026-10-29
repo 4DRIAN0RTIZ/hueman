@@ -78,10 +78,10 @@ test("filterReleases compares numerically, not lexically", () => {
   assert.deepStrictEqual(R.filterReleases(rel, "0.9.0").map((x) => x.id), ["0-9-0"]);
 });
 
-test("formatDate renders long Spanish date", () => {
+test("formatDate renders long English date", () => {
   const out = R.formatDate("2026-10-16");
   assert.match(out, /16/);
-  assert.match(out, /octubre/);
+  assert.match(out, /October/i);
   assert.match(out, /2026/);
 });
 

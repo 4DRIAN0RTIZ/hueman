@@ -1,6 +1,6 @@
 ---
 name: hueman
-description: "Operate hueman, a Python CLI (`hueman`) that turns one YAML palette plus Jinja2 templates into config files for the user's apps. Use when the user mentions hueman or asks to apply, switch, inspect or sync a hueman theme, to find out why a hueman target was skipped, or to add a template, target or palette to a hueman setup. Do NOT use when hueman is not mentioned, or when the user only wants some colors in a one-off config file."
+description: "Operate hueman, a Python CLI (`hueman`): one palette, every tool — apply one theme across the apps declared in the user's config. Use when the user mentions hueman or asks to apply, switch, inspect or sync a hueman theme, to find out why a hueman target was skipped, or to add a template, target or palette to a hueman setup. Do NOT use when hueman is not mentioned, or when the user only wants some colors in a one-off config file."
 license: MIT
 metadata:
   version: "0.2.0"
@@ -10,7 +10,7 @@ metadata:
 
 # hueman
 
-hueman reads a palette (`hueman/palettes/<name>.yaml` in the package) and renders Jinja2 templates into the files declared in the user's own `hueman.config.yaml`. It is not a dotfile manager: it installs, links and versions nothing, and it never guesses paths. This skill teaches you to operate it safely. The installed `hueman` CLI is the authority for syntax; this file is only guidance.
+**One palette. Every tool.** hueman applies one theme across the apps declared in the user's own `hueman.config.yaml` (packaged palettes under `hueman/palettes/<name>.yaml`, templates under `hueman/templates/`). It is not a dotfile manager: it installs, links and versions nothing, and it never guesses paths. This skill teaches you to operate it safely. The installed `hueman` CLI is the authority for syntax; this file is only guidance.
 
 Versioning: this file is versioned by the git tag of the hueman repo (`skills/hueman/SKILL.md` at tag `vX.Y.Z`). `metadata.version` is the hueman release it describes. If a flag or message here disagrees with the installed tool, trust the tool and say so.
 
@@ -25,7 +25,7 @@ hueman <subcommand> --help
 
 Do not assume a `hueman` binary is on `PATH`: check with `hueman --version` or `command -v hueman`; from a source checkout, run `python3 -m hueman` instead. `--config <path>` is a global option and goes before the subcommand. Always pass it explicitly; the implicit order is `--config`, `$HUEMAN_CONFIG`, `~/.config/hueman/config.yaml` (the current directory is never searched).
 
-Subcommands at the time of writing: `list`, `status`, `set <palette> [--dry-run] [--only NAME[,NAME]]`, `sync [-q]`. If `--help` shows others, use the help text.
+Subcommands at the time of writing: `init`, `list`, `status`, `set <palette> [--dry-run] [--only NAME[,NAME]]`, `sync [-q]`. If `--help` shows others, use the help text.
 
 ## Standard sequence
 
