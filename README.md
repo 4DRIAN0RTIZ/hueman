@@ -23,6 +23,11 @@ git clone https://github.com/NeanderTeam/hueman.git
 cd hueman && pip install -e .
 ```
 
+Actualizar: `pipx upgrade hueman-cli` (o `pip install -U hueman-cli`).
+Desinstalar: `pipx uninstall hueman-cli` (o `pip uninstall hueman-cli`); tu config
+y los archivos generados no se borran (detalle en la
+[guía de instalación](https://hueman.cuevaneander.tech/?p=install)).
+
 Otros comandos: `init` (config de ejemplo), `list` (paletas), `status` (tema activo) y `sync` (estado
 compartido entre máquinas).
 
@@ -56,6 +61,11 @@ python3 -m http.server 8765 --directory website
 ```
 
 y abre `http://localhost:8765`.
+
+## Soporte
+
+¿Un bug o una idea? Abre un issue en
+[github.com/NeanderTeam/hueman/issues](https://github.com/NeanderTeam/hueman/issues).
 
 ## Estructura del repo
 
