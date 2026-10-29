@@ -23,7 +23,7 @@ hueman --help
 hueman <subcommand> --help
 ```
 
-Do not assume a `hueman` binary is on `PATH`: check with `hueman --version` or `command -v hueman`; from a source checkout, run `python3 -m hueman` instead. `--config <path>` is a global option and goes before the subcommand. Always pass it explicitly; the implicit order is `--config`, `$HUEMAN_CONFIG`, `./hueman.config.yaml`, `~/.config/hueman/config.yaml`.
+Do not assume a `hueman` binary is on `PATH`: check with `hueman --version` or `command -v hueman`; from a source checkout, run `python3 -m hueman` instead. `--config <path>` is a global option and goes before the subcommand. Always pass it explicitly; the implicit order is `--config`, `$HUEMAN_CONFIG`, `~/.config/hueman/config.yaml` (the current directory is never searched).
 
 Subcommands at the time of writing: `list`, `status`, `set <palette> [--dry-run] [--only NAME[,NAME]]`, `sync [-q]`. If `--help` shows others, use the help text.
 
@@ -39,7 +39,7 @@ hueman --config CFG set PALETTE               # real apply
 1. Run `list` and `status` first. They are read-only.
 2. Run `set ... --dry-run` and show the user every `[DRY RUN] escribiría <path>` line plus any `post_apply` lines.
 3. Run the real `set` only after the user explicitly approves that list. `set` writes outside the repo: every `outputs` path, the `state_file` (default `~/.config/hueman/current`), and runs `reload`/`post_apply` shell commands.
-4. `sync` also writes outside the repo (it applies a remote palette). Ask first. Without `state_sync` configured it only warns and exits 0.
+4. `sync` also writes outside the repo (it applies a remote palette). Ask first. Without `state_sync` configured it only warns and exits 0. If the remote palette is not available locally, it warns, does not advance the revision and exits 0. Palette names are limited to letters, digits, `.`, `_`, `-`.
 5. Report the exit code. Exit 1 means a config problem or at least one target failed, even if other targets were written.
 
 `--dry-run` writes nothing, creates no directories, runs no `reload`, saves no `state_file`, publishes no state. It still prints the `post_apply` commands that would run.

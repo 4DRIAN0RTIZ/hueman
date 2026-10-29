@@ -189,6 +189,13 @@ class Hueman:
             # set_theme valida antes de escribir: no hay nada aplicado ni revision que guardar
             print(f"Config invalida: {e}", file=sys.stderr)
             return 1, "failed"
+        except SystemExit:
+            # load() ya logueo el motivo; la paleta remota no existe aqui (o es invalida).
+            # Sync no debe matar el arranque del shell ni avanzar la revision.
+            self.config.logger.warning(
+                f"sync: la paleta remota '{remote.palette}' no esta disponible localmente; "
+                "se omite")
+            return 0, "unknown-palette"
         if failed:
             print(f"Targets con errores: {', '.join(failed)}", file=sys.stderr)
             return 1, "failed"
@@ -245,7 +252,7 @@ def _var_arg(text: str):
 def main():
     parser = argparse.ArgumentParser(description="Gestor centralizado de temas (standalone)")
     parser.add_argument("--version", action="version", version=f"hueman {__version__}")
-    parser.add_argument("--config", help="Ruta a hueman.config.yaml")
+    parser.add_argument("--config", help="Ruta al config (por defecto: $HUEMAN_CONFIG o ~/.config/hueman/config.yaml)")
     parser.add_argument(
         "--var", action="append", type=_var_arg, default=[], metavar="NAME=VALUE",
         help="Define o sobreescribe una variable de 'vars:' para ${NAME} en las rutas "
@@ -277,7 +284,8 @@ def main():
 
     config_path = HuemanConfig.resolve_path(args.config)
     if not config_path.exists():
-        print(f"Config no encontrada: {config_path}", file=sys.stderr)
+        print(f"Config no encontrada: {config_path} "
+              "(usa --config, HUEMAN_CONFIG o crea ~/.config/hueman/config.yaml)", file=sys.stderr)
         sys.exit(1)
 
     try:

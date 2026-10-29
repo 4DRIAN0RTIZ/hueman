@@ -42,6 +42,9 @@ edita a mano el mismo archivo (starship, algunos TOML), usa **patch**.
 
 ## 2. Template Jinja
 
+Los templates corren en un sandbox de Jinja, pero igual revisa cualquier
+template de terceros antes de usarlo.
+
 Crea un archivo en tu directorio custom, por ejemplo:
 
 ```text

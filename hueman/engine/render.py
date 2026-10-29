@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 import jinja2
+import jinja2.sandbox
 
 from .colors import contrast_text, is_dark
 from .fsutil import atomic_write_text
@@ -22,8 +23,11 @@ def _dig(data: dict, dotted_path: str):
     return cur
 
 
-def make_jinja_env(template_dirs: list, packaged_dir: Path, delimiters=None) -> jinja2.Environment:
-    """ChoiceLoader: los template_dirs custom del usuario se resuelven ANTES
+def make_jinja_env(template_dirs: list, packaged_dir: Path, delimiters=None) -> jinja2.sandbox.SandboxedEnvironment:
+    """Entorno Jinja en sandbox: una plantilla ajena no alcanza internals de
+    Python (`__class__`, `__globals__`...).
+
+    ChoiceLoader: los template_dirs custom del usuario se resuelven ANTES
     que los empaquetados — así un target idiosincrático puede referenciar un
     template por nombre igual que uno genérico."""
     loader = jinja2.ChoiceLoader([
@@ -33,7 +37,7 @@ def make_jinja_env(template_dirs: list, packaged_dir: Path, delimiters=None) -> 
     kwargs = {"loader": loader, "keep_trailing_newline": True}
     if delimiters:
         kwargs["variable_start_string"], kwargs["variable_end_string"] = delimiters
-    env = jinja2.Environment(**kwargs)
+    env = jinja2.sandbox.SandboxedEnvironment(**kwargs)
     env.filters["contrast"] = contrast_text
     env.filters["is_dark"] = is_dark
     return env
@@ -226,6 +230,10 @@ def render_target(env, target, name, palette, dry_run, logger) -> bool:
         return render_patch(env, target, name, palette, dry_run, logger)
     except jinja2.TemplateNotFound as exc:
         raise TargetRenderError(f"{target.name}: plantilla {exc.name!r} no encontrada") from exc
+    except jinja2.exceptions.SecurityError as exc:
+        raise TargetRenderError(
+            f"{target.name}: la plantilla intento una operacion no permitida en el sandbox ({exc})"
+        ) from exc
     except OSError as exc:
         raise TargetRenderError(f"{target.name}: error de E/S ({exc})") from exc
     except (KeyError, TypeError) as exc:

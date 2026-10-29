@@ -185,11 +185,12 @@ def test_sync_failed_target_does_not_persist_revision(tmp_path, dotfiles):
     assert a.local_revision() is None
 
 
-def test_sync_unknown_palette_is_error(tmp_path, dotfiles):
+def test_sync_unknown_palette_is_soft_and_keeps_revision(tmp_path, dotfiles):
     peer(tmp_path, dotfiles).write(State("nope", 4))
-    with pytest.raises(SystemExit) as exc:
-        app(tmp_path, dotfiles).sync()
-    assert exc.value.code == 1
+    a = app(tmp_path, dotfiles)
+    assert a.sync() == (0, "unknown-palette")
+    assert a.local_revision() is None
+    assert not (tmp_path / "state").exists()
 
 
 # --- status ------------------------------------------------------------------

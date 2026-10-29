@@ -52,8 +52,9 @@ precedencia:
 
 1. `hueman --config /ruta/al/config.yaml`
 2. variable `HUEMAN_CONFIG`
-3. `./hueman.config.yaml` en el working directory
-4. `~/.config/hueman/config.yaml`
+3. `~/.config/hueman/config.yaml`
+
+El directorio actual no se busca (un config puede ejecutar comandos).
 
 ## Verificar
 
