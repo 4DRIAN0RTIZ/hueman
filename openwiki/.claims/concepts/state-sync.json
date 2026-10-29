@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f3027155874191855ddbeeb755d1a3ffef1e01a47d749d7dfa53dba9f0e45307",
+  "claims": [
+    {
+      "id": "claim_40ce3ed651b147f2a3963e9adb3e3088",
+      "statement": "El motor depende de la interfaz abstracta `StateSource` y de `build_source(...)`, no de una implementación concreta, lo que permite usar indistintamente los backends `git` y `file`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L346-L367",
+          "version": "repo-lines-v1:sha256:03a49444a0afe9b8882e24182b1c793760f955632adb7a6afc3cff95e53b7c9e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MDRiNmFhY2I1ZjVhZWEwMjg0NDgzYTdmMDIyZTY1NGY2MDNlNmI0NDVlZmMxYjkxMDM3OWU3OTNhMGRlNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MjliZDhlMjhmMTU5ZWVlM2NjYzhmZmFmZDg3ZjBlNTI1YTUyNzczMGQ4NzAzNmVmYjM5ZmE5NTZhNWE0NTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiNzVhOWEwZGJhNGQxNTRiNDkyOTI2NGI1MjBkNDFhNmU2OWY5ZTFmYzMwZGQ1Zjg3MDdlNDJmYTM4ZWYxYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L68-L81",
+          "version": "repo-lines-v1:sha256:30b1316c211cb49c6c42621dad1a67cac17f63760960c32195ba43e3966e93af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0ZDUxYjIzMmJmMjI3ZTk3Y2VhZjNiOGI5ZTU2YTkyN2Q5NDZiMThjNTMxN2U4ZGNiZWJhMjgxMjdiYTI5NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyMzc5MGUyMTBhZmMwNmJmNzgzYjRiMzYxNmQ0NjY0ZmQ3YTE3YzAxOTJmMDcyMjliMmZkZDA4MTc1YzdlOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5YzYwZjk5ZjViZjFjZjA5NDU0N2RlOTRjYmE2NGFjMDAwN2U3NWFmMWMwM2U2ZjgyNzJkNTg4N2JkYTMxNzEifQ"
+        },
+        {
+          "resource": "repo://tests/test_file_source.py#L124-L124",
+          "version": "repo-lines-v1:sha256:a2a4bf85317ce0c51b839a3de24c44910c7accc0ed8740e9bf325ae5096ea8f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJhNGJmODUzMTdjZTBjNTFiODM5YTNkZTI0YzQ0OTEwYzdhY2NjMGVkODc0MGU5YmYzMjVhZTUwOTZlYThmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJhNGJmODUzMTdjZTBjNTFiODM5YTNkZTI0YzQ0OTEwYzdhY2NjMGVkODc0MGU5YmYzMjVhZTUwOTZlYThmNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI4ZjYxMGJkOWIzZDk5OGNlYjBjNjllM2M2YTI3ZWIwYmRhZjA1OWY2MGExODViMTVhOWFhZjQ5Mzg5OTE0ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTMzZGU4Y2ViYTMwYTUzNzk1MDMyMjhhOTNhZDZlNmVhZDkwYjE5NzRhMmU4ZmZhYWQ2YzQzMGRkNTE5YTE5NSJ9"
+        },
+        {
+          "resource": "repo://tests/test_state_source_contract.py#L1-L48",
+          "version": "repo-lines-v1:sha256:3005d1f9a7adb2a445d1ef3a33462166677859116d209129e11e61afc9344174:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNzhmNGYyYzRmNTFmZjE3NzE0YWYzMmIyYmI0NDFlNWE1ZTUyM2IwYmM3YTc1MmEyNTY2NWVkZTVmY2VmMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2YWViYmExMmI2MGJlYjEzMDc3ZTAzNDk4NWJmMDgyYWVlYTk0OTFiYTUwYzk4YjA2N2VlNWZkZjFkYzUxNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyMmE4MDZlMGE4MzY5NTExZWY4ODBkNTAwMzU4ODMyYTZlNjUyNDU4ZTRjYjExZjU2ZjkzMzY1MmY0ZDkxYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_270bd1a47d914d6cb969dffa712fd833",
+      "statement": "El estado compartido se modela como `{palette, revision}` y `revision` es un entero monótono: una revision mayor gana; ante empate, gana la escritura aceptada al final.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L227-L251",
+          "version": "repo-lines-v1:sha256:d8cbd6b739d3dc7352dac87cbff32dbba6e4c3545a1cdef0618b72092bb9b3fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMTAyOTBjNTUyZGQ4M2M2YzZhNjEwNjljMDM0YTY1ODMzMGExYmRjNjllYzdkNGE3MThlMThkY2JlYWM5N2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5OTg1ZjQzMjFmOGU2YTA5N2Q1YzQyNWE5YzcyZDE0ZTkyZTUwYThkZDY1ZmJlNjllOGRlMTY4NzQzM2QzYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxOThlNTZjYTA2ZTEzOTVmYmY0MmZlMWIyYTRhZTYxMTJkYTlmODI5YmZhY2IzNDQ5YWNiY2NiZTY2Y2UxYTgifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L42-L45",
+          "version": "repo-lines-v1:sha256:21992234995b386a10898e98d49a70d5c9cf10b45d07b12f10753dcce782bdd2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY5YTEzOTc1YzI1NmVjODMyMGUyMDE2MDgzYzk2ZGY2MzdjYTNkMzViZWJkZTIzMTRiZWUzYTQ3MTFiNTZjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQzYzVjNTVlZDIxNDBiZjg3MzIyZGQ0ODhjYjNkZDI2ZWE2ZDc0OTNkOTQwZTEzYzg1NDUzMzY3YzE1ZTQwNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZkNzhmZmI2ZGFmYjc1NzBkNTEyNDEzODBlZWM5OWY1YzBhY2JiYmZiMmQzNjhhNDM1Y2EwYTM1ZDI5ZGY2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzBjZTNmMjRhYjQ3YzJmNWE5ZDMzN2YzNzdlZDg1NzNmYTU2NTg0MDc2NDAyZjFhZjA1NGEzZGVkNjE5NDYyZiJ9"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L74-L80",
+          "version": "repo-lines-v1:sha256:6425447e9c12a73c273de7b3888009aed46c3f8ccb858f0e6044dc8dedb0484b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJjYWRjMjBjNGI3OTMwNzZiZWYyYWJlNjU2ZTQ4MGViMWE4OTEyNDBkY2ZjYTZhMzU1MDkzOWU2ZjMxZDJhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDViM2U0Y2MzNjQ3YWY0MzM2MzdkMzRiMDZhYzE2YWQxYTRkMjVjZTM3N2NjM2MzZDM3NGUwZmM3MDQ3YTlhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGRjYTI0OTE3YzAwZDk4NTdmNTVjNjgwOWNiMDAxMjU0Y2I5YWEzMzVlN2FkYzJkMzE0YzE3YjNjOTQ3ODk1YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTg0ZjdkYTk0MWIzZTExZWNjYjFmMTk3MTcyN2UwZDFmNzI2YjYzY2E1ZjVkYWU3OGIxYTE5MDgxYTc0NDU1YSJ9"
+        },
+        {
+          "resource": "repo://tests/test_state_source_contract.py#L64-L92",
+          "version": "repo-lines-v1:sha256:f8a5c40cb5b9ba23a2dcbfa9381358fe674e41524f48144f06ec7250aaad6481:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3OTlmOTdmNDM1M2JlNzk1MDk2ODdlMWQ1ZDY1NGFmMGRjOGZjMzg0YjI3YTAzNDQ5OGIzMGI1ODZmZTY2ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZGE3OTkwYWUyMzI3MmMzNmIzZTVhZDc5ZTI5MGE3NzU2OWY1M2JkNWM2ZjViYmU1MmY2NzUyNGU5NmQ2OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmZWI4ZGNmYjU4ZDFjYmNkODBjOGZlYzg0YTViNGU4ZGJhMGM4NzljZDczYTJlOWZlOGYxYzNkMGQ2NWY0OTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7bbe894d8d2747e6ad5aaa652583fe79",
+      "statement": "`ReadResult` distingue entre almacén alcanzable e inalcanzable: `remote=True` significa que el backend llegó al almacén aunque esté vacío o sea ilegible, mientras que `remote=False` significa que el almacén no pudo alcanzarse y no debe tratarse como verdad remota.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L48-L55",
+          "version": "repo-lines-v1:sha256:b5ca253f5276946d5f7037ed3e607b4fa1f588f2ecfbf070b95d7ae0286765ec:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY5YTEzOTc1YzI1NmVjODMyMGUyMDE2MDgzYzk2ZGY2MzdjYTNkMzViZWJkZTIzMTRiZWUzYTQ3MTFiNTZjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGNiMTUzMTY3ZjIzMjQ5YzBkYjA0YTkwZjVlZTkyZjk2YjFlYWQ2MjlkM2ZkOTEwZWZiMjg3YjRhNjE2NzhmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzg3ZGY2ZWI2ZDk4MDkxNzE1MzIzZmJhZTQ1NDY5ZWEwODFhZTcyYTMxNGUyY2I3MDEzYzM2MGQ0MzhhN2Y1NCJ9"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L85-L91",
+          "version": "repo-lines-v1:sha256:13333a4023d28f630cef4c565eb6b5369e93cff419c7e696d5358535f4bec237:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNlMWFhY2QyM2I1YmUwMDE2MDBiMjNjNTY5YzRmY2E2OThlNGM2ZDc2MDZhNzgxMzg2MWYzZWViMWUzZjFhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBkZTI1ODcxOTYxNDkyNjA3MWM4ZmIxOWZkODY2MTUwNTU1ZjFiMDEzNTRmOGNkMTYwM2ExMDlhN2RkYWU0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjljNjBmOTlmNWJmMWNmMDk0NTQ3ZGU5NGNiYTY0YWMwMDA3ZTc1YWYxYzAzZTZmODI3MmQ1ODg3YmRhMzE3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTEwMDViODI1Zjc0NzNhMjkwZjNlZWRkMjhhNjlhODMwZTNmNWEwYmU4ZjhmNmRjNzZiN2MyNTc3NzVlMjQzNyJ9"
+        },
+        {
+          "resource": "repo://tests/test_state_source_contract.py#L51-L61",
+          "version": "repo-lines-v1:sha256:e97546bc0ae1de3e5429f44cb1c09e3e0d6bd9b504a5ba7557a9ac19cdec58ff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxZGQxMWRlZThkYWQ1M2ZlNzlhYTZlNmY0NGFhNWEyZTBjNTU5MjI3OGQ3MTgyNTJjZGQwY2IwZjExN2QwMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmMWMwOTljMjAwZmQ5NDM5Y2E0YTZmM2E5NDY3M2ExZDg3ZGNmOTgxMWEwZTY3NzBlMDJjNTMzOTUxODM1ZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5MjVmMzExN2FlYTgwYjMxNmE4OTk3YTAyZDFiN2UwNDI1OWJkNGVmMzA5MzhiZjMzZGMzOWQ5OTAyOTYwMzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4YmExMzZiOWJlNDc3ZTQxMzljZDgxMzdlODA5Mzc0YTIzNDFmZjBlYjQ1M2U5OGUxOWU5NGM5MWQ3OTM3MzIifQ"
+        },
+        {
+          "resource": "repo://tests/test_sync_status.py#L27-L50",
+          "version": "repo-lines-v1:sha256:5037742a199f631603278206e69272906947a6ca7c861fc44fec7d2f6b4fe2d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlZTNiMzMzMjRjYTFiYTI4MDE5NDM5YjdkYzU4MjAwODVkZmQyMzc1MWZlMzg1ZmZlMzVlYjQ3YTQyNzQzYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmZGUwYjE0MmY1Yzk1MTIyMTI1ZmQyMTFjNjNkMTk4ZGNjOTQ3NDc3YmZmNDJlNGQwNjQxODdmYzIyZTg2YzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1NGVhMDJkYWM1YjE4YmMwZjE0YjFiZWEwNTg3MDg4ZWYyZjBlYzI5MGFmYmZmZjBkNTg2ZTAzMDJiZDVhODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3MTM2NjIzM2Y3YTIyNzllZTcwZmY0ZmU1NmEwYTk4MmNhMGZjZWIzNjNhZjBmNTAxODU3ZjhmYTljODEwMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6b14e926f79349cf981a88cd8f1dec8c",
+      "statement": "El backend `git` persiste el estado en la rama huérfana `hueman-state` de un repositorio git propio, mediante un único commit sin padre y `push --force-with-lease`, sin tocar el working tree del repo de dotfiles.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L120-L180",
+          "version": "repo-lines-v1:sha256:9b418bb65d256318cdab4b5b50b7a1bcc689c311f44e453c1970c73681bf3900:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMzNiZGI4ODFhMzQxN2Q2NjJjMmRiYTFmY2U5ZmUxMTE3YWJkMDY4OTU2YmE2YzkwZmY5YmEzZjU1MmQ3ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMDQyNGJkZTNhZDkxZmY4ZGFlYTgxYTRhYTUwNGIyZmU5ZDM3OTIzZjU5Mzc5MTUyZDU0M2Q3YjRkZWFmNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczM2U4NDg3Yzg1ZGZkY2Y5ZmE3YjkzYzc0NmM5NDYyNWFlNDdlMTIwYzc5N2U3OTFlNzM3ZjllZDdmZmM3M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzMjZkYmQ0NTc4NjYxNDgzZGM1YjVlYWYxZmMxNmYwOWNhYmU0NDgxZDU3M2FlYmQ0MzY0OGU4YWFkZTc5YmMifQ"
+        },
+        {
+          "resource": "repo://engine/statesource.py#L8-L17",
+          "version": "repo-lines-v1:sha256:6650940226fb74a2dccf9a74ef36ea401f49c436948e341fa22c0c6cc3d9e74c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyMzQ1MWE4NDAwYzMyYjQ2OTFmODJlN2Q0NWYyOTFiYzUwZDM1MDRkMDQyNmM2N2I1Yzg4NTE1ZDk4NjkyMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxZGQwNzY5N2YxMjVlNTZkN2M4NWNkZGU3ZjNmZjZjZDMxN2ZiNWUyZDNhZDE4ZGExYzI4ZjhlNDA1MDYwMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZDIyNGFhMzIwMDk0YmQ5MGNkZTIxYmY0N2Y2YWFkY2Y4MzIwNGI5MGRmZmRmMDA5OGJjN2NkMTc5MDNjM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MWQ1ZDY4OTMzYzZiMDYzOTg0OGNiY2UzMTgxYTExMWIyZDdjYzcyOWY2OTFiZjMzMTFkMWQ1NTE0ODhkMGIifQ"
+        },
+        {
+          "resource": "repo://tests/test_state_branch.py#L56-L86",
+          "version": "repo-lines-v1:sha256:0d50d94ce6bbc497f09269ff468114255d8abfe26be0ad9ce5b35f6236a75d3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YjBkMGJhZmM5M2M4NDRkOWNjOThkYzNkMTIxMzI2MWZiNzY0YTBkZGU4NjE2YzdhZDU2ZmVjYTczODgyYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGEyODgzOTZmZDYxNzcyNTJjMWUzYTIyZDFiM2QwZTNiNjg5OTA5MTE1NmY2ZGI3MjQxYzBiYmI4MDRlYmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwNjA3OTAwMDg3MjY0YWQ5MzlkMzJkNDkwNTljODA4YWZhN2VkOTllMzhmZTA4NGQ3NjZlNTZkOGVmNDE3M2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4YTRjOGRhNzRhZjU1NjhjZjg5ZTBkZjg3NDQ1ZTk3YzU2ZTNiODY4MmJkOTU5ZDJhNzI4MWJkOGMwNzdlZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c767818d20364654a95506ca388f5d6f",
+      "statement": "El backend `file` guarda el mismo YAML en un archivo dentro de una carpeta sincronizada por otra herramienta, escribe de forma atómica y trata la ausencia del directorio padre como inalcanzabilidad, sin crearlo.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L254-L305",
+          "version": "repo-lines-v1:sha256:6b84a75f415f98108f2d2fa71642c82cde433db5c9539c2f4f6a64d600fbe750:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNWYyNzZiMDQ4ODgxYmYzMGEzN2MyYTFhNWUzM2I5NGMyZTFjN2Y4MWE4YzVmZTFlNjNhZDM0YmJhYzdmZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMzI1ODhiZjE1NzMzZGZiM2Q4MjA2NDc5MDU5OWVmYjU3Yzk0ZGNiZTlmMmU2ODdkNmZlZGZmYWNlYTliZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5OWVmZWRmZDJkOTcwNmQ4OTFjN2JhOTgzZTdmODRlMDVhZDBlMDE5MWMxMzI3OThiZTVlM2MxY2M1MzA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwY2UzZjI0YWI0N2MyZjVhOWQzMzdmMzc3ZWQ4NTczZmE1NjU4NDA3NjQwMmYxYWYwNTRhM2RlZDYxOTQ2MmYifQ"
+        },
+        {
+          "resource": "repo://tests/test_file_source.py#L11-L37",
+          "version": "repo-lines-v1:sha256:d6a8e02b6987ea15e43c091d8879c13f4a652cfcd68f189d41d38fa9d86d157d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwZGFiYTc2N2Q4MDAzMDIzOWUwYTg1YTFkOGVkYzkwMTc0YTlhYTVhZmJmYzc2MGRmMDY4MjQ2OTVjNjg2MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0ZmZmZThhOGYzM2YzYWIxY2I1NjdkYzcwMTBjMDA3MjNkZThkYWQyMjA1NGU0ZDdjN2RiMjhhZjE2OWRkNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhMWJhOGNmZDUxMWMwZTRhMzIwODNiMDJhMmZhYWVlOTgwZDc4ODY4Y2ExMDUyNDVjMTBiZTc0ODQ2ZTY3MjEifQ"
+        },
+        {
+          "resource": "repo://tests/test_file_source.py#L39-L47",
+          "version": "repo-lines-v1:sha256:df58bff88c83f13872651f3388a3e76a6af163ebfbc87a4c351e4b4ae96227d1:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQ3NjdmZDc5NzVhMjMwZmFlNjJhNTI4MmE1MTkyNWU5MmU1MjM2NzI3ZTFkYjViMzA1NzIyNmZlMTIwOGFiNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQwZTBlZmJjYWIyZDU0NzhhMzZkZTk5NzAyNzRhZGI2OTZhNzVhMmM0NDc1ZjhkNDQ0MGU4YjI0NzJjYzg2ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTgyMjAyZTE5MGNlZmI1ZTNhNDQ3YjJmNTc4ZjA2NmEyYzZmZTg0YzEyNmM1OWY0NWYyNzVjZTQ5ZDIxOGQwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTM1ZDE2NTA5ODI4MjNmZDg2NzViNTAxODY2ZjFmNTY1NGQ3ODhlZWM1NWVlYzI3YTBlNjQyMmEwYzU0MTQxMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_22a1b3986ca141cbba642d9000ba589d",
+      "statement": "`hueman set` publica el estado compartido solo cuando `state_sync` está configurado; calcula la nueva `revision` a partir del máximo entre el remoto actual y la `local_revision`, y persiste esa `revision` local solo si la publicación tuvo éxito.",
+      "evidence": [
+        {
+          "resource": "repo://hueman.py#L124-L140",
+          "version": "repo-lines-v1:sha256:484648df4fb1a8bb97603192950fe63e681c655a1339966a7fb42ee752cc1e1e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZDAwY2YyNzA5NjRkNDRhMTNkZmFjODc1MmIwOWZjYzQzNWIwZjE5YjMxNmFiY2Y4MWE3YWE2NGJiMTIyZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkOGRjM2FiZTMyYWNiODdjZjU0MDgzMDQ4ZTFjZTcxNDIwNTY3ODcxMzMyZjRiODAzYzIyMGMwY2JmYmJiYmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4MTYyMWYzMWQyOGVlN2M4MThkNWZiMTQzNTgwMmI4OWRhYmQwMjBhM2RmNTIyMzNiMDZkNGI5N2MxMzVlMDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyNWNkYTJkZTg0OGY0NGU5ODA5MDYzNTY1N2FmZDk4ZmQ0NDhlNmZlYTIzOGUxOTI1Yjc2OTVhYmU4YWViYmMifQ"
+        },
+        {
+          "resource": "repo://hueman.py#L142-L157",
+          "version": "repo-lines-v1:sha256:15cdf49ca0edfe586ea0215c1233c8ee29e31901e47260b259abb3eb442aebb6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1Y2E5NTkwMDYzOGM5ZGU5ZTNhMWMyZTI5MmM2ZTVhYTA1MzBkYjA1NzMwZTgwOGRlZjA5OWVmYjFiZjE4MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2YTJjOWUwZjY4MjhlNWIyNmRiYWFmZWE5MDgyNDA1OTM4YmRlMjliMzljYTVmMzFiMTEyZmYzZDA0ZTNhOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkOTM2OWQzYTA4MGVhYmFkYWNlMzZmMTliOWQ3Y2JkYjlmMzJlOWQxNWQxYzQ0NTQwZTFlZmM5OTBmMWNlMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllNzQzZTA2YTMzOGI3NmUxZTNjZjI4ZTFmYTYwN2M4OGI3ZGI5MzFmYmMzOTM5OWYyNzZhMzEyN2RlM2M3MTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_state_branch.py#L198-L204",
+          "version": "repo-lines-v1:sha256:d074a4a59f458e175a0c169e9ac637f5aa182c4e20864b7c2ffc69ee339582f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGMwY2U2ODZjM2I0YTAxMjRhZDZiMWMwYjc2YjhiMDk0M2U3ZGE4NmJkYWRkODNkMmU5Y2E2NTFkMWI4MjIwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWY3Y2VjNzRlMzJjZDkxNmQxYjk4ZTg4ZjcyZGQxOWFmYjgyMWU2OGQ1Y2YxZmI3OWVmODA3YjJlNmY3ZGI2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjVhM2RiZTk5N2Q4NWRjMjVlYmZjNzUzNTNiODU0YmRlZjM0ZjUxZDc0MTdmNDExN2E5Y2E4ZWU1MzVmZjM2ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjBlNTgwMWQzNTM0MTYwZmI1Mjc1MjZkM2MwNDFhN2UyMzdkYTg2YzEzNGVkOTdmZWE0ZmI4YzZjOWQzNGM2ZiJ9"
+        },
+        {
+          "resource": "repo://tests/test_sync_status.py#L87-L107",
+          "version": "repo-lines-v1:sha256:4524d783fe20841420da66c124e6265e166cb68af724f35e81e872ff81a52a49:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNjBkNDE3NmIxNDYyYTEzZmI1MGExMjIzMGEyNGVkMjU4Y2ViZjFmYmNlZGYwZTlkYWUzYzI4NGVmMjQxNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiN2JkNDgyM2RkNTNiYTQ3M2FhODNkMjAyMDA5Y2FmNzcwZTNjZmQ5ZTc0NGU5YzEzOTU2ZjZiZDNkYzFiY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4OWU4OWU5NWM3NmNmNWZlMTY2YjVkZjBlNzQ2OWRkMjIyZWZmZTgwNzc5NjRmZGU4ZmNjNDViYzhlZmFlYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZjZmZTUwNDkzMDdjZTZlNmJlNzAzOTUyOTkyZTQ4OGM4ZjRkNWI0YjYyMDYwNTYwODk0N2RjNzkzOWRlOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38da1299a155483f917728801a19cc8b",
+      "statement": "`hueman sync` aplica el estado remoto solo cuando es alcanzable y su `revision` es mayor que la local; si el remoto está inalcanzable, devuelve un resultado no erróneo y no aplica la caché local como verdad remota.",
+      "evidence": [
+        {
+          "resource": "repo://hueman.py#L159-L190",
+          "version": "repo-lines-v1:sha256:93e5aa76801c55cf419711136b8d5b581403e78bcbbbc97c98dcb571ed0913bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkZTM5MmM4NzM0ZmEyMDgzZmE0N2Q0NGNjNmFjZjQ4YmM0MjNjNGQwNDM4MTU4YTYyZGI2MDUzMmFlZGMzZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwMTU4MmEzNzVhMmRlZDE0ODE0Zjk2ZDg2Yjc0NjNmYjQwMDgxODRlY2M0NDhiNmYzNjIzODhmMDhlOTJkOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNTFmZTg0ZjZlZDI5ODJiY2VmNmI3MWRkMzk0Zjc5ZjUxZWE4ZjBkN2Q0OGExMDU0YWVhNTNlY2ZiMzRkZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxZTk2ZTVkY2UyMjVlMjc5ZjQ3YTg1MDJlM2FmNDBjODY1MTEyYWYzZGFmZWVmZjFiOTJhMDZlZjE1MjdjODQifQ"
+        },
+        {
+          "resource": "repo://tests/test_sync_status.py#L117-L169",
+          "version": "repo-lines-v1:sha256:3a0aa1daf9856642460f451cc63d18804b3513f6d36fde99aa18a24c8f6d4904:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ODAwYjBlNjQwNGZmOTg3YWEzNTZiN2ExMDUxYzBmNTJhM2NjYzQ5ZmZmNGYxN2RmZmQ2ZGQ5MDkzZjc5ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMzFiZWFkNWZjM2NjMjMyMGNkNjljN2Y3NGJhMWJjNWI0YjlkZDg5NDk3MmNmMmNkNjQwNWVlYTRiOTMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5NTZiMTE5MzliMTFjMzk4NDBkNTY0ODc2NDdjMjJlMmI1N2NhMzk4YWRjNjNkZGRmOTI0ZTU5ZWI0MzNjYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwNWQ2MDA5ZTZiNjM0MjM1ZWY3NjFlYmExYjFkMzI1N2E4YjE4OTBiMzBlMjg1ZTk5M2RhYzlhZGIwYjM3MjMifQ"
+        },
+        {
+          "resource": "repo://tests/test_sync_status.py#L172-L185",
+          "version": "repo-lines-v1:sha256:ad0b00918311aa4dbd69a0230218b775c08615b1ab0391db86300db4b38af229:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyZGI4ZWFiMTE4NzJjZWU0YjFjZDQ5MThkODRmZjRmMWE1NTNiZGQ0M2M3NDM5NDZhNzEzN2IxNWVkM2U2MWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNmFmOWJlMmM1MzE4ODdlMDBiOWQyZjc0ODVhNzNkMzhmYTQ3NDZkMTIxZjRiNWM5NTNhN2MxNzBlMWQ0YjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkOGU1ZGFjNWVmZTUyMTgxMTU3NTRlY2ZjOGVmMDIyZTI4Y2EyYTBiY2RkMzU1NWUzNWNjNWQwMDgzODk5ZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4YzkxYTY2MTZhOTAyNDVlZTQ2MmJjNTI1Y2ExYmVkNzE4YzU5MjI3NzM0MTQyZjJjOWE4MDY3MjQ4MzZlZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a526123175da4285903efbfdb60167b8",
+      "statement": "`hueman status` reporta la `revision` local, la remota y un drift derivado solo de compararlas, distinguiendo `in sync`, `behind`, `ahead`, `no remote state` y `remote unreachable`.",
+      "evidence": [
+        {
+          "resource": "repo://hueman.py#L192-L223",
+          "version": "repo-lines-v1:sha256:5516258f2938e74be2853b514b7acc5e6db5814431d1edc8fb985e881d748ae6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1NjYyNjY4ZjgzNzE3NmEwMWRkNDRkMjVmNTcyY2YyMzMzY2Q5MDcwYjg1NDY2MTQwMWI5YWY3NGFjNzY0YjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMTg4YWMyNjk1Y2YzN2U3OGFjZTE3NjYzODZjM2M3OGZlNWVjZDkyZjExNzFlODc5NjM5ZmU2NDg1ZjQ3YjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwM2UyOWY3NjM0N2JhOWJlZGFiN2FhNzMyYjQyZDU0NjExZjVhNTk5N2Y2Y2VkYTBmMzE3ZmU2YzUwOWE0OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiZDJiMGI3NmRiYThmZTJhZjUyYzJlOTQ1NTk5OGMzN2I3MjFhOTcxYWZmMDE1YzUxZDJlZDZmNzI3YmUyZmYifQ"
+        },
+        {
+          "resource": "repo://tests/test_sync_status.py#L195-L232",
+          "version": "repo-lines-v1:sha256:ef76758235cb8ef60d7cf523c1547299d00ca1c95fef3024453cc1708d32f4e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMWZmYWUxMTI3NWExZGUyNTFjZDk5ZTk0MzRmOTNlZTg1NmM4Nzc4MGZhMjQzOTczMjYwNDczMmJkOGJiYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjZTg0ZjNjNTc1MTEyMmYxZjE3OGQzZjcyNDAxMjJhOTQ2YTE1NDFkNzJjMThkZDFmMjk2NmJkN2IxZGU1YWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlZDA1M2Y3YjI2YjY5NzQ2ZDY1ZDZiM2MzZDM0ZmUwYmM4MTU3YzFmMTM1ODIzNzk3MTcxNWM2ODE5NGM4NjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0e4127cf7fc74fdd96acc2eea0fda621",
+      "statement": "El flujo de sincronización mantiene la semántica de retry y reconciliación: una `revision` remota mayor bloquea la publicación, una igualdad evita reescrituras, y los reintentos de push están acotados por `max_retries`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/statesource.py#L227-L251",
+          "version": "repo-lines-v1:sha256:d8cbd6b739d3dc7352dac87cbff32dbba6e4c3545a1cdef0618b72092bb9b3fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMTAyOTBjNTUyZGQ4M2M2YzZhNjEwNjljMDM0YTY1ODMzMGExYmRjNjllYzdkNGE3MThlMThkY2JlYWM5N2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5OTg1ZjQzMjFmOGU2YTA5N2Q1YzQyNWE5YzcyZDE0ZTkyZTUwYThkZDY1ZmJlNjllOGRlMTY4NzQzM2QzYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxOThlNTZjYTA2ZTEzOTVmYmY0MmZlMWIyYTRhZTYxMTJkYTlmODI5YmZhY2IzNDQ5YWNiY2NiZTY2Y2UxYTgifQ"
+        },
+        {
+          "resource": "repo://tests/test_state_branch.py#L117-L167",
+          "version": "repo-lines-v1:sha256:9ba84983f4b19f34a9559e1376dc6c56ecc14b48aa2f455ecf79cd08ed58b2d3:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZmQwOWZkMTU5MjdkN2Y2ZWRjYmNhMWRhNzNiYmE4NzlmZDExOWI5MGE4YzVhYTg3YWEyMTBhYWRjY2U2OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5Mjg1NWFhZWI0ODRkY2Q5NTQ5NDA1OTg4ZTFiOTdkYTBhZTdjNTljOTUyYjJjZWFmNDYwYjcxOGM1M2NmNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NTYzZDk5YjhlN2RiZjRiNjk5Yzg2NDg0MGUzMDU5MDNkNmYyYzIxOThkZjg2Yzc1ZDUwYTZjZjIwNzZjODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNTNkMjM4YWEwOGNlMTljZjI2YjhmOWY3NjNkODJiNTI3NTRhOGI0YzkzMGFiNzE2ZmJjMDY0ZGU4ZmY0OWEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}

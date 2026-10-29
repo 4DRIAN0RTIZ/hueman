@@ -3,8 +3,8 @@ import logging
 
 import pytest
 
-from engine.render import make_jinja_env, render_target
-from engine.targets import PatchSpec, Target
+from hueman.engine.render import make_jinja_env, render_target
+from hueman.engine.targets import PatchSpec, Target
 
 
 @pytest.fixture
@@ -113,7 +113,7 @@ def test_json_scheme_patch_upserts_scheme(tmp_path, logger):
 def test_windhawk_taskbar_template_matches_legacy_json(tmp_path, logger):
     from pathlib import Path
 
-    packaged = Path(__file__).resolve().parent.parent / "templates"
+    packaged = Path(__file__).resolve().parent.parent / "hueman" / "templates"
     env = make_jinja_env([], packaged)
     palette = {"polybar": {"background": "#170b2f", "primary": "#ff2bd6"}}
     output = tmp_path / "taskbar-colors.json"
@@ -254,8 +254,8 @@ def test_json_scheme_patch_returns_false_when_output_missing(tmp_path, logger):
 
 
 def test_reload_not_fired_when_all_outputs_skipped(tmp_path, monkeypatch):
-    from engine.config import HuemanConfig
-    from hueman import Hueman
+    from hueman.engine.config import HuemanConfig
+    from hueman.cli import Hueman
 
     (tmp_path / "t.j2").write_text("x\n")
     (tmp_path / "palette.yaml").write_text("name: demo\nkitty: {}\n")
@@ -266,7 +266,7 @@ def test_reload_not_fired_when_all_outputs_skipped(tmp_path, monkeypatch):
         f"    outputs: ['{tmp_path}/nope/out']\n    reload: 'r'\n"
     )
     reloads = []
-    monkeypatch.setattr("hueman.run_reload", lambda cmd, logger: reloads.append(cmd))
+    monkeypatch.setattr("hueman.cli.run_reload", lambda cmd, logger: reloads.append(cmd))
 
     Hueman(HuemanConfig(tmp_path / "hueman.yaml")).set_theme("palette")
 
@@ -274,7 +274,7 @@ def test_reload_not_fired_when_all_outputs_skipped(tmp_path, monkeypatch):
 
 
 def test_missing_extra_var_key_raises_target_render_error_naming_target_and_key(tmp_path, logger):
-    from engine.render import TargetRenderError
+    from hueman.engine.render import TargetRenderError
 
     env = env_for(tmp_path)
     (tmp_path / "templates" / "demo.j2").write_text("{{ panel }}\n")
@@ -291,7 +291,7 @@ def test_missing_extra_var_key_raises_target_render_error_naming_target_and_key(
 
 
 def test_missing_json_scheme_section_raises_target_render_error(tmp_path, logger):
-    from engine.render import TargetRenderError
+    from hueman.engine.render import TargetRenderError
 
     env = env_for(tmp_path)
     out = tmp_path / "s.json"
@@ -308,8 +308,8 @@ def test_missing_json_scheme_section_raises_target_render_error(tmp_path, logger
 
 
 def _failing_app(tmp_path, monkeypatch):
-    from engine.config import HuemanConfig
-    from hueman import Hueman
+    from hueman.engine.config import HuemanConfig
+    from hueman.cli import Hueman
 
     (tmp_path / "t.j2").write_text("{{ panel|default('') }}ok\n")
     (tmp_path / "palette.yaml").write_text("name: demo\nkitty: {}\n")
@@ -324,8 +324,8 @@ def _failing_app(tmp_path, monkeypatch):
         f"post_apply: ['echo done']\n"
     )
     reloads, post = [], []
-    monkeypatch.setattr("hueman.run_reload", lambda cmd, logger: reloads.append(cmd))
-    monkeypatch.setattr("hueman.run_post_apply", lambda c, logger: post.append(c))
+    monkeypatch.setattr("hueman.cli.run_reload", lambda cmd, logger: reloads.append(cmd))
+    monkeypatch.setattr("hueman.cli.run_post_apply", lambda c, logger: post.append(c))
     return Hueman(HuemanConfig(tmp_path / "hueman.yaml")), reloads, post
 
 
@@ -344,7 +344,7 @@ def test_set_theme_skips_failing_target_continues_and_returns_failures(tmp_path,
 
 
 def test_cli_exits_nonzero_when_a_target_failed(tmp_path, monkeypatch):
-    import hueman
+    import hueman.cli as hueman
 
     monkeypatch.setattr(hueman.Hueman, "set_theme", lambda self, *a, **k: ["bad"])
     (tmp_path / "c.yaml").write_text(f"state_file: {tmp_path / 's'}\ntargets: {{}}\n")

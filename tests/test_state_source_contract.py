@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from engine.statesource import ReadResult, State, StateSource
+from hueman.engine.statesource import ReadResult, State, StateSource
 
 from test_state_branch import git
 
@@ -18,7 +18,7 @@ def backend(request, tmp_path):
     if request.param == "git":
         if shutil.which("git") is None:
             pytest.skip("git not installed")
-        from engine.statesource import GitBranchSource
+        from hueman.engine.statesource import GitBranchSource
         bare = tmp_path / "remote.git"
         git("init", "--bare", "-q", str(bare))
         repo = tmp_path / "dotfiles"
@@ -31,7 +31,7 @@ def backend(request, tmp_path):
         def break_it():
             shutil.rmtree(bare)
         return make, break_it
-    from engine.statesource import FileSource
+    from hueman.engine.statesource import FileSource
     folder = tmp_path / "synced"
     folder.mkdir()
 

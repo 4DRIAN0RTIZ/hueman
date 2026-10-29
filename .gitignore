@@ -15,6 +15,11 @@ __pycache__/
 venv/
 graphify-out/
 
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
 # Harness files kept local
 /.atl/
 /feature_list.json

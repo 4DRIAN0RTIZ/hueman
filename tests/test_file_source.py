@@ -2,8 +2,8 @@
 
 import pytest
 
-from engine.config import ConfigError
-from engine.statesource import (FileSource, ReadResult, State, StateSource,
+from hueman.engine.config import ConfigError
+from hueman.engine.statesource import (FileSource, ReadResult, State, StateSource,
                                 build_source)
 from test_reload_exit_codes import make_app
 
@@ -37,7 +37,7 @@ def test_missing_parent_is_unreachable_and_not_created(tmp_path):
 
 
 def test_write_is_atomic_via_fsutil(tmp_path, monkeypatch):
-    from engine import statesource
+    from hueman.engine import statesource
     calls = []
     real = statesource.atomic_write_text
     monkeypatch.setattr(statesource, "atomic_write_text",
@@ -48,7 +48,7 @@ def test_write_is_atomic_via_fsutil(tmp_path, monkeypatch):
 
 
 def test_write_error_degrades_to_false(tmp_path, monkeypatch):
-    from engine import statesource
+    from hueman.engine import statesource
     def boom(*a, **k):
         raise OSError("disk full")
     monkeypatch.setattr(statesource, "atomic_write_text", boom)
@@ -123,5 +123,5 @@ def test_hueman_flow_over_file_backend(tmp_path):
 
 def test_orchestrator_depends_only_on_the_interface():
     from pathlib import Path
-    src = (Path(__file__).resolve().parent.parent / "hueman.py").read_text()
+    src = (Path(__file__).resolve().parent.parent / "hueman" / "cli.py").read_text()
     assert "GitBranch" not in src and "FileSource" not in src

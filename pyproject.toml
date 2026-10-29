@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=77", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# "hueman" is taken on PyPI; this is the single place (plus hueman/__init__.py) to rename.
+name = "hueman-cli"
+dynamic = ["version"]
+description = "Centralized theme manager: one YAML palette feeds Jinja2 templates that generate each tool's config."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "4DRIAN0RTIZ" }]
+keywords = ["theme", "colors", "palette", "dotfiles", "jinja2", "terminal", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Desktop Environment",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "Jinja2>=3.1.6",
+    "PyYAML>=6.0.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+hueman = "hueman.cli:main"
+
+[project.urls]
+Homepage = "https://hueman.cuevaneander.tech"
+Source = "https://github.com/NeanderTeam/hueman"
+Issues = "https://github.com/NeanderTeam/hueman/issues"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["hueman*"]
+
+[tool.setuptools.package-data]
+hueman = ["palettes/*.yaml", "templates/*.j2", "data/*.yaml"]
+
+[tool.setuptools_scm]
+tag_regex = "^v(?P<version>[0-9]+(?:\\.[0-9]+)*.*)$"
+fallback_version = "0.0.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

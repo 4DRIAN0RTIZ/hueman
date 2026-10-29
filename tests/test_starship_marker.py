@@ -5,18 +5,19 @@ replaced in place, never duplicated."""
 import logging
 from pathlib import Path
 
+import pytest
 import yaml
 
-from engine.palettes import PaletteLoader
-from engine.render import make_jinja_env, render_target
-from engine.targets import Target
+from hueman.engine.palettes import PaletteLoader
+from hueman.engine.render import make_jinja_env, render_target
+from hueman.engine.targets import Target
 
 ROOT = Path(__file__).resolve().parent.parent
 LOG = logging.getLogger("t")
 
 
 def _target(output):
-    cfg = yaml.safe_load((ROOT / "hueman.config.example.yaml").read_text())
+    cfg = yaml.safe_load((ROOT / "hueman" / "data" / "hueman.config.example.yaml").read_text())
     data = dict(cfg["targets"]["starship"], outputs=[str(output)])
     return Target.from_dict("starship", data)
 
@@ -32,8 +33,8 @@ def _file(header):
 def _run(tmp_path, header):
     out = tmp_path / "starship.toml"
     out.write_text(_file(header))
-    palette = PaletteLoader(ROOT / "palettes", [], LOG).load("synthwave")
-    env = make_jinja_env([], ROOT / "templates")
+    palette = PaletteLoader(ROOT / "hueman" / "palettes", [], LOG).load("synthwave")
+    env = make_jinja_env([], ROOT / "hueman" / "templates")
     target = _target(out)
     render_target(env, target, "synthwave", palette, False, LOG)
     first = out.read_text()
@@ -55,3 +56,16 @@ def test_new_header_is_replaced_in_place_without_duplicate(tmp_path):
     assert first.count("[palettes.dotfiles]") == 1
     assert first.count("Bloque gestionado por") == 1
     assert "[git_branch]" in first
+
+
+def test_ensure_after_inserts_palette_line_as_valid_toml(tmp_path):
+    tomllib = pytest.importorskip("tomllib", reason="needs Python 3.11+")
+
+    out = tmp_path / "starship.toml"
+    out.write_text("add_newline = false\n\n[character]\nx = 1\n")
+    palette = PaletteLoader(ROOT / "hueman" / "palettes", [], LOG).load("synthwave")
+    env = make_jinja_env([], ROOT / "hueman" / "templates")
+    render_target(env, _target(out), "synthwave", palette, False, LOG)
+    text = out.read_text()
+    assert "\\n" not in text
+    assert tomllib.loads(text)["palette"] == "dotfiles"

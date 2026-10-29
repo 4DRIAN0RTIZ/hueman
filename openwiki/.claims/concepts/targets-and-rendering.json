@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:73e7d73973a15bdc075c5a942e02d54eaaca6708d82d1a65b51e251d2f0df573",
+  "claims": [
+    {
+      "id": "claim_f918c38fd8314e03a442c76b6e988bdb",
+      "statement": "El contexto Jinja de un target siempre incluye `theme_name`; si `palette_key` existe en la paleta, su sección se mezcla directamente en el contexto, y cada entrada de `extra_vars` se resuelve como lookup con punto sobre la paleta completa.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L42-L51",
+          "version": "repo-lines-v1:sha256:c384e3374d7ec6311e90ba619001f290e68bb6f9855d6007a46cdf5823444b92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OWE1M2MyNjM0MmZlYjIwNzEwNGNiYjliNjNiMGEyOTQyZjk2YWJmYWI5N2ZiMDg0NzM1NzQwMTU4NTVhOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmJiNDQ3MWIwNTI5ZmRiZDFlOWQ3ZGMzYTYyNDA3ZDVhN2M5YzBkNWFhNjhkZjA5OGNmZTlkMzJiN2Q4OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYzIzZTJjMTE3YTU5Y2M2NzEwNzBiZDcwY2E0NzY1OWJkNzE4YTA1NTJkNDJlNWQ1ODlmOWQwNTBiMmE5ZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2YWNkYWFlYzNkN2M1Yjg5NGY3Yzg4YTZiMjZiYjZkOWY5Nzc4MmMxZGQ4YWY0MGI4ZjZlMzZlNzQzMDNmNDkifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L39-L45",
+          "version": "repo-lines-v1:sha256:e84b97f3307a945589b15c7c61c40af4c00934992cc25d1954c7d43ce026ce0a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYzYTU2YjIwZGYzYjE2NGJmZTVkZDRkNGE3MTE0ZDNmOTUxYmRlMzk5M2FjYTIwNTE0MGQxNWY0ZTI4NTY2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDVlZDlkNjEzMDFjYzFlNmRlYTA3ODQzMjk0OGIyMTU1ZjhiYzU3YmE1OGM5N2Y1OGE0ZGRlNDdmY2Y4Njc3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzUyNzU4MjAyNWYzY2I5NDVhMGUwYzVmYzIwYmNhMmJiOGUzMTYxZmExYWQzOTZiNGE4YTIyYTNhNDJhYjAyNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_34a1da94db5b4687805ecd2d113384cb",
+      "statement": "`make_jinja_env()` construye un `ChoiceLoader` que busca primero en `template_dirs` del usuario y después en el directorio empaquetado, y puede usar delimitadores Jinja personalizados además de los filtros `contrast` e `is_dark`.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L25-L39",
+          "version": "repo-lines-v1:sha256:46f749e7f991c4c475dbbbb02f8e17bf857ccfbd5a7cfa7305248359f16532a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZjgyNDQwOTkxYmYzMTBlNTNiYzViMWZjZTAxNzI2MDY0OGQ3NDk3ZmNlNDY0OTZmYmZkZWQwOGY3OGFmOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNmZlNGE4Zjk2NjEyZGE3ZTE1N2UwODAwMGZjNjY1MjBjYjlmMWI2NDBkMzNlYTI4ODcyOTc1M2NlYWMwNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NDI1OTgxNzRlNDQ1OTE5MjYyZDFjODFmMWE3YTUxNWQyMTIwNDgxY2E3MWFiZGVlMmMzNjRjYzFjYmM5ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiNjM4ZmIxNDY4MzkyYjFhNzZlOTljODZlNDhlZmZlZDJhYzkwNTFjZGNjNTYyNWQ4OTYwZjA2ZjkzMjcxYWEifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L55-L65",
+          "version": "repo-lines-v1:sha256:154b50cc6d16abf70850c61c90ca95d303cdfe1476f84a91162036a9f9d36d04:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0Njc3Yzk3ZWEzZjNmZDBlMDM2MThmMzg3ZTA4ZmE0OGI5ZDIyZjVlY2FkMzhiMWRkM2I3MWU5OGE0MDM0MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZGNiN2FkNGVmOWM0NjdhOTJmNzAzNjc5ZTdmODMxYWQ3MWE4MjZjY2MxYzJhMGMxNmExODc5MTI3MWEyNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2NDllMzZmNzg5YWMwYTVlMWJmZmZiODRjNWFiM2U2M2Q2MTYyZjgwMTVkNjc5ZWJlYTViYzk5NzY2NDgyYzgifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L67-L77",
+          "version": "repo-lines-v1:sha256:302d22cf05e9f67313327ac3e9f3a15f60e86d946803845b6eddad90cc3aa86f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjYzQyM2NlZDgxYjE2MzZkNmZjOWE3OWU0YTljOWZmMTdmMmQyZWIwM2E1MWU1NzdhZDJlYTE1N2MzOTMxZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzODYwZTlmMGMwYzlhMjM1NjQ5ZDdkYWI1Y2VmMWE2MDJhYTYyNzQxNWM3NGE3OGNiZmRlZDM3MjY3NzliNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiOTA1ZjM0YjlmODk2MjE1MzNiMjZiMWFlYTI4ZTNkOWI5N2Y0NWViMmQwZTZjOTdkNzY3NTU3ZmUwMjZmODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4b963271fec4a8d88eced3e207c797e",
+      "statement": "En modo `overwrite`, el renderer genera una vez el template y lo escribe en todas las rutas de `outputs`; crea el directorio padre cuando hace falta, respeta `make_executable`, y en `dry_run` no crea archivos ni directorios.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L59-L79",
+          "version": "repo-lines-v1:sha256:740d8a76cd072bddfbefdccf6c5eda18e1acc9d5415ee02e89f0f9b1b6ee73df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1OGYzZTQ1MDE5NGQyYWM4MDA2YWZkNzlkNzVmMTJlNGEyZGM0MzRkZjdkNTU5MTg0OWM4ZjY5ODJkNDY3MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZWZhZmU1MDQwZDEwNTc4YWRlZGJhNTQ4ODFkNDA5ZjJhMjEyNzM2NmJmODhlMjAwZDBlZTQ5NjhlMzMzZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhMGM4YzljY2NiMjhkM2IzMDZlNThiNjI1YjY5M2U3NzBlMmZjMDNhNTlmYjNlMDFlMjBkZjU0ZDUxYmVlZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkNTA0MDAyNTEyOTkxN2Q3Y2M5ZjQ5YThhNzNjYWVkY2U4ZDRmZTAxNGI4NzYwMzdlOTIyZDU2Yjk3OTYxODEifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L21-L40",
+          "version": "repo-lines-v1:sha256:2fd474e4492d7fd9081f8fa84110e3158eb0de281bd2e764fa459d8c9cb9af9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2MGI3ODgzNDI2YmU2NzUyMjEzODM5ZjNmNWRiZmU4ZjBhOTdiY2MzY2QxZDA4Mjc4Y2IxOGNjOGM0ZjQ1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxOGYxZTQ2OTZjNzFkNmVjNjkyNzA2YjFkYmE3M2ExODJmNmFjMTM5N2RkMjVjYjhjMmVhNWFhMDExMTMyOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2N2YxYzc4OTg0Yjg5ZGU1NjUzODlkOWJjOWNjYzEyYWIwMmYyNjA4ZjBkZWFlOTVmZDhjMmUxMzJmMWU2MTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyODc4MGNiOWM3NjM4MmRlZTM5ZjViYTVlY2I4MDk5NDE0YzI2NzI2OTcxZjdiMTNlODA1OWNhNDAwNjY1NGYifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L21-L37",
+          "version": "repo-lines-v1:sha256:c3c749b8b793a8e1baa283dfa9b5d062786fdf4139c0dc10b40fb0f9b6495de2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyYTgxZjg4NmE5M2ZjYzIyMzMyNGY1NjY1ZDJlODk4OWYyOGIxNmI1ZWNjYWJjNGI0MDEwMWM4YjAxYzBmMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzMGE2NDM4ZWQxYWEzNGQ4YTFkOWEwNjMxMGJlYTY1ZmZiMDUzYjEwNzJmNTYwZmQ2MjgzYTI3NjE3ZTgxNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2N2ZlOWUwODMzMjY1NWU0MmU5YjllYTdkMWMyYWJiZGM1NDNiZjY3N2FlZTQwMjY4MzFmMDI5YzBkMzNlNjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7464e3318d2b4c8c81e7cc9100fbef0a",
+      "statement": "`skip_if_missing_parent` omite únicamente las salidas cuyo directorio padre no existe, mientras que `skip_unless_path_exists` omite el target completo sin escribir ni recargar cuando falta cualquiera de las rutas requeridas.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L203-L211",
+          "version": "repo-lines-v1:sha256:7511c28e0f22f0213056635c9bd5892341246f54f6fc4c3719da01d606ba4f87:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFjYTEwZWJkODBhNmI1NTMxZDNkNWNiZjk0MmNkMmZkZDMzYjMwNWM2NjlmOWE5MzViMGUyOGVkNTI3MjQyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E3ZWU4MzZiZTZjZTQzNTA4YjhhYTU4YjZkYzU5ODIwNTA4NDJiYTM1Y2Y0ZmFhN2U1ZmNiYzg0MWMzNTc1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTE5NGUyZDE1ZTU1NzgyMjE1ZGUwNzM1OGE1NWMwMDZmMTI3OWJhYmQ5ZDVlZDUxMGQxNTdlOGVlNzQ5YjI1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxMjMwNmI5MzVlYmY3Njg5NDQ0NTVhOTYyMjNhNWIxODdkNmY1YTU0Zjc2MmNlZGY3MTgzZjkyZjhlMzBkNCJ9"
+        },
+        {
+          "resource": "repo://engine/render.py#L73-L79",
+          "version": "repo-lines-v1:sha256:97bc5acca11c7f1cc5fbf4b1c1d9e02d14f6a4c9674503349f9d4e2b7cc9b282:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRmMGE1MWY2OGVkM2ExZDJlMDE2YTc1NjU3OTMzYTQyYWQyMTEyZWU3MWVhZjJmOTU2ZWEzMmM0N2FlNjJlZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmNlZmFmZTUwNDBkMTA1NzhhZGVkYmE1NDg4MWQ0MDlmMmEyMTI3MzY2YmY4OGUyMDBkMGVlNDk2OGUzMzNmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDdlYzA1MWFiMzM1NWYwODAwMjM4YWZlYmEyY2YzNWJhYTc2ZDVkOGQ1YjBhN2JkOGE2NmExOGI2N2I3ZjE2ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ1MDQwMDI1MTI5OTE3ZDdjYzlmNDlhOGE3M2NhZWRjZThkNGZlMDE0Yjg3NjAzN2U5MjJkNTZiOTc5NjE4MSJ9"
+        },
+        {
+          "resource": "repo://engine/targets.py#L45-L80",
+          "version": "repo-lines-v1:sha256:76bbda4d9379574b2ffd515928598dd976f3df8c937bb51d80163043535c6ee1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzN2MxMjk0NDM2Y2JjOTI5ODFiYTg1NDI4YjllNjQ2YjNmNDRjYzQ4NjZiYzhjZmZlZTQwOWFkMmFmMzZkNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViMDkzZjg4NjgzNGU0NTEzZTgxYzdhZGZiMzdhYTNkZDg0MWM5MWJkYmNmODU0ZWE0ODYyZDI0YzhkMzUxOTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1MGM4OTZkMGEyYzU2ODhlZGYyMTVhOWU4NmRhMTY5ZjQ0MjcwNWE0OTU4MDUwZWIwODk1OWFmYWRhMGM3MjMifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L43-L54",
+          "version": "repo-lines-v1:sha256:85105813b5004c2d5e1379cd2b63f416c93b099d33f4e72966af71e95ac1bccf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5OGE4MTc1MzUyNzEyNWI0YTNkMDE0YTIyMzMxYmE0N2IwY2M4YjdiZGVhOTJlNTU2NDY4Yjc3ZTAwOTk0YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjMjg0NTIzOWY3OWVjNjE5MzU0M2RlMDczODQ4MGNhYmI1ZDk4MGNjOWUzN2E3MTEyMjcwYjIwMWQyMmYxOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkMmRlMzNkZTRjY2UxMjg1MmFmYTZiYjJlOWNlMDRlYmJjYzBjNjU5YzU3NmJjNTJmNmJhNWZiNmUxNjRiMWUifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L47-L53",
+          "version": "repo-lines-v1:sha256:f6f706041eb0e7da913fc8ff3d624bf3552b40d0db941eeb68799aa6e0b437d7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQwMTA5MDQwZDJmNzE5ZTU3NzczMzc3NTE0Yjc2MzM4NTZlMGJlMDIzNmNkNzk4ZGJlOGVjNzg3NGQ1NjI0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjI1Y2Q5OWE5ZmMxMGUwMzc5YzBlZDU3MzgwNGQ5NWQ2ODJlZDcxZjA1YzAzNjcyMzgxMDg2MTg2MWJhNGNhMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjVjM2FhNDE4ZWQ3N2MxZDU2MWVjZTU4ZjhmOTA3NjI4YzhiZWViYzEwYjc4MjEyNjIyZmM5MDI5ZGEyY2E5YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_acb6929faefc41ba9b9dcb3c1b027e07",
+      "statement": "En modo `patch`, el renderer no crea outputs nuevos: solo actúa sobre archivos ya existentes, y si la ruta no existe devuelve `False` sin escribir.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L160-L200",
+          "version": "repo-lines-v1:sha256:5fcb29561bd37294f536bd70559b6b94b823a463b5e499b3ed0da8e6c6e35316:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMDg3MDRmMTdlMzFmNGEwZjIyMzFkNjFjOGMxYTk1ODI2ODFjYzNjZTZjOTA4ZDkxZDEyYzVjMTNiYjYzZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZWZhZmU1MDQwZDEwNTc4YWRlZGJhNTQ4ODFkNDA5ZjJhMjEyNzM2NmJmODhlMjAwZDBlZTQ5NjhlMzMzZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZGY4OGEyMTg3MjY4NGYxNDExZGYyNmZlMDgwNDE2NzEzMTZiYzEzNzQ4YjllZTk5YzJkMTBkY2I1NzdjMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxZTNmZGY2NTZhNzNjYzRlNTg0NTkwZTkzOTY1YTZlY2UwNzA4MmI1MzAwYzM4ZTcwYmI5ZjFmYmQzNDQ2ODcifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L73-L88",
+          "version": "repo-lines-v1:sha256:e39b07d8e1452645724dd22d49f94c2f0743723cfe4d8ee8fa9a3c619ac70817:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmZmQ3YzdkNzBjNmMzYjczODZiNmZjNzQwNTFjZTM4MDQ1NjU4YmViMzZjZjFmNzU4NDM5MzY0NWI2Mjg2OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzZDkzNWYwYmUyNjdhYThjZDdiMWJjNWI1OWMwZWUxOTNlMjliNzkwNDc4M2NkNTlmMDBlYTJkMTc2YjhmZTIifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L88-L95",
+          "version": "repo-lines-v1:sha256:c67e54fb368c331a6bb1320648ccf3a735d757a46fe91eae1d4ac8f9e85e3945:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI5OWI3ODNkODQ0NWM0NmRhYjcyMDY2NWVmZmNjMzE4MTI1ZDZjMjQ5NWZkNjg1Y2MzNTVmODcwZTYyZTA5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ1NGVjN2Y1ZTA2MTk5YjM5OGY3NzYwNzFkMWE5MWQ2NjhlZmQ5NzQyODRjYmJkODFlZTI4MjA4NzU2YTY4OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI2YzBkMmQzN2I4NGI4ODgwMzRhYTdhMDkyNGRmOTRjOGM3NTk2N2EzYWRlZjQ0YmVhM2Q5YTVkOTY2ZWI2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTk4OWViM2ViNmFmZDMyOTY1MDQ0ZDc0YmI3ODBkZmNmMTZlODYzMDgxY2RhOGM5NDYwMDkwZjc5MGRlYmVmNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f03d607c9f44564a4e6ec685f903742",
+      "statement": "La estrategia `regex_splice` soporta dos formas de localizar el bloque gestionado: un `marker_regex` con inserción opcional tras otra sección, o marcadores literales `marker_begin` y `marker_end`; después puede aplicar `replacements` y `ensure_after` sobre el contenido ya parcheado.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L82-L123",
+          "version": "repo-lines-v1:sha256:29cdc760301e63725c989ad7de331650032fc8b1adc40e4c35d49483218f8b09:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmNGY2OWNmYmZlMjQ1MjIyODY0NzZjMmIyNDY2MTMzMjAwYTAyZDQzODVjZGU0ODliN2YxZTI1YmE3M2FhYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTRlMmQxNWU1NTc4MjIxNWRlMDczNThhNTVjMDA2ZjEyNzliYWJkOWQ1ZWQ1MTBkMTU3ZThlZTc0OWIyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhNGIwY2Y3YjM3MWI5YWI0MjMxZTQxY2Y4ODRkZjU3MjZiYWYwYjUzOGRhM2Y2NDdkODAxNjk0MjM4ZWJjY2EifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L147-L191",
+          "version": "repo-lines-v1:sha256:055f9a30b39b08f907b4e1f23d2389f7f97bfa3da938da2adc750f22a5c2a939:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMzJhMDU0YWQ5ZDE3ZjJlMjcyMTlkY2IwZjA1N2I4MjViMjQzZmYxNTA1Nzc2NmM1YmJiNGQwNDg0M2RjMTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5ZjNiYmUxYmM4OGZiZjQ1MGRkNGQ3YjNhNDY5ZTgyZTgyOGM2MTYzZjQ0NDUxMmI3ZmMwMDU4OTU4ZWNjNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzY2JkZDdmZjhkN2Q1Y2JkZDFkNGRjMzA1ODExOGNlNjE4YzQ1NmI4YTFhZGQzZDA3MmM3YWEzMGRlZjkxYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkNTk1YTc1MDAwMDAyODg2ZmIzMmI4ZTk0Y2UxMGZkY2NjNmNiN2Y0MDNiYjVmN2EwNDIzOGEyZjkyNTcyYTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L56-L71",
+          "version": "repo-lines-v1:sha256:6c876798fc7f808ab961e673ccc303ca217982b887551c1467df6a3d61886369:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyOTUyODkzZDNmNWYyNTUxYjNhYTZkMzUzMDk4YmNjZDYzOTJhNjQ3NWM4NWE3YTljOTVjNDVlNTY0YTE5MjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiYjcwNjRlZmE0ODc0OThhNDY2OTk5ZjI3ZWE3Mzk0OTIxZGUzMjdiM2UxMTFkYjI1NDZjMmFlMjQ2YzIyMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwZjllNzk2NzZjNmE4ZTUyYTdhZjA5MWE2ZWE5M2IxYWYxNjI5ZWNkZjRmYjkzN2FlM2MzOGJkYWQ2ZGY3YTQifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L98-L135",
+          "version": "repo-lines-v1:sha256:b975137f3f5b3f9a57989a681a0d0c86fa070329aaf64f526867cc934d326b82:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NTk3ODQ4NDQxOWFkMmM3NmY4YzIwZjlmZWIwNjQ5YTlmY2QwMWJhZDQ4M2NiNTkxMjMxZWRlZjRkOTA2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNWJkY2Y5MTc1NTkzZTEyZTE3OWQ0NDBiYWNmYWQ5M2ZlZjZjNzgxYTkyY2Q0MjIzMTU3MmVlMDA5M2QxYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNjJmMDEwZTllOTFkM2RlMjVmZWExMjcyZDIwMGM2MGFmMGUzYjNiZGE0NmViZTA3MGIzMjBmYWM5OGI5YjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4093a122aee14f06b250679ab00bf978",
+      "statement": "La estrategia `json_scheme_upsert` actualiza una lista `schemes` en un archivo JSON existente, reemplazando el scheme con el mismo `name` o agregándolo si no existe, y falla con `TargetRenderError` si el JSON no es válido.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L125-L184",
+          "version": "repo-lines-v1:sha256:b6c48a043ec7bb3f230350bf449bf2b8aabe0f4a3739e92c651c8a964309f885:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNjgxMzA4NjU4ZjEzMTg0OTM4OTI0NDIwYTMzNmY5ZjM2ZGI4ZGQ4MGUzMjJiZjIzOGJlMThjOWUyZjQ1YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjMzE1YTQ1MTM2NjMwMDc0NzViOGUzZjk0YTMyZjQ3NzliODRkMDA1NTY3ODM1YTQ2ZmRhN2JkYTJmMjE5MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYmY3NDA3MDljNGU2MzM0NjVlZWE4YTU0N2UzOGYyODc4NzcyM2RjODAzYzliYzMxOGFkY2VmODVjOTMzNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5NDYxYWNhOGM1YjI2YWJiM2M2ZWI2ZDZlNjA1NjAzMzQ2NWQ3MWRhNjhmMmRkYzUwMzEzMmQ0MGU4ODQ5ZmUifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L90-L110",
+          "version": "repo-lines-v1:sha256:4dc2cba67d0ac74977b0a7ffb2b975c7a788090b1f15679f32fd9483b2ea7a8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzZGRlYTQ1MzZjNjNlYmNlN2ViYmE2N2E2ZTBjYzllMmZjYzYxZDY0YWM1YTZiNTFmNjQwMDUzNDIyYzY1YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1NDJjNGM2MzE1YzljNGMxNGMwMjg5MDEzY2I4ZTJhNzUyNTM1NTBhYjRmMTU2NDg4NjMxZjJhNTE0MjcwZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiYjcwNjRlZmE0ODc0OThhNDY2OTk5ZjI3ZWE3Mzk0OTIxZGUzMjdiM2UxMTFkYjI1NDZjMmFlMjQ2YzIyMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyYmYxZGFkMTQxNzhkZDNjZTExMjY2ZjkzNzA2NzJiNTNmODRlNTIzYmYwZjAwYThmNWZhNGU0OTlmOGNjZDEifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L137-L149",
+          "version": "repo-lines-v1:sha256:1d05ca134f0bc8172a94319d59afba44fb32c111a6fe3fd51f20a4813201e84a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMzA0ZmM1OWViMGJjNDVkMTBmMDAxMGZmMDNhYjc3N2NlMmZjOWI2NTNlODljY2M4ZmEyYWVlYWVlYzc1ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0MTdlMmIwNzQ5ODIxYjk2ZTdhMDVhNjYwMzIxOGI1ZGVlN2E0MWI5NTYwNDJiNWU0MDlkYTZjZjQ0NjFjYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4NWNmOTNkOWRlMTE2NTkwNmJiNzNhNjI0N2VjN2NmYzZkODY4MTdlODc5MmY0M2M1MjFjZWNkNmVjZTdkOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c6e56249fc441aa9e5d308bfd2150a6",
+      "statement": "`render_target()` devuelve `True` solo cuando se escribió al menos una salida; devuelve `False` cuando el target se omite por guardas o por falta de datos requeridos, y traduce a `TargetRenderError` los errores de plantilla, JSON inválido o E/S.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L203-L220",
+          "version": "repo-lines-v1:sha256:b94e284d05be2a4475f5688600181cb11c51a4340927287a3ed44774b48735e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhY2ExMGViZDgwYTZiNTUzMWQzZDVjYmY5NDJjZDJmZGQzM2IzMDVjNjY5ZjlhOTM1YjBlMjhlZDUyNzI0MjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNjU3ZmFhOTA3MWRhMGZjNWZjOTE1N2EyMWI1NDYyZmEwNTNmY2FhYjM4NjRjMTAwZThlMmRkN2FlZWQ1NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTRlMmQxNWU1NTc4MjIxNWRlMDczNThhNTVjMDA2ZjEyNzliYWJkOWQ1ZWQ1MTBkMTU3ZThlZTc0OWIyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L194-L253",
+          "version": "repo-lines-v1:sha256:e1ecfcc62a4dccac42b4e1a26cfbddb0f1555506e216e9b861b1b2d41988190e:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhYjYyZTY2M2U5ZmE4ZmFlMGJmMjkxZGVkMjQxZDk2Y2IyNzM0ZDRlZTAxNWU3ZmVhODU3MDZiMGVlMzg3ZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3N2I2NjQ5NDFhNjkxZWUxYzYyNjFkMWFjMDEzOGFlZmVhN2RiNzdlNjc5YjYyYTczYThhNmMzMWM2M2QyZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNzhkNmI0YWVhYzgyMWQ5NjBmY2E3MTdkZjE2MGQwYWJkMjc4YjFmN2ExZjJlZTgyOTc4ZjlmMzRlYjBlMTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0ZjZiM2E2MjBjYTg5YzZjOGE0Yzk1YmVlMDJkMDg3OTdjOTIyNDMxNTc5ZmRmNWQ3MWZiODFhMTBiNmY0MGMifQ"
+        },
+        {
+          "resource": "repo://tests/test_render_modes.py#L79-L85",
+          "version": "repo-lines-v1:sha256:9b1a86231859ccb8e19043c50d63686b111851ea572b039af90538938b695462:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2JlZjgxOWYzMmY2YTQzZWZiYTNmYjRlMTkwZjI5YmVhMmMzNzkyNTNmMDRkMjEwODQ2MDAwZDAzMzEwZTlkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTYwNjA1YmQzMmYxMDEzYjc0N2RlNzBmMDAwMmE0MTc4NjczYWQzMTg2OWUyNmQ1ZTQ4Y2VmOTExNjY3MGNhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA4YmIxZGJlNjg5M2EzZDYxY2E5M2YwZDcwYWVmYjQxOGZkOGIzYzFlOWY2OWRjNGFjMTQyMGUwOWIxOWFlMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmI2ZjNkYzhjMjFkNWVmZTU5NDE5ZmQyODc3MTk2Mzc5NDdkNDY4YWFkZGJhNzJjODU1MjFjOGRjNTAwNGQ0MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5583bd53ac4408f8b9a6ecbe1fe50ac",
+      "statement": "Los comandos de `reload` y `post_apply` comparten un sistema de placeholders que expande `{name}`/`{palette}` y `{seccion.clave}` con `shlex.quote`, deja intactos `${VAR}` y llaves sin punto, y falla de forma explícita si un lookup con punto no existe.",
+      "evidence": [
+        {
+          "resource": "repo://engine/reload.py#L10-L31",
+          "version": "repo-lines-v1:sha256:2f0d45196c78657c22c034140c051886d5859cb76816e24d73d889b963173587:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0Y2RjNWMwMGNhYTNmZTY3NTU3ODczMzYwODE4YjJiYTMwYWMzNDkwODg2NzZlYzJmN2QzMGRmZTkyY2M2YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiY2Q3NzQzMmEyNWU0ZDM1MmU2MmMwZjNjMTdmNGQ3YmQ1NDcxMWU5MTVhMDBlYzEwN2ZjZjllNmU3MjY1ZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1MWZiZTg1OTZhMjhiZTlkN2ZiMmVjZjcxOGI4ZDIyYjNiOGE3MDYxNzYzOThlMDA0NGZkMWQ4YTAwMjEzNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjZjBlYzRlNDMzYzExMGIyZWI1MTJkM2FhMWU2ZjdhYWUyYjAwMjIwNWE3YjAwN2I4ZjUwN2I4NzZhMzNiNWQifQ"
+        },
+        {
+          "resource": "repo://tests/test_command_substitution.py#L38-L51",
+          "version": "repo-lines-v1:sha256:b43398fde5902db21b006b94a0042d3acd3cd801fea6aaf01de656787701290f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMzhiZDljYmM2MTVmNmY0MGQ0ODQ1YTNhZjE0OTE4ZWE3MGE2NDM2NDQzMTZjMjc0ZmQ3YzhkNWZkM2Q2ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYWIyZDEyMjlhM2MyNjAzNWIwY2I2MTliNmMyNzBmMmIyZWU2YTRiYzlmNzU3ODlhY2RkM2U3ZmYwZmE1ODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkYzEwZDJhYzk0NGQxMDNjMWIzN2JkOTMyM2RlZmQxMTQzZTI2NTNjOGNkZmI2NjE1MTE2MjQ3YTUyNzU0YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_command_substitution.py#L9-L36",
+          "version": "repo-lines-v1:sha256:cee9b3ae9656c48b392713167b616dadbf7eb72fc078c9be47980ae800705193:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNWM2NGY4OTAzZmZhYzhmMDcyNzY5NjA5Y2NkZTY3YTc3ZmE3YTQyMTExYWE3OWVhYTUxMmY2NWU4YzBjMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmMjZlOWZiODIwYWEyZmE0MGIwZmJmMzFmMTE2Mjc0YWMyYWQzOTI1NmVkYzFmNGI3NjA4NDkwNDQzZDUxNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjNzZjNjY4YjAzYzQwNmE0ZTU2MDk0MDQ2ZTczMzE3ODkxN2IzM2FhMjQzMGU4OGZmYzQyNDRjNDcyYzY1YTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43bcbc5c8c3d48b897c5ceb6e72c30b5",
+      "statement": "El orquestador solo debe ejecutar `reload` cuando `render_target()` reporta que hubo escritura real; si todo fue omitido, el target termina sin recarga.",
+      "evidence": [
+        {
+          "resource": "repo://engine/render.py#L203-L220",
+          "version": "repo-lines-v1:sha256:b94e284d05be2a4475f5688600181cb11c51a4340927287a3ed44774b48735e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhY2ExMGViZDgwYTZiNTUzMWQzZDVjYmY5NDJjZDJmZGQzM2IzMDVjNjY5ZjlhOTM1YjBlMjhlZDUyNzI0MjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNjU3ZmFhOTA3MWRhMGZjNWZjOTE1N2EyMWI1NDYyZmEwNTNmY2FhYjM4NjRjMTAwZThlMmRkN2FlZWQ1NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTRlMmQxNWU1NTc4MjIxNWRlMDczNThhNTVjMDA2ZjEyNzliYWJkOWQ1ZWQ1MTBkMTU3ZThlZTc0OWIyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/test_render.py#L256-L260",
+          "version": "repo-lines-v1:sha256:5498c01fa745f499c9edd5775202af5dac326f09f59240a9d81267cfb3d68d36:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY5MGYzNWIxYjJjZTFlZjE3NzU5OTUzZGZjNzNhMzA1Mjc1YjE2MTY4YzEzYjcyMTczYTQ1ZTc4NzdkZDdlZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc3MzQ4ODQ0ODE4YTVjZjFmNDc0YWRlMDk3YzEzODUxNzZjYWY0ZGY2Y2EyYzBkN2RlZmRmYWM3MGVjZWMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWJkY2Y5OTliYTk1ZTcwZDYwZWJmOGEyYmY0MjJhNGY3MGQ4NWFlOTBjNzllYmNlMjMyNDg1YjNkZTZiNDI2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzljNGUxYTIzNWRjMWM0MTgzY2VjMjRiYWU0YmYzNGMwNjY0YzBhNjBkMGIzNjg2NmQyZTZmNjAyMDVmZDg0OSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T21:58:07.062Z"
+  }
+}

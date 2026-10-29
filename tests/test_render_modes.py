@@ -3,9 +3,9 @@ import stat
 
 import pytest
 
-from engine.palettes import PaletteLoader
-from engine.render import make_jinja_env, render_target
-from engine.targets import PatchSpec, Target
+from hueman.engine.palettes import PaletteLoader
+from hueman.engine.render import make_jinja_env, render_target
+from hueman.engine.targets import PatchSpec, Target
 
 LOG = logging.getLogger("hueman-tests")
 
@@ -77,7 +77,7 @@ def test_user_template_dir_precedes_packaged(tmp_path):
 
 
 def test_missing_template_raises_clean_target_error(tmp_path):
-    from engine.render import TargetRenderError
+    from hueman.engine.render import TargetRenderError
     env = env_with(tmp_path)
     target = Target(name="t", template="ghost.j2", outputs=[tmp_path / "o"])
     with pytest.raises(TargetRenderError):
@@ -135,7 +135,7 @@ def test_patch_replacements_and_ensure_after_apply_once(tmp_path):
 
 
 def test_json_scheme_patch_rejects_invalid_json_without_modifying_file(tmp_path):
-    from engine.render import TargetRenderError
+    from hueman.engine.render import TargetRenderError
     env = env_with(tmp_path)
     out = tmp_path / "s.json"
     out.write_text("{not json")
@@ -164,3 +164,89 @@ def test_palette_precedence_ignores_missing_custom_dir(tmp_path):
     (packaged / "p.yaml").write_text("src: packaged\n")
     loader = PaletteLoader(packaged, [tmp_path / "does-not-exist"], LOG)
     assert loader.load("p")["src"] == "packaged"
+
+
+class _RecLog:
+    def __init__(self):
+        self.warnings = []
+
+    def warning(self, msg):
+        self.warnings.append(msg)
+
+
+def _splice_runs(regex, rendered, original, runs=1):
+    from types import SimpleNamespace
+    from hueman.engine.render import _apply_regex_splice
+    patch = SimpleNamespace(marker_regex=regex, insert_after_section_regex=None,
+                            replacements=[], ensure_after=[])
+    log = _RecLog()
+    content = original
+    for _ in range(runs):
+        content = _apply_regex_splice(content, rendered, patch, log)
+    return content, log.warnings
+
+
+def test_marker_regex_not_matching_own_output_warns_once():
+    content, warns = _splice_runs(r"\[colors\].*?(?=\n\[|\Z)", "color=1\n", "a=1\n")
+    assert content == "a=1\n\ncolor=1\n"
+    assert len(warns) == 1
+    assert "marker_regex" in warns[0]
+
+
+def test_marker_regex_matching_own_output_is_idempotent_without_warning():
+    content, warns = _splice_runs(r"(?s)color=1\n", "color=1\n", "a=1\n", runs=3)
+    assert content.count("color=1") == 1
+    assert warns == []
+
+
+def test_marker_regex_replace_path_does_not_warn():
+    content, warns = _splice_runs(r"\[colors\].*?(?=\n\[|\Z)", "[colors]\nx=2\n",
+                                  "a=1\n[colors]\nx=1\n")
+    assert content == "a=1\n[colors]\nx=2\n"
+    assert warns == []
+
+
+class _InfoLog:
+    def __init__(self):
+        self.infos = []
+
+    def info(self, msg):
+        self.infos.append(msg)
+
+    def warning(self, msg):
+        raise AssertionError(f"no debe avisar: {msg}")
+
+
+def test_overwrite_unknown_palette_key_logs_info_and_skips(tmp_path):
+    env = env_with(tmp_path, **{"t.j2": "x"})
+    out = tmp_path / "o"
+    target = Target(name="pi", template="t.j2", palette_key="pi", outputs=[out])
+    log = _InfoLog()
+    assert render_target(env, target, "n", {"kitty": {}}, False, log) is False
+    assert not out.exists()
+    assert len(log.infos) == 1
+    assert "pi" in log.infos[0] and "la paleta no tiene la seccion 'pi'" in log.infos[0]
+
+
+def test_patch_unknown_palette_key_logs_info_and_skips(tmp_path):
+    env = env_with(tmp_path, **{"t.j2": "x"})
+    out = tmp_path / "o"
+    out.write_text("orig\n")
+    target = Target(name="omp", template="t.j2", palette_key="omp", outputs=[out],
+                    mode="patch", patch=PatchSpec(strategy="marker_regex",
+                                                  marker_regex="x"))
+    log = _InfoLog()
+    assert render_target(env, target, "n", {"kitty": {}}, False, log) is False
+    assert out.read_text() == "orig\n"
+    assert len(log.infos) == 1
+    assert "omp" in log.infos[0] and "la paleta no tiene la seccion 'omp'" in log.infos[0]
+
+
+def test_known_palette_key_does_not_log_missing_section(tmp_path):
+    env = env_with(tmp_path, **{"t.j2": "x"})
+    out = tmp_path / "o"
+    target = Target(name="t", template="t.j2", palette_key="k", outputs=[out])
+    log = _InfoLog()
+    assert render_target(env, target, "n", {"k": {}}, False, log) is True
+    assert out.read_text() == "x"
+    assert not any("no tiene la seccion" in m for m in log.infos)

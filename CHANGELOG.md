@@ -2,6 +2,67 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Bug Fixes
+
+- Use a real newline in the starship ensure_after example (536a64c)
+- Validate logging, mode, patch, post_apply and outputs in config (60a81b0)
+- Harden palette names, config lookup and template rendering (#49) (ded6249)
+- Report unknown placeholders as a clean error (#34) (7e91ea2)
+- Log when a target is skipped for a missing palette section (#33) (2a90088)
+- Fail early with a clean error on unknown placeholders (#31) (1d4ded3)
+- Warn when marker_regex does not match the block it inserted (#30) (74a4558)
+- Package newt_colors for whiptail palette (e6d0a6a)
+
+### CI
+
+- Add Dependabot for actions and pip (606acb4)
+- Run pytest on a Python 3.9-3.13 matrix (adfad6a)
+- Harden release workflow (env-passed outputs, SHA-pinned actions, ff-only sync-dev) (68b7507)
+
+### Chore
+
+- Skip merge commits in the changelog (0ad038a)
+- Remove release.sh, releases are cut by the workflow (b0bf932)
+- Make the roadmap issue template neutral (7c1e714)
+
+### Documentation
+
+- Freeze the v0.2.0 docs snapshot and sync the site changelog (b035527)
+- Move the docs freeze procedure to CONTRIBUTING and drop website/README.md (8182ec7)
+- Drop the deploy section from the website readme (360306f)
+- Make the site deploy-ready (canonical, Open Graph, robots, deploy notes) (2e3c25f)
+- Add update and uninstall instructions (a83ef61)
+- Add security policy, contributing guide and PR template (6e98e91)
+- Document retrying a failed publish (cdfb827)
+- Bump skill version to 0.2.0 and sync website changelog (ed98e36)
+- Correct palette_key claim, drop logging note, cover real errors in troubleshooting (e45d150)
+- Unify palette count and neutral tone in example config (1324787)
+- Document config validation errors (97722a6)
+- Document hueman init in install, quickstart, CLI and agent guides (cb5ff92)
+- Link the full documentation site from the README (#32) (9d0f641)
+- Warn that symlinked outputs are replaced, not followed (#29) (10db85b)
+- Add a Windows and WSL guide with example scripts (#28) (95d80ff)
+- Make the README a general overview (#27) (59bc81d)
+- Model versioned content and add-tool guide (5da3c53)
+- Add generated project wiki (ee0c6bb)
+- Add generated project wiki (394c85c)
+
+### Features
+
+- Add hueman init and ship example config as package data (7854f43)
+- Package hueman for pip as hueman-cli (#36) (d9daeb8)
+- Add vars substitution for output paths (#26) (695b8f2)
+- Show release info and a per-version changelog (#24) (dd717b8)
+- Add Termux colors template and proot guide (#25) (5884ae4)
+- Add static documentation portal shell (#23) (853085f)
+
+### Testing
+
+- Skip the TOML check where tomllib is unavailable (8cc9a86)
+- Cover the git timeout against a real hung remote (#35) (1fe2de0)
+
 ## [0.1.0] - 2026-10-16
 
 ### Bug Fixes

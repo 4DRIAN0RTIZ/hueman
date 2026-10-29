@@ -3,9 +3,9 @@ import sys
 
 import pytest
 
-import hueman
-from engine.config import ConfigError, HuemanConfig
-from engine.palettes import PaletteLoader
+import hueman.cli as hueman
+from hueman.engine.config import ConfigError, HuemanConfig
+from hueman.engine.palettes import PaletteLoader
 
 LOG = logging.getLogger("hueman-tests")
 

@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "runId": "7be54296-385e-4cd9-b434-90b35b0d04ea",
+  "mode": "init",
+  "phase": "generating",
+  "startedAt": "2026-10-16T21:58:07.062Z",
+  "language": "es",
+  "languageChanged": true,
+  "requiredRewritePages": [],
+  "initialPages": [],
+  "sourceFingerprint": "sha256:7d4c6683eea25425558887b43c69e3882dbed51eb3033be226a25e814feb5e61",
+  "targetGitHead": "8e17006bf8dc09f296e8f665cb2b6712eb9476bb",
+  "planningContext": "Genera una wiki completa y práctica del proyecto. Documenta la arquitectura, CLI, configuración, targets, renderizado, paletas, sincronización de estado, manejo de errores, pruebas y flujos de contribución. Usa el código como fuente de verdad y evita incluir datos específicos del entorno local.",
+  "actor": {
+    "producerActor": "openwiki/0.7.2",
+    "metadataModel": "gpt-5.4-mini"
+  },
+  "previousLastUpdate": null,
+  "beforeContentSnapshot": "ffa63583dfa6706b87d284b86b0d693a161e4840aad2c5cf6b5d27c3b9621f7d",
+  "preparedWiki": {
+    "generatedProvenance": []
+  },
+  "plan": {
+    "pages": [
+      {
+        "id": "b14e4e62-0e1b-4e53-9941-c7c9706297e1",
+        "path": "/openwiki/architecture/overview.md",
+        "title": "Architecture overview",
+        "purpose": "Resumen del sistema hueman: CLI, carga de configuración, loader de paletas, motor de renderizado, recarga, persistencia de estado y backend de sincronización.",
+        "seedPaths": [
+          "README.md",
+          "engine/config.py",
+          "engine/palettes.py",
+          "engine/reload.py",
+          "engine/render.py",
+          "engine/statesource.py",
+          "engine/targets.py",
+          "hueman.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/configuration.md",
+          "/openwiki/concepts/state-sync.md",
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/workflows/apply-theme.md",
+          "/openwiki/workflows/sync-and-status.md"
+        ],
+        "instructions": [
+          "Describe límites de responsabilidad entre módulos y cómo se conectan en tiempo de ejecución.",
+          "Evita listar cada archivo del árbol; centra la explicación en sistemas y relaciones.",
+          "Incluye diagramas Mermaid para el flujo principal de `set`, `sync` y resolución de configuración si ayudan a clarificar."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "cb271026-b7cc-45c4-a8e3-eaf246ba9bed",
+        "path": "/openwiki/concepts/configuration.md",
+        "title": "Configuration model",
+        "purpose": "Explica el esquema de hueman.config.yaml: resolución de rutas, targets, políticas de reload, templates y paletas custom, y estado compartido opt-in.",
+        "seedPaths": [
+          "README.md",
+          "engine/config.py",
+          "hueman.config.example.yaml",
+          "tests/test_config_and_palettes.py",
+          "tests/test_real_config.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/state-sync.md",
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/operations/runtime-and-failure-handling.md"
+        ],
+        "instructions": [
+          "Aclara qué campos son obligatorios, cuáles son opcionales y cómo se validan.",
+          "Documenta precedencia de resolución del config y defaults observados en el código.",
+          "No arrastres contexto local; mantén los ejemplos genéricos y tomados del repositorio."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "faf0db81-246d-4d9d-bdfd-4c28d1896df8",
+        "path": "/openwiki/concepts/palettes.md",
+        "title": "Palette model and lookup",
+        "purpose": "Explica cómo se cargan las paletas YAML empaquetadas y custom, cómo se resuelve precedencia y qué invariantes deben cumplir las paletas.",
+        "seedPaths": [
+          "README.md",
+          "engine/palettes.py",
+          "hueman.config.example.yaml",
+          "tests/test_config_and_palettes.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/testing/overview.md"
+        ],
+        "instructions": [
+          "Mantén el foco en el contrato observable por el motor, no en inventario de paletas concretas.",
+          "Resume la precedencia entre directorios custom y empaquetado, y qué sucede ante conflictos o YAML inválido."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "d24b23df-2a1b-46b7-9b0e-9a6fa54eae26",
+        "path": "/openwiki/concepts/state-sync.md",
+        "title": "Shared state sync",
+        "purpose": "Documenta el estado compartido opt-in, la interfaz StateSource, los backends git/file, la semántica de revision y las reglas de conciliación.",
+        "seedPaths": [
+          "README.md",
+          "engine/statesource.py",
+          "hueman.config.example.yaml",
+          "hueman.py",
+          "tests/test_file_source.py",
+          "tests/test_state_branch.py",
+          "tests/test_state_source_contract.py",
+          "tests/test_sync_status.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/operations/runtime-and-failure-handling.md",
+          "/openwiki/workflows/sync-and-status.md"
+        ],
+        "instructions": [
+          "Aclara que el motor depende de la interfaz abstracta y no de un backend concreto.",
+          "Explica claramente qué significa alcanzable vs inalcanzable y cómo se trata `revision`.",
+          "Usa un diagrama Mermaid para el ciclo de vida de lectura/escritura de estado compartido y el drift local/remoto."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "1428661d-9c21-4d6c-b140-8d36605eb4dc",
+        "path": "/openwiki/concepts/targets-and-rendering.md",
+        "title": "Targets and rendering",
+        "purpose": "Describe el modelo declarativo de targets, los modos overwrite/patch, los placeholders, guards de escritura y el contrato de éxito/fracaso del render.",
+        "seedPaths": [
+          "README.md",
+          "engine/reload.py",
+          "engine/render.py",
+          "engine/targets.py",
+          "tests/test_command_substitution.py",
+          "tests/test_render.py",
+          "tests/test_render_modes.py",
+          "tests/test_starship_marker.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/configuration.md",
+          "/openwiki/operations/runtime-and-failure-handling.md",
+          "/openwiki/workflows/apply-theme.md"
+        ],
+        "instructions": [
+          "Explica cómo se construye el contexto Jinja y cómo se resuelven `palette_key` y `extra_vars`.",
+          "Incluye un diagrama Mermaid para el flujo de renderizado y patch si ayuda a mostrar bifurcaciones.",
+          "Señala las condiciones en las que un target se omite sin escribir ni recargar."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "423f3dee-65c3-4a50-aa8c-94aa1c22bc90",
+        "path": "/openwiki/integrations/cli.md",
+        "title": "CLI surface",
+        "purpose": "Documenta comandos, flags, resolución de config y comportamiento observable de la interfaz de línea de comandos.",
+        "seedPaths": [
+          "README.md",
+          "hueman.py",
+          "tests/test_colors_and_cli.py",
+          "tests/test_state_and_reload.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/configuration.md",
+          "/openwiki/quickstart.md",
+          "/openwiki/workflows/apply-theme.md",
+          "/openwiki/workflows/sync-and-status.md"
+        ],
+        "instructions": [
+          "Describe `set`, `list`, `status`, `sync`, `--config`, `--dry-run`, `--only`, y `-q/--quiet` según el código.",
+          "No documentes rutas locales específicas ni ejemplos del entorno del autor; usa ejemplos genéricos."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "15533148-6861-428e-a9b3-d92ef1a44b8d",
+        "path": "/openwiki/integrations/templates-and-hooks.md",
+        "title": "Templates and hooks integration",
+        "purpose": "Explica Jinja2, filtros de color, delimitadores alternativos, expansión de placeholders y ejecución de comandos de reload/post_apply.",
+        "seedPaths": [
+          "engine/colors.py",
+          "engine/reload.py",
+          "engine/render.py",
+          "tests/test_colors_and_cli.py",
+          "tests/test_command_substitution.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/operations/runtime-and-failure-handling.md"
+        ],
+        "instructions": [
+          "Incluye cuándo se preservan `${VAR}` y llaves literales, y cuándo un placeholder es error.",
+          "Si documentas el render, usa Mermaid solo si aporta claridad al control de flujo."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "d08a2a96-1799-4b82-aca0-65a87326ef12",
+        "path": "/openwiki/operations/runtime-and-failure-handling.md",
+        "title": "Runtime and failure handling",
+        "purpose": "Centraliza políticas operativas: códigos de salida, timeouts, best-effort reload/post_apply, fallos de escritura, y degradaciones seguras.",
+        "seedPaths": [
+          "README.md",
+          "engine/reload.py",
+          "engine/render.py",
+          "engine/statesource.py",
+          "hueman.py",
+          "tests/test_error_paths.py",
+          "tests/test_reload_exit_codes.py",
+          "tests/test_state_source_contract.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/state-sync.md",
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/workflows/apply-theme.md",
+          "/openwiki/workflows/sync-and-status.md"
+        ],
+        "instructions": [
+          "Enumera políticas de error por capa sin inventar nuevas rutas de código.",
+          "Incluye qué es warning vs error para reload_failure y cómo afecta al exit status.",
+          "Menciona bounded time/timeout y el principio de no tocar el working tree del usuario."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "b4a6279d-8d1a-4198-a8e1-0d7ea07c5ab2",
+        "path": "/openwiki/testing/contributor-flow.md",
+        "title": "Contributor workflow and verification",
+        "purpose": "Flujo práctico para cambiar el sistema con seguridad: localizar superficie afectada, ejecutar pruebas relevantes y verificar regresiones.",
+        "seedPaths": [
+          "README.md",
+          "docs/conventions.md",
+          "docs/verification.md",
+          "tests/"
+        ],
+        "relatedPages": [
+          "/openwiki/operations/runtime-and-failure-handling.md",
+          "/openwiki/quickstart.md",
+          "/openwiki/testing/overview.md"
+        ],
+        "instructions": [
+          "Evita dependencias en datos del entorno local; usa el código y las pruebas como guía.",
+          "Mantén los pasos genéricos y reproducibles solo con el repo."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "1db25688-b66a-4d96-aef5-dfc3decd505f",
+        "path": "/openwiki/testing/overview.md",
+        "title": "Testing overview",
+        "purpose": "Mapa de pruebas del repositorio: qué subsistema valida cada grupo y qué invariantes protegen.",
+        "seedPaths": [
+          "tests/test_file_source.py",
+          "tests/test_real_config.py",
+          "tests/test_render.py",
+          "tests/test_state_and_reload.py",
+          "tests/test_state_source_contract.py",
+          "tests/test_sync_status.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/state-sync.md",
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/operations/runtime-and-failure-handling.md"
+        ],
+        "instructions": [
+          "Agrupa pruebas por comportamiento, no por nombre de archivo solamente.",
+          "Resalta invariantes importantes, casos límite y qué boundary confirma cada test."
+        ],
+        "status": "skipped"
+      },
+      {
+        "id": "3ca8faa4-c7bc-4f58-b445-c16220e9bcb1",
+        "path": "/openwiki/workflows/apply-theme.md",
+        "title": "Apply theme workflow",
+        "purpose": "Guía del flujo de `set`: selección de targets, render, reloads por target, post_apply, persistencia de estado y publicación compartida.",
+        "seedPaths": [
+          "engine/reload.py",
+          "engine/render.py",
+          "engine/statesource.py",
+          "hueman.py",
+          "tests/test_idempotence.py",
+          "tests/test_reload_exit_codes.py",
+          "tests/test_state_and_reload.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/state-sync.md",
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/operations/runtime-and-failure-handling.md"
+        ],
+        "instructions": [
+          "Aterriza el manejo de errores sin duplicar la referencia de las capas conceptuales.",
+          "Describe el orden exacto de operaciones y qué pasos se saltan con `--dry-run` o `--only`.",
+          "Incluye un diagrama Mermaid de secuencia para `set` cuando sea útil."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "d63357b4-e5af-4461-b484-1b8aec154194",
+        "path": "/openwiki/workflows/sync-and-status.md",
+        "title": "Sync and status workflows",
+        "purpose": "Explica `sync` y `status`: cuándo aplican un tema, cuándo no hacen nada, cómo detectan drift y cómo reportan el estado del backend.",
+        "seedPaths": [
+          "engine/statesource.py",
+          "hueman.py",
+          "tests/test_state_branch.py",
+          "tests/test_sync_status.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/state-sync.md",
+          "/openwiki/operations/runtime-and-failure-handling.md"
+        ],
+        "instructions": [
+          "Documenta las salidas observables relevantes: in-sync, behind, ahead, no remote state, remote unreachable, disabled.",
+          "Usa Mermaid para el flujo de decisión de `sync` si aclara la semántica."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "e7ffdc64-efa4-4195-818b-7ae722dc17db",
+        "path": "/openwiki/quickstart.md",
+        "title": "Quickstart",
+        "purpose": "Ruta de entrada para orientarse en el proyecto, elegir comandos principales y saltar a arquitectura, configuración, renderizado, estado compartido, operaciones y pruebas.",
+        "seedPaths": [
+          "README.md",
+          "docs/architecture.md",
+          "hueman.config.example.yaml",
+          "hueman.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/configuration.md",
+          "/openwiki/concepts/targets-and-rendering.md",
+          "/openwiki/operations/runtime-and-failure-handling.md",
+          "/openwiki/testing/overview.md",
+          "/openwiki/workflows/apply-theme.md",
+          "/openwiki/workflows/sync-and-status.md"
+        ],
+        "instructions": [
+          "La página debe actuar como mapa de navegación hacia las demás secciones de la wiki.",
+          "No incluyas rutas ni secretos del entorno local; describe únicamente configuraciones y flujos genéricos del repo.",
+          "Usa el código y README como fuente de verdad."
+        ],
+        "status": "pending"
+      }
+    ],
+    "deletePages": []
+  }
+}

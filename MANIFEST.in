@@ -1,0 +1,12 @@
+include LICENSE README.md
+recursive-include hueman/data *.yaml
+recursive-include hueman/palettes *.yaml
+recursive-include hueman/templates *.j2
+recursive-include tests *.py
+global-exclude __pycache__ *.py[cod]
+prune website
+prune openwiki
+prune skills
+prune .github
+prune examples
+exclude CHANGELOG.md cliff.toml .gitignore

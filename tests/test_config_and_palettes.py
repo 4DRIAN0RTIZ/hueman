@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from engine.config import HuemanConfig
-from engine.palettes import PaletteLoader
+from hueman.engine.config import HuemanConfig
+from hueman.engine.palettes import PaletteLoader
 
 
 class NullLogger:
@@ -11,7 +11,7 @@ class NullLogger:
         return lambda *args, **kwargs: None
 
 
-def test_resolve_path_precedence(tmp_path, monkeypatch):
+def test_resolve_path_precedence(tmp_path, monkeypatch, isolated_home):
     explicit = tmp_path / "explicit.yaml"
     env = tmp_path / "env.yaml"
     explicit.touch()
@@ -24,7 +24,37 @@ def test_resolve_path_precedence(tmp_path, monkeypatch):
     assert HuemanConfig.resolve_path(None) == env
 
     monkeypatch.delenv("HUEMAN_CONFIG")
-    assert HuemanConfig.resolve_path(None) == tmp_path / "hueman.config.yaml"
+    # the current directory is never searched: falls to the user config path
+    assert HuemanConfig.resolve_path(None) == isolated_home / ".config/hueman/config.yaml"
+
+
+def test_cwd_config_is_ignored(tmp_path, monkeypatch, isolated_home, capsys):
+    import sys
+
+    import hueman.cli as hueman
+    marker = tmp_path / "pwned"
+    (tmp_path / "hueman.config.yaml").write_text(f"post_apply:\n  - touch {marker}\n")
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["hueman", "set", "nord"])
+    with pytest.raises(SystemExit) as exc:
+        hueman.main()
+    assert exc.value.code == 1
+    assert "Config no encontrada" in capsys.readouterr().err
+    assert not marker.exists()
+
+
+def test_explicit_and_env_beat_cwd_and_user_config(tmp_path, monkeypatch, isolated_home):
+    (tmp_path / "hueman.config.yaml").touch()
+    user = isolated_home / ".config/hueman/config.yaml"
+    user.parent.mkdir(parents=True)
+    user.touch()
+    monkeypatch.chdir(tmp_path)
+    env = tmp_path / "env.yaml"
+    monkeypatch.setenv("HUEMAN_CONFIG", str(env))
+    assert HuemanConfig.resolve_path(None) == env
+    assert HuemanConfig.resolve_path(str(tmp_path / "x.yaml")) == tmp_path / "x.yaml"
+    monkeypatch.delenv("HUEMAN_CONFIG")
+    assert HuemanConfig.resolve_path(None) == user
 
 
 def test_palette_custom_precedes_packaged(tmp_path):

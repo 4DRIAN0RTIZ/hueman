@@ -6,8 +6,8 @@ import sys
 
 import pytest
 
-import hueman
-from engine.statesource import GitBranchSource, ReadResult, State
+import hueman.cli as hueman
+from hueman.engine.statesource import GitBranchSource, ReadResult, State
 from test_reload_exit_codes import make_app
 from test_state_branch import BRANCH, app, dotfiles, git, make_source, remote, remote_state  # noqa: F401
 
@@ -51,7 +51,7 @@ def test_read_result_no_remote_configured(tmp_path):
 
 
 def test_git_calls_are_bounded_by_timeout(tmp_path, dotfiles):
-    from engine import statesource
+    from hueman.engine import statesource
     assert 0 < statesource.GIT_TIMEOUT <= 30
     assert make_source(tmp_path, dotfiles, timeout=5).timeout == 5
 
@@ -185,11 +185,12 @@ def test_sync_failed_target_does_not_persist_revision(tmp_path, dotfiles):
     assert a.local_revision() is None
 
 
-def test_sync_unknown_palette_is_error(tmp_path, dotfiles):
+def test_sync_unknown_palette_is_soft_and_keeps_revision(tmp_path, dotfiles):
     peer(tmp_path, dotfiles).write(State("nope", 4))
-    with pytest.raises(SystemExit) as exc:
-        app(tmp_path, dotfiles).sync()
-    assert exc.value.code == 1
+    a = app(tmp_path, dotfiles)
+    assert a.sync() == (0, "unknown-palette")
+    assert a.local_revision() is None
+    assert not (tmp_path / "state").exists()
 
 
 # --- status ------------------------------------------------------------------
@@ -274,7 +275,7 @@ def test_cli_sync_disabled_exit_zero_with_notice(tmp_path, monkeypatch, caplog):
 def test_config_timeout(tmp_path):
     a = make_app(tmp_path, extra_top="state_sync:\n  repo: /x\n  timeout: 4\n")
     assert a.config.state_sync.timeout == 4
-    from engine.config import ConfigError
+    from hueman.engine.config import ConfigError
     for bad in ("0", "-1", "abc", "true"):
         with pytest.raises(ConfigError):
             make_app(tmp_path, extra_top=f"state_sync:\n  repo: /x\n  timeout: {bad}\n")
