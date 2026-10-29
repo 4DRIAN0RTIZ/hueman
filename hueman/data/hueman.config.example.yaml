@@ -85,7 +85,7 @@ targets:
       ensure_after:
         - if_missing_regex: '(?m)^palette\s*='
           anchor: "add_newline = false\n"
-          insert: 'palette = "dotfiles"\n'
+          insert: "palette = \"dotfiles\"\n"
     outputs:
       - "~/.config/starship.toml"
 

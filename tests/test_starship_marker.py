@@ -55,3 +55,16 @@ def test_new_header_is_replaced_in_place_without_duplicate(tmp_path):
     assert first.count("[palettes.dotfiles]") == 1
     assert first.count("Bloque gestionado por") == 1
     assert "[git_branch]" in first
+
+
+def test_ensure_after_inserts_palette_line_as_valid_toml(tmp_path):
+    import tomllib
+
+    out = tmp_path / "starship.toml"
+    out.write_text("add_newline = false\n\n[character]\nx = 1\n")
+    palette = PaletteLoader(ROOT / "hueman" / "palettes", [], LOG).load("synthwave")
+    env = make_jinja_env([], ROOT / "hueman" / "templates")
+    render_target(env, _target(out), "synthwave", palette, False, LOG)
+    text = out.read_text()
+    assert "\\n" not in text
+    assert tomllib.loads(text)["palette"] == "dotfiles"
