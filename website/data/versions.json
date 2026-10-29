@@ -13,11 +13,22 @@
       "notes": "Working docs tip; tracks mainline after each merge to dev/main."
     },
     {
+      "id": "v0.3.0",
+      "label": "v0.3.0",
+      "semver": "0.3.0",
+      "channel": "release",
+      "status": "current",
+      "updated": "2026-10-29",
+      "contentDir": "content/v0.3.0",
+      "changelogSource": "CHANGELOG.md",
+      "notes": "Frozen snapshot matching the v0.3.0 release tag."
+    },
+    {
       "id": "v0.2.0",
       "label": "v0.2.0",
       "semver": "0.2.0",
       "channel": "release",
-      "status": "current",
+      "status": "supported",
       "updated": "2026-10-29",
       "contentDir": "content/v0.2.0",
       "changelogSource": "CHANGELOG.md",
