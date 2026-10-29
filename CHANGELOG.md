@@ -15,8 +15,14 @@ All notable changes to this project are documented here.
 - Warn when marker_regex does not match the block it inserted (#30) (74a4558)
 - Package newt_colors for whiptail palette (e6d0a6a)
 
+### CI
+
+- Run pytest on a Python 3.9-3.13 matrix (adfad6a)
+- Harden release workflow (env-passed outputs, SHA-pinned actions, ff-only sync-dev) (68b7507)
+
 ### Documentation
 
+- Document retrying a failed publish (cdfb827)
 - Bump skill version to 0.2.0 and sync website changelog (ed98e36)
 - Correct palette_key claim, drop logging note, cover real errors in troubleshooting (e45d150)
 - Unify palette count and neutral tone in example config (1324787)
@@ -41,6 +47,7 @@ All notable changes to this project are documented here.
 
 ### Testing
 
+- Skip the TOML check where tomllib is unavailable (8cc9a86)
 - Cover the git timeout against a real hung remote (#35) (1fe2de0)
 
 ### Merge
