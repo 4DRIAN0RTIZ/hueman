@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Documentation
+
+- Sync the site changelog with the v0.2.0 release (a580c2a)
+
 ## [0.2.0] - 2026-10-29
 
 ### Bug Fixes
