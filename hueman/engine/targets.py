@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 FAILURE_POLICIES = ("warn", "error")
+MODES = ("overwrite", "patch")
 
 
 @dataclass
@@ -52,8 +53,18 @@ class Target:
 
     @classmethod
     def from_dict(cls, name: str, data: dict) -> "Target":
+        mode = data.get("mode", "overwrite")
+        if mode not in MODES:
+            raise TypeError(f"{name}: mode debe ser 'overwrite' o 'patch', no {mode!r}")
         patch_data = data.get("patch")
+        if patch_data is not None and not isinstance(patch_data, dict):
+            raise TypeError(f"{name}: 'patch' debe ser un mapeo")
+        if mode == "patch" and not patch_data:
+            raise TypeError(f"{name}: mode 'patch' requiere una seccion 'patch'")
         patch = PatchSpec(**patch_data) if patch_data else None
+        raw_outputs = data.get("outputs") or []
+        if not isinstance(raw_outputs, list) or not all(isinstance(o, str) for o in raw_outputs):
+            raise TypeError(f"{name}: 'outputs' debe ser una lista de rutas (strings)")
         delimiters = data.get("jinja_delimiters")
         required = data.get("skip_unless_path_exists") or []
         if isinstance(required, str):
@@ -65,10 +76,10 @@ class Target:
             )
         return cls(
             name=name,
-            mode=data.get("mode", "overwrite"),
+            mode=mode,
             template=data.get("template"),
             palette_key=data.get("palette_key"),
-            outputs=[Path(o).expanduser() for o in data.get("outputs", [])],
+            outputs=[Path(o).expanduser() for o in raw_outputs],
             reload=data.get("reload"),
             reload_failure=policy,
             make_executable=data.get("make_executable", False),
