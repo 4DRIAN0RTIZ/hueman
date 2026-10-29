@@ -44,7 +44,9 @@ Paleta activa y, con `state_sync`, revisiones y drift (`in sync`, `behind`,
 ## `sync`
 
 Pull de estado remoto y aplica si la revision remota es mayor. Pensado para
-startup de shell (`-q`). Sin red / sin `state_sync` → exit 0 con aviso.
+startup de shell (`-q`). Sin red / sin `state_sync` → exit 0 con aviso. Un placeholder desconocido en
+`reload`/`post_apply` da el mismo error limpio `Config invalida` (exit 1, sin
+traceback) y la revision no avanza.
 
 ## Códigos de salida (resumen)
 

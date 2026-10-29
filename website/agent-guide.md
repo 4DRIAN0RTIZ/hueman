@@ -75,7 +75,7 @@ Reúne antes: ruta del config en uso, salida completa y exit code. Resumen ofici
 | Patch duplica el bloque | `marker_regex` sin match y sin `insert_after_section_regex`: el bloque se **añade al final**; si el regex tampoco reconoce el bloque insertado, hueman emite un warning (la causa es el `marker_regex`) | Revisa el regex; `(?m)` si usas `^`/`$` en `ensure_after` |
 | Exit 1 con el tema aplicado | Algún target omitido por error, o `reload_failure: error` y un hook devolvió ≠ 0 | Mensajes `reload fallo (exit N)` / `post_apply fallo` |
 | El reload "no hace nada" | Solo corre con escritura efectiva y sin `--dry-run`; usa `sh -c` | El log registra `reload: <cmd> (exit N)`; que el humano lo corra a mano |
-| `set` falla con `Config invalida: placeholder desconocido` (antes de escribir nada) | `{seccion.clave}` inexistente en `reload`/`post_apply` | Corrige la clave; `${VAR}` de shell no se toca |
+| `set` o `sync` falla con `Config invalida: placeholder desconocido` (antes de escribir nada; `sync` no avanza la revision) | `{seccion.clave}` inexistente en `reload`/`post_apply` | Corrige la clave; `${VAR}` de shell no se toca |
 | `sync` no aplica | Remoto inalcanzable, sin estado, o revisión local >= remota (nunca aplica caché) | `status`, línea `Drift:` (`in sync`, `behind`, `ahead`, `no remote state`, `remote unreachable`); la carpeta de `type: file` no se crea |
 
 ## Reglas para ti
