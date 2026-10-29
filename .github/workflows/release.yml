@@ -17,12 +17,12 @@ jobs:
       version: ${{ steps.compute.outputs.version }}
       released: ${{ steps.compute.outputs.released }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 
       - name: Install git-cliff
-        uses: orhun/git-cliff-action@v4
+        uses: orhun/git-cliff-action@a9a95522b26fe6403f7bb24031f21fb573d0f5ff # v4.9.1
         id: bumped
         with:
           config: cliff.toml
@@ -30,8 +30,10 @@ jobs:
 
       - name: Compute version and decide if release is needed
         id: compute
+        env:
+          BUMPED_CONTENT: ${{ steps.bumped.outputs.content }}
         run: |
-          VERSION="$(echo "${{ steps.bumped.outputs.content }}" | tail -n 1 | tr -d '[:space:]')"
+          VERSION="$(printf '%s\n' "$BUMPED_CONTENT" | tail -n 1 | tr -d '[:space:]')"
           LATEST_TAG="$(git tag --list 'v*' --sort=-v:refname | head -n 1 || true)"
           echo "Ultimo tag: ${LATEST_TAG:-ninguno}"
           echo "Version calculada: $VERSION"
@@ -44,7 +46,7 @@ jobs:
 
       - name: Generate CHANGELOG.md for the new version
         if: steps.compute.outputs.released == 'true'
-        uses: orhun/git-cliff-action@v4
+        uses: orhun/git-cliff-action@a9a95522b26fe6403f7bb24031f21fb573d0f5ff # v4.9.1
         with:
           config: cliff.toml
           args: --tag ${{ steps.compute.outputs.version }}
@@ -53,27 +55,29 @@ jobs:
 
       - name: Commit, tag and push
         if: steps.compute.outputs.released == 'true'
+        env:
+          VERSION: ${{ steps.compute.outputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add CHANGELOG.md
-          git commit -m "chore(release): ${{ steps.compute.outputs.version }}"
-          git tag -a "${{ steps.compute.outputs.version }}" -m "Release ${{ steps.compute.outputs.version }}"
+          git commit -m "chore(release): $VERSION"
+          git tag -a "$VERSION" -m "Release $VERSION"
           git push origin HEAD:main
-          git push origin "${{ steps.compute.outputs.version }}"
+          git push origin "$VERSION"
 
   release:
     needs: bump
     if: needs.bump.outputs.released == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
           ref: ${{ needs.bump.outputs.version }}
 
       - name: Generate release notes
-        uses: orhun/git-cliff-action@v4
+        uses: orhun/git-cliff-action@a9a95522b26fe6403f7bb24031f21fb573d0f5ff # v4.9.1
         id: git-cliff
         with:
           config: cliff.toml
@@ -82,10 +86,12 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.bump.outputs.version }}
+          NOTES: ${{ steps.git-cliff.outputs.content }}
         run: |
-          gh release create "${{ needs.bump.outputs.version }}" \
-            --title "${{ needs.bump.outputs.version }}" \
-            --notes "${{ steps.git-cliff.outputs.content }}"
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --notes "$NOTES"
 
   # Publicar aqui y no en un workflow aparte disparado por el tag: un tag
   # empujado con GITHUB_TOKEN no dispara otros workflows.
@@ -98,12 +104,12 @@ jobs:
       contents: read
       id-token: write  # Trusted Publishing (OIDC), sin tokens guardados
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0  # setuptools-scm necesita los tags para la version
           ref: ${{ needs.bump.outputs.version }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
 
@@ -113,18 +119,23 @@ jobs:
           python -m build
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
 
   sync-dev:
     needs: bump
     if: needs.bump.outputs.released == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
           ref: main
 
+      # --ff-only: if dev has diverged (e.g. a changelog bot commit), fail
+      # loudly instead of creating a merge or overwriting it.
       - name: Fast-forward dev to main
         run: |
-          git push origin HEAD:dev
+          git fetch origin dev
+          git checkout -B dev origin/dev
+          git merge --ff-only origin/main
+          git push origin dev
