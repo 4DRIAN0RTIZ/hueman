@@ -30,6 +30,19 @@ The docs live in `website/content/latest` (written in Spanish).
 Targets stay declarative: tool-specific logic belongs in YAML and Jinja
 templates, not in Python.
 
+### Freezing docs for a release
+
+The site is static (`website/`, no build step). `content/latest` is the editable
+tip; each release gets a frozen copy. Page ids in `content/*/nav.json` are used
+as URLs (`?p=<id>`), so do not rename them.
+
+1. Cut the release as usual.
+2. Copy `website/content/latest/` to `website/content/vX.Y.Z/`.
+3. Add an entry to `website/data/versions.json` with `channel: release`, the
+   `semver` and the release date as `updated`; bump `updated` on `latest`.
+4. Check that every nav id resolves, internal links work and the changelog has a
+   section for that tag.
+
 ## Security
 
 Report vulnerabilities privately; see [SECURITY.md](SECURITY.md).
