@@ -6,6 +6,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Set Open Graph image from stone palette logo (fb0e7d0)
 - Freeze v0.3.0 documentation snapshot (9b9de6a)
 
 ## [0.3.0] - 2026-10-29
