@@ -15,6 +15,7 @@ All notable changes to this project are documented here.
 
 ### Documentation
 
+- Document hueman init in install, quickstart, CLI and agent guides (cb5ff92)
 - Link the full documentation site from the README (#32) (9d0f641)
 - Warn that symlinked outputs are replaced, not followed (#29) (10db85b)
 - Add a Windows and WSL guide with example scripts (#28) (95d80ff)
@@ -25,6 +26,7 @@ All notable changes to this project are documented here.
 
 ### Features
 
+- Add hueman init and ship example config as package data (7854f43)
 - Package hueman for pip as hueman-cli (#36) (d9daeb8)
 - Add vars substitution for output paths (#26) (695b8f2)
 - Show release info and a per-version changelog (#24) (dd717b8)
@@ -34,6 +36,10 @@ All notable changes to this project are documented here.
 ### Testing
 
 - Cover the git timeout against a real hung remote (#35) (1fe2de0)
+
+### Merge
+
+- Sync dev into feat/init-command (8d88567)
 
 ## [0.1.0] - 2026-10-16
 
