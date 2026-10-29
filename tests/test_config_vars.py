@@ -2,8 +2,8 @@ import sys
 
 import pytest
 
-import hueman
-from engine.config import ConfigError, HuemanConfig, substitute_vars
+import hueman.cli as hueman
+from hueman.engine.config import ConfigError, HuemanConfig, substitute_vars
 
 
 def write_cfg(tmp_path, body):

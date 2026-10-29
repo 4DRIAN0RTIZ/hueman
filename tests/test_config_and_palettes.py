@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from engine.config import HuemanConfig
-from engine.palettes import PaletteLoader
+from hueman.engine.config import HuemanConfig
+from hueman.engine.palettes import PaletteLoader
 
 
 class NullLogger:

@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from engine.config import HuemanConfig
-from engine.palettes import PaletteLoader
-from engine.render import make_jinja_env, render_template
+from hueman.engine.config import HuemanConfig
+from hueman.engine.palettes import PaletteLoader
+from hueman.engine.render import make_jinja_env, render_template
 
 ROOT = Path(__file__).resolve().parent.parent
 REAL_CONFIG = Path(
@@ -33,15 +33,15 @@ def test_real_config_has_targets():
 
 @pytest.mark.parametrize("target", _targets, ids=lambda t: t.name)
 def test_real_target_template_exists_and_renders(target):
-    packaged = ROOT / "templates"
+    packaged = ROOT / "hueman" / "templates"
     if target.template is None:
         assert target.patch and target.patch.strategy == "json_scheme_upsert"
-        palette = PaletteLoader(ROOT / "palettes", [], logging.getLogger("t")).load(PALETTE)
+        palette = PaletteLoader(ROOT / "hueman" / "palettes", [], logging.getLogger("t")).load(PALETTE)
         assert target.patch.palette_section in palette
         return
     assert (packaged / target.template).is_file(), f"missing template {target.template}"
 
-    palette = PaletteLoader(ROOT / "palettes", [], logging.getLogger("t")).load(PALETTE)
+    palette = PaletteLoader(ROOT / "hueman" / "palettes", [], logging.getLogger("t")).load(PALETTE)
     env = make_jinja_env([], packaged, target.jinja_delimiters)
     out = render_template(env, target, PALETTE, palette)
 

@@ -6,8 +6,8 @@ import sys
 
 import pytest
 
-import hueman
-from engine.statesource import GitBranchSource, ReadResult, State
+import hueman.cli as hueman
+from hueman.engine.statesource import GitBranchSource, ReadResult, State
 from test_reload_exit_codes import make_app
 from test_state_branch import BRANCH, app, dotfiles, git, make_source, remote, remote_state  # noqa: F401
 
@@ -51,7 +51,7 @@ def test_read_result_no_remote_configured(tmp_path):
 
 
 def test_git_calls_are_bounded_by_timeout(tmp_path, dotfiles):
-    from engine import statesource
+    from hueman.engine import statesource
     assert 0 < statesource.GIT_TIMEOUT <= 30
     assert make_source(tmp_path, dotfiles, timeout=5).timeout == 5
 
@@ -274,7 +274,7 @@ def test_cli_sync_disabled_exit_zero_with_notice(tmp_path, monkeypatch, caplog):
 def test_config_timeout(tmp_path):
     a = make_app(tmp_path, extra_top="state_sync:\n  repo: /x\n  timeout: 4\n")
     assert a.config.state_sync.timeout == 4
-    from engine.config import ConfigError
+    from hueman.engine.config import ConfigError
     for bad in ("0", "-1", "abc", "true"):
         with pytest.raises(ConfigError):
             make_app(tmp_path, extra_top=f"state_sync:\n  repo: /x\n  timeout: {bad}\n")

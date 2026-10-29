@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from engine.config import HuemanConfig
-from engine.reload import run_post_apply, run_reload
-from hueman import Hueman
+from hueman.engine.config import HuemanConfig
+from hueman.engine.reload import run_post_apply, run_reload
+from hueman.cli import Hueman
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -108,8 +108,8 @@ def test_cli_end_to_end_in_subprocess_uses_only_temp_paths(tmp_path, isolated_ho
     cfg = str(app.config.path)
     for args, rc in ((["set", "one"], 0), (["set", "nope"], 1), (["status"], 0), (["list"], 0)):
         r = subprocess.run(
-            [sys.executable, str(ROOT / "hueman.py"), "--config", cfg, *args],
-            capture_output=True, text=True, env=env,
+            [sys.executable, "-m", "hueman", "--config", cfg, *args],
+            capture_output=True, text=True, env=env, cwd=ROOT,
         )
         assert r.returncode == rc, r.stderr
     assert app.current_theme() == "one"
@@ -117,7 +117,7 @@ def test_cli_end_to_end_in_subprocess_uses_only_temp_paths(tmp_path, isolated_ho
 
 
 def test_cli_missing_config_exits_one(tmp_path, monkeypatch, capsys):
-    import hueman
+    import hueman.cli as hueman
     monkeypatch.setattr(sys, "argv", ["hueman", "--config", str(tmp_path / "nope.yaml"), "list"])
     with pytest.raises(SystemExit) as exc:
         hueman.main()
