@@ -104,9 +104,9 @@ class HuemanConfig:
             raise ConfigError(
                 f"{path}: reload_failure debe ser 'warn' o 'error', no {self.reload_failure!r}"
             )
-        self.post_apply = raw.get("post_apply", [])
+        self.post_apply = self._validate_post_apply(path, raw.get("post_apply"))
         self.state_sync = self._load_state_sync(path, raw.get("state_sync"))
-        self.logger = self._make_logger(raw.get("logging", {}))
+        self.logger = self._make_logger(self._validate_logging(path, raw.get("logging")))
 
     @staticmethod
     def _substitute_target(name, cfg, variables):
@@ -115,6 +115,40 @@ class HuemanConfig:
             if key in out:
                 out[key] = _subst_paths(out[key], variables, f"targets.{name}.{key}")
         return out
+
+    @staticmethod
+    def _validate_post_apply(path, raw):
+        if raw is None:
+            return []
+        if not isinstance(raw, list) or not all(isinstance(c, str) for c in raw):
+            raise ConfigError(f"{path}: 'post_apply' debe ser una lista de comandos (strings)")
+        return raw
+
+    @staticmethod
+    def _validate_logging(path, raw) -> dict:
+        """Return a checked copy of the ``logging`` section."""
+        if raw is None:
+            return {}
+        if not isinstance(raw, dict):
+            raise ConfigError(f"{path}: 'logging' debe ser un mapeo (level, file)")
+        level = raw.get("level", "INFO")
+        if not isinstance(level, str) or not isinstance(
+            logging.getLevelName(level.upper()), int
+        ):
+            raise ConfigError(
+                f"{path}: logging.level desconocido: {level!r} "
+                "(usa DEBUG, INFO, WARNING, ERROR o CRITICAL)"
+            )
+        log_file = raw.get("file")
+        if log_file is not None:
+            if not isinstance(log_file, str) or not log_file:
+                raise ConfigError(f"{path}: logging.file debe ser una ruta (string)")
+            parent = Path(log_file).expanduser().parent
+            if not parent.is_dir():
+                raise ConfigError(f"{path}: logging.file: el directorio {parent} no existe")
+            if not os.access(parent, os.W_OK | os.X_OK):
+                raise ConfigError(f"{path}: logging.file: no se puede escribir en {parent}")
+        return {**raw, "level": level.upper()}
 
     @staticmethod
     def _load_state_sync(path, raw):

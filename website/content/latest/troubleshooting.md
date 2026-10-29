@@ -8,6 +8,7 @@
 | Archivo no cambia | `--dry-run`, `--only`, skip guards, `palette_key` que no es sección de la paleta (INFO `la paleta no tiene la seccion '<key>', omitido`, exit 0), patch sin match |
 | Valores vacíos en la salida | Variable ausente en el contexto: Jinja la renderiza como cadena vacía, sin error. Revisa `palette_key` y los nombres de clave |
 | `{{ … }}` literales | Solo con `jinja_delimiters` distintos de `{{ }}`: la plantilla usa otros delimitadores |
+| `Config invalida: ... logging.level` / `logging.file` / `mode` / `patch` / `post_apply` / `outputs` | Valor inválido en el config: `level` desconocido, directorio de `file` inexistente o sin permiso, `mode` distinto de `overwrite`/`patch`, `mode: patch` sin sección `patch`, `post_apply` u `outputs` que no son una lista de strings. Sale con exit 1 y un mensaje de una línea, sin traceback |
 | `Config invalida: placeholder desconocido` | `{seccion.clave}` inexistente en `reload` o `post_apply`: `set` (y `sync`, sin avanzar la revision) sale con error limpio (exit 1) antes de escribir nada |
 | Bloque duplicado en un patch | `marker_regex` sin match ni `insert_after_section_regex`: añade el bloque al final en cada corrida; hueman registra un warning si tu `marker_regex` no reconoce el bloque que insertó |
 | Exit 1 con tema aplicado | Targets omitidos por error, o `reload_failure: error` |
