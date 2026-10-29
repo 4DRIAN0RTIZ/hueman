@@ -10,6 +10,11 @@ El workflow tiene estos jobs:
 | `publish` | Construye sdist y wheel y los sube a PyPI (Trusted Publishing, entorno `pypi`) |
 | `sync-dev` | Avanza `dev` hasta `main` con `git merge --ff-only` |
 
+`bump` solo crea una release si desde el último tag hay commits `feat`, `fix`
+o `perf` (o `BREAKING CHANGE`). Un merge a `main` que solo trae docs, CI o
+chores no publica nada. Una corrida manual (`workflow_dispatch`) omite esta
+comprobación.
+
 ## Reintentar un publish fallido
 
 Antes de reintentar, revisa en qué punto falló:
