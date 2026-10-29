@@ -1,4 +1,4 @@
-"""Ubicación de paletas y plantillas empaquetadas."""
+"""Ubicación de paletas, plantillas y config de ejemplo empaquetadas."""
 
 from importlib.resources import files
 from pathlib import Path
@@ -12,3 +12,7 @@ def packaged_palettes_dir() -> Path:
 
 def packaged_templates_dir() -> Path:
     return Path(str(files("hueman") / "templates"))
+
+
+def packaged_example_config() -> Path:
+    return Path(str(files("hueman") / "data" / "hueman.config.example.yaml"))

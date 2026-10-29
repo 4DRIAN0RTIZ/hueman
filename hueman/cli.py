@@ -18,7 +18,7 @@ from .engine.palettes import PaletteLoader
 from .engine.reload import PlaceholderError, expand_command, run_post_apply, run_reload
 from .engine.statesource import ReadResult, State, build_source
 from .engine.render import TargetRenderError, make_jinja_env, render_target
-from .resources import packaged_palettes_dir, packaged_templates_dir
+from .resources import packaged_example_config, packaged_palettes_dir, packaged_templates_dir
 
 
 class UnknownTargetError(ValueError):
@@ -239,6 +239,24 @@ class Hueman:
         print(f"Targets configurados: {len(self.config.targets)} ({existing}/{total} outputs existentes en disco)")
 
 
+DOCS_URL = "https://hueman.cuevaneander.tech"
+
+
+def init_config(path: Path, force: bool) -> int:
+    """Copy the packaged example config to `path`; returns the exit code."""
+    if path.exists() and not force:
+        print(f"Ya existe: {path} (usa --force para sobrescribir)", file=sys.stderr)
+        return 1
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        atomic_write_text(path, packaged_example_config().read_text())
+    except OSError as exc:
+        print(f"No se pudo escribir {path}: {exc}", file=sys.stderr)
+        return 1
+    print(f"Config de ejemplo escrito en {path}")
+    return 0
+
+
 def _var_arg(text: str):
     """argparse type for --var NAME=VALUE; returns (name, value)."""
     name, sep, value = text.partition("=")
@@ -274,6 +292,11 @@ def main():
     sync_p.add_argument("-q", "--quiet", action="store_true",
                         help="Solo errores reales (sin avisos de red o config)")
 
+    init_p = sub.add_parser(
+        "init", help="Escribir un config de ejemplo en la ruta de config por defecto")
+    init_p.add_argument("--force", action="store_true",
+                        help="Sobrescribir el config si ya existe")
+
     sub.add_parser("list", help="Listar paletas disponibles")
     sub.add_parser("status", help="Mostrar tema activo y estado de los targets")
 
@@ -283,9 +306,19 @@ def main():
         return
 
     config_path = HuemanConfig.resolve_path(args.config)
+    if args.command == "init":
+        sys.exit(init_config(config_path, args.force))
     if not config_path.exists():
-        print(f"Config no encontrada: {config_path} "
-              "(usa --config, HUEMAN_CONFIG o crea ~/.config/hueman/config.yaml)", file=sys.stderr)
+        if args.command == "list":
+            # Las paletas empaquetadas no dependen del config del usuario.
+            loader = PaletteLoader(packaged_palettes_dir(), [], logging.getLogger("hueman"))
+            print("\n".join(loader.list_palettes()))
+            return
+        print(
+            f"Config no encontrada: {config_path}\n"
+            f"Crea uno con `hueman init`, o usa --config / HUEMAN_CONFIG (docs: {DOCS_URL})",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     try:

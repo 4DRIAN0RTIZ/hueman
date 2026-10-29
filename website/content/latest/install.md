@@ -46,9 +46,15 @@ corre smoke tests y la suite.
 
 ## Config del usuario
 
-hueman **no** trae tu mapeo de máquinas. Necesitas un config propio (copia
-desde `hueman.config.example.yaml`) y pásalo así, en este orden de
-precedencia:
+hueman **no** trae tu mapeo de máquinas. Necesitas un config propio:
+`hueman init` escribe uno de ejemplo (comentado) en la ruta por defecto, sin
+sobrescribir uno existente salvo con `--force`:
+
+```sh
+hueman init
+```
+
+hueman busca el config en este orden de precedencia:
 
 1. `hueman --config /ruta/al/config.yaml`
 2. variable `HUEMAN_CONFIG`

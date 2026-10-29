@@ -86,7 +86,7 @@ notas significa que no hay nada que añadir.
 | `qutebrowser_theme.py.j2` | qutebrowser | `polybar` | En Windows: ver [Windows y WSL](guides/windows.md) |
 | `rofi_theme.rasi.j2` | rofi | `polybar` | — |
 | `sshub_theme.toml.j2` | sshub | `polybar` | — |
-| `starship_block.toml.j2` | starship | `polybar` | Pensado para `patch`; ver `hueman.config.example.yaml` |
+| `starship_block.toml.j2` | starship | `polybar` | Pensado para `patch`; ver `hueman/data/hueman.config.example.yaml` (o `hueman init`) |
 | `termux_colors.properties.j2` | Termux | `kitty` | Ver [Termux y proot](guides/termux.md) |
 | `tmux.conf.j2` | tmux | `tmux` | — |
 | `tuicr_theme.toml.j2` | tuicr | `polybar` | — |

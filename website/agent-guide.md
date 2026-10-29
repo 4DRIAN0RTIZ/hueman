@@ -31,7 +31,7 @@ Antes de tocar nada, pregúntale (una cosa a la vez) dónde vive o vivirá su co
 
 **Instalar** (`p=install`). Requiere Python >= 3.9. Se instala con `pipx install hueman-cli` (recomendado para un CLI) o `pip install hueman-cli`; desde el código fuente: `git clone https://github.com/NeanderTeam/hueman.git && cd hueman && pip install -e .`. Jinja2 y PyYAML vienen como dependencias. El comando es `hueman`, pero no asumas que está en el `PATH`: verifica con `hueman --version` o `command -v hueman`. Si no está, desde un checkout del código fuente usa `python3 -m hueman ...` desde la raíz del repo.
 
-**Config.** hueman no trae mapeo de máquinas; parte de `hueman.config.example.yaml` (esquema comentado). Pasa siempre `--config <ruta>` para no depender de la resolución implícita.
+**Config.** hueman no trae mapeo de máquinas; parte del ejemplo empaquetado: `hueman init` (con `--config <ruta>` para elegir dónde; no sobrescribe sin `--force`). Pasa siempre `--config <ruta>` para no depender de la resolución implícita.
 
 **Secuencia** (`p=quickstart`, `p=cli`):
 
@@ -64,7 +64,7 @@ Reúne antes: ruta del config en uso, salida completa y exit code. Resumen ofici
 
 | Síntoma | Causa (verificada en código) | Comprobación |
 |---|---|---|
-| `Config no encontrada` | Ninguna ruta del orden de resolución existe | `echo "$HUEMAN_CONFIG"`; pasa `--config` |
+| `Config no encontrada` | Ninguna ruta del orden de resolución existe | `echo "$HUEMAN_CONFIG"`; `hueman init` o pasa `--config` |
 | Paleta no aparece / `Paleta no encontrada` | Archivo no es `.yaml`, directorio ausente de `palette_dirs`, o YAML inválido (`Paleta invalida`, exit 1) | `list`; el error enumera las disponibles |
 | `plantilla '<x>' no encontrada` | Nombre de `.j2` incorrecto o fuera de `template_dirs`/`hueman/templates/`; target omitido, exit 1 | Nombre exacto del archivo |
 | Un target no escribe y no hay error | `skip_unless_path_exists` o `skip_if_missing_parent` no se cumplen; `patch` sobre archivo inexistente; `--only` o `--dry-run` | Líneas `INFO` "omitido" / "no existe" |
