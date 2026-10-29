@@ -5,6 +5,7 @@ replaced in place, never duplicated."""
 import logging
 from pathlib import Path
 
+import pytest
 import yaml
 
 from hueman.engine.palettes import PaletteLoader
@@ -58,7 +59,7 @@ def test_new_header_is_replaced_in_place_without_duplicate(tmp_path):
 
 
 def test_ensure_after_inserts_palette_line_as_valid_toml(tmp_path):
-    import tomllib
+    tomllib = pytest.importorskip("tomllib", reason="needs Python 3.11+")
 
     out = tmp_path / "starship.toml"
     out.write_text("add_newline = false\n\n[character]\nx = 1\n")
