@@ -195,3 +195,46 @@ def test_cli_only_validates_just_selected_targets(tmp_path, monkeypatch):
     assert (tmp_path / "a.out").exists() and not (tmp_path / "b.out").exists()
     assert not (tmp_path / "state").exists()
     assert _run_cli(tmp_path, monkeypatch, "--only", "b") == 1
+
+
+# --- sync: mismo error limpio que `set` ---------------------------------------
+
+def _sync_app(tmp_path, revision=3, **kw):
+    from engine.statesource import FileSource, State
+    shared = tmp_path / "shared"
+    shared.mkdir(exist_ok=True)
+    FileSource(shared / "s.yaml").write(State("one", revision))
+    cfg = f"state_sync:\n  type: file\n  path: {shared}/s.yaml\n"
+    return make_app(tmp_path, extra_top=cfg, **kw)
+
+
+@pytest.mark.parametrize("where", ["reload", "post_apply"])
+def test_sync_unknown_placeholder_fails_cleanly(tmp_path, capsys, where):
+    if where == "reload":
+        a = _sync_app(tmp_path, targets={"k": {"reload": "echo {kitty.nope}"}})
+    else:
+        a = _sync_app(tmp_path, targets={"k": {}}, post_apply=["echo {kitty.nope}"])
+    assert a.sync() == (1, "failed")
+    err = capsys.readouterr().err
+    assert "Config invalida" in err and "{kitty.nope}" in err
+    assert "Traceback" not in err
+    assert not (tmp_path / "k.out").exists() and not (tmp_path / "state").exists()
+    assert a.local_revision() is None
+
+
+def test_sync_cli_quiet_unknown_placeholder_no_traceback(tmp_path, monkeypatch, capsys):
+    _sync_app(tmp_path, targets={"k": {"reload": "echo {kitty.nope}"}})
+    monkeypatch.setattr("sys.argv", ["hueman", "--config", str(tmp_path / "hueman.yaml"), "sync", "-q"])
+    with pytest.raises(SystemExit) as exc:
+        hueman.main()
+    assert exc.value.code == 1
+    err = capsys.readouterr().err
+    assert "Config invalida" in err and "Traceback" not in err
+
+
+def test_sync_valid_placeholders_still_apply(tmp_path):
+    marker = tmp_path / "m"
+    a = _sync_app(tmp_path, targets={"k": {"reload": f"echo {{kitty.c}} > {marker}"}})
+    assert a.sync() == (0, "applied")
+    assert marker.read_text() == "red\n"
+    assert a.local_revision() == 3

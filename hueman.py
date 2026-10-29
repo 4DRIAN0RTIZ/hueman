@@ -188,7 +188,12 @@ class Hueman:
         if remote.revision < local:
             return 0, "ahead"
         self.config.logger.info(f"sync: r{local} -> r{remote.revision} ({remote.palette})")
-        failed = self.set_theme(remote.palette, publish=False)
+        try:
+            failed = self.set_theme(remote.palette, publish=False)
+        except PlaceholderError as e:
+            # set_theme valida antes de escribir: no hay nada aplicado ni revision que guardar
+            print(f"Config invalida: {e}", file=sys.stderr)
+            return 1, "failed"
         if failed:
             print(f"Targets con errores: {', '.join(failed)}", file=sys.stderr)
             return 1, "failed"
