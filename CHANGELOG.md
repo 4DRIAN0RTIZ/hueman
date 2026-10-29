@@ -24,6 +24,7 @@ All notable changes to this project are documented here.
 
 ### Features
 
+- Package hueman for pip as hueman-cli (#36) (d9daeb8)
 - Add vars substitution for output paths (#26) (695b8f2)
 - Show release info and a per-version changelog (#24) (dd717b8)
 - Add Termux colors template and proot guide (#25) (5884ae4)
