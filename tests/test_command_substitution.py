@@ -1,6 +1,6 @@
 import pytest
 
-from engine.reload import expand_command
+from hueman.engine.reload import expand_command
 
 
 PALETTE = {"kitty": {"color4": "#112233"}, "polybar": {"primary": "#abcdef"}}
@@ -36,8 +36,8 @@ def test_unknown_dotted_key_fails_clearly():
 
 
 def test_set_theme_expands_post_apply_placeholders(tmp_path, monkeypatch):
-    from engine.config import HuemanConfig
-    from hueman import Hueman
+    from hueman.engine.config import HuemanConfig
+    from hueman.cli import Hueman
 
     (tmp_path / "pal.yaml").write_text("kitty:\n  color4: '#112233'\n")
     cfg = tmp_path / "h.yaml"
@@ -46,6 +46,6 @@ def test_set_theme_expands_post_apply_placeholders(tmp_path, monkeypatch):
         "targets: {}\npost_apply: ['run {name} {kitty.color4} ${HOME}']\n"
     )
     calls = []
-    monkeypatch.setattr("hueman.run_post_apply", lambda commands, logger: calls.append(commands))
+    monkeypatch.setattr("hueman.cli.run_post_apply", lambda commands, logger: calls.append(commands))
     Hueman(HuemanConfig(cfg)).set_theme("pal")
     assert calls == [["run pal '#112233' ${HOME}"]]

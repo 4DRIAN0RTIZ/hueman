@@ -1,6 +1,6 @@
 ---
 name: hueman
-description: "Operate hueman, a Python CLI (hueman.py) that turns one YAML palette plus Jinja2 templates into config files for the user's apps. Use when the user mentions hueman or asks to apply, switch, inspect or sync a hueman theme, to find out why a hueman target was skipped, or to add a template, target or palette to a hueman setup. Do NOT use when hueman is not mentioned, or when the user only wants some colors in a one-off config file."
+description: "Operate hueman, a Python CLI (`hueman`) that turns one YAML palette plus Jinja2 templates into config files for the user's apps. Use when the user mentions hueman or asks to apply, switch, inspect or sync a hueman theme, to find out why a hueman target was skipped, or to add a template, target or palette to a hueman setup. Do NOT use when hueman is not mentioned, or when the user only wants some colors in a one-off config file."
 license: MIT
 metadata:
   version: "0.1.0"
@@ -10,7 +10,7 @@ metadata:
 
 # hueman
 
-hueman reads a palette (`palettes/<name>.yaml`) and renders Jinja2 templates into the files declared in the user's own `hueman.config.yaml`. It is not a dotfile manager: it installs, links and versions nothing, and it never guesses paths. This skill teaches you to operate it safely. The installed `hueman.py` is the authority for syntax; this file is only guidance.
+hueman reads a palette (`hueman/palettes/<name>.yaml` in the package) and renders Jinja2 templates into the files declared in the user's own `hueman.config.yaml`. It is not a dotfile manager: it installs, links and versions nothing, and it never guesses paths. This skill teaches you to operate it safely. The installed `hueman` CLI is the authority for syntax; this file is only guidance.
 
 Versioning: this file is versioned by the git tag of the hueman repo (`skills/hueman/SKILL.md` at tag `vX.Y.Z`). `metadata.version` is the hueman release it describes. If a flag or message here disagrees with the installed tool, trust the tool and say so.
 
@@ -19,21 +19,21 @@ Versioning: this file is versioned by the git tag of the hueman repo (`skills/hu
 Do not guess flags or subcommands. Run:
 
 ```sh
-python3 hueman.py --help
-python3 hueman.py <subcommand> --help
+hueman --help
+hueman <subcommand> --help
 ```
 
-Run it from the hueman repo root. Do not assume a `hueman` binary is on `PATH`. `--config <path>` is a global option and goes before the subcommand. Always pass it explicitly; the implicit order is `--config`, `$HUEMAN_CONFIG`, `./hueman.config.yaml`, `~/.config/hueman/config.yaml`.
+Do not assume a `hueman` binary is on `PATH`: check with `hueman --version` or `command -v hueman`; from a source checkout, run `python3 -m hueman` instead. `--config <path>` is a global option and goes before the subcommand. Always pass it explicitly; the implicit order is `--config`, `$HUEMAN_CONFIG`, `./hueman.config.yaml`, `~/.config/hueman/config.yaml`.
 
 Subcommands at the time of writing: `list`, `status`, `set <palette> [--dry-run] [--only NAME[,NAME]]`, `sync [-q]`. If `--help` shows others, use the help text.
 
 ## Standard sequence
 
 ```sh
-python3 hueman.py --config CFG list                      # palettes, read-only
-python3 hueman.py --config CFG status                    # active theme, outputs found on disk
-python3 hueman.py --config CFG set PALETTE --dry-run     # plan, writes nothing
-python3 hueman.py --config CFG set PALETTE               # real apply
+hueman --config CFG list                      # palettes, read-only
+hueman --config CFG status                    # active theme, outputs found on disk
+hueman --config CFG set PALETTE --dry-run     # plan, writes nothing
+hueman --config CFG set PALETTE               # real apply
 ```
 
 1. Run `list` and `status` first. They are read-only.
@@ -69,7 +69,7 @@ python3 hueman.py --config CFG set PALETTE               # real apply
 1. Re-run `set PALETTE --dry-run --only TARGET` and read the INFO/WARNING lines (`omitido`, `no existe`, `no encontrado`, `plantilla ... no encontrada`, `no tiene la clave ... requerida`).
 2. No line at all: suspect `palette_key` (sharp edge above).
 3. Check that the output exists (patch mode) and that `skip_*` conditions hold.
-4. Check template names against `template_dirs` (user dirs win) and `templates/`.
+4. Check template names against `template_dirs` (user dirs win) and the packaged `hueman/templates/`.
 5. Report the config path used, the exact output, and the exit code. Do not retry blindly with a real `set`.
 
 ## Adding a template, target or palette (locally)

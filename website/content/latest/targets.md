@@ -56,7 +56,7 @@ No crea archivos nuevos. Estrategias:
 
 ## Templates empaquetados
 
-Cada `.j2` de `templates/` espera una sección concreta de la paleta. `—` en
+Cada `.j2` de `hueman/templates/` espera una sección concreta de la paleta. `—` en
 notas significa que no hay nada que añadir.
 
 | Template | Herramienta | `palette_key` | Notas |

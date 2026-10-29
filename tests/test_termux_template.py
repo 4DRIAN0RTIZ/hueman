@@ -3,8 +3,8 @@ from pathlib import Path
 
 import yaml
 
-from engine.render import make_jinja_env, render_target
-from engine.targets import Target
+from hueman.engine.render import make_jinja_env, render_target
+from hueman.engine.targets import Target
 
 ROOT = Path(__file__).resolve().parent.parent
 KEYS = ["foreground", "background", "cursor"] + [f"color{i}" for i in range(16)]
@@ -12,8 +12,8 @@ logger = logging.getLogger("hueman-tests")
 
 
 def _render(tmp_path, palette_name="catppuccin-mocha"):
-    palette = yaml.safe_load((ROOT / "palettes" / f"{palette_name}.yaml").read_text())
-    env = make_jinja_env([], ROOT / "templates")
+    palette = yaml.safe_load((ROOT / "hueman" / "palettes" / f"{palette_name}.yaml").read_text())
+    env = make_jinja_env([], ROOT / "hueman" / "templates")
     out = tmp_path / ".termux" / "colors.properties"
     target = Target(
         name="termux", template="termux_colors.properties.j2",

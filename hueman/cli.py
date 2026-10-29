@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Gestor centralizado de temas (standalone): una paleta por nombre en
 palettes/*.yaml (empaquetadas o custom) alimenta templates Jinja2 que
 generan la config real de cada herramienta declarada en un
@@ -12,18 +11,14 @@ import logging
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from engine.config import VAR_NAME_RE, ConfigError, HuemanConfig  # noqa: E402
-from engine.fsutil import atomic_write_text  # noqa: E402
-from engine.palettes import PaletteLoader  # noqa: E402
-from engine.reload import PlaceholderError, expand_command, run_post_apply, run_reload  # noqa: E402
-from engine.statesource import ReadResult, State, build_source  # noqa: E402
-from engine.render import TargetRenderError, make_jinja_env, render_target  # noqa: E402
-
-HUEMAN_DIR = Path(__file__).resolve().parent
-PACKAGED_PALETTES = HUEMAN_DIR / "palettes"
-PACKAGED_TEMPLATES = HUEMAN_DIR / "templates"
+from . import __version__
+from .engine.config import VAR_NAME_RE, ConfigError, HuemanConfig
+from .engine.fsutil import atomic_write_text
+from .engine.palettes import PaletteLoader
+from .engine.reload import PlaceholderError, expand_command, run_post_apply, run_reload
+from .engine.statesource import ReadResult, State, build_source
+from .engine.render import TargetRenderError, make_jinja_env, render_target
+from .resources import packaged_palettes_dir, packaged_templates_dir
 
 
 class UnknownTargetError(ValueError):
@@ -33,14 +28,14 @@ class UnknownTargetError(ValueError):
 class Hueman:
     def __init__(self, config: HuemanConfig):
         self.config = config
-        self.palettes = PaletteLoader(PACKAGED_PALETTES, config.palette_dirs, config.logger)
+        self.palettes = PaletteLoader(packaged_palettes_dir(), config.palette_dirs, config.logger)
         self._jinja_envs = {}
 
     def _jinja_env(self, delimiters):
         key = delimiters or ()
         if key not in self._jinja_envs:
             self._jinja_envs[key] = make_jinja_env(
-                self.config.template_dirs, PACKAGED_TEMPLATES, delimiters
+                self.config.template_dirs, packaged_templates_dir(), delimiters
             )
         return self._jinja_envs[key]
 
@@ -249,6 +244,7 @@ def _var_arg(text: str):
 
 def main():
     parser = argparse.ArgumentParser(description="Gestor centralizado de temas (standalone)")
+    parser.add_argument("--version", action="version", version=f"hueman {__version__}")
     parser.add_argument("--config", help="Ruta a hueman.config.yaml")
     parser.add_argument(
         "--var", action="append", type=_var_arg, default=[], metavar="NAME=VALUE",

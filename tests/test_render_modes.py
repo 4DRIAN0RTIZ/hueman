@@ -3,9 +3,9 @@ import stat
 
 import pytest
 
-from engine.palettes import PaletteLoader
-from engine.render import make_jinja_env, render_target
-from engine.targets import PatchSpec, Target
+from hueman.engine.palettes import PaletteLoader
+from hueman.engine.render import make_jinja_env, render_target
+from hueman.engine.targets import PatchSpec, Target
 
 LOG = logging.getLogger("hueman-tests")
 
@@ -77,7 +77,7 @@ def test_user_template_dir_precedes_packaged(tmp_path):
 
 
 def test_missing_template_raises_clean_target_error(tmp_path):
-    from engine.render import TargetRenderError
+    from hueman.engine.render import TargetRenderError
     env = env_with(tmp_path)
     target = Target(name="t", template="ghost.j2", outputs=[tmp_path / "o"])
     with pytest.raises(TargetRenderError):
@@ -135,7 +135,7 @@ def test_patch_replacements_and_ensure_after_apply_once(tmp_path):
 
 
 def test_json_scheme_patch_rejects_invalid_json_without_modifying_file(tmp_path):
-    from engine.render import TargetRenderError
+    from hueman.engine.render import TargetRenderError
     env = env_with(tmp_path)
     out = tmp_path / "s.json"
     out.write_text("{not json")
@@ -176,7 +176,7 @@ class _RecLog:
 
 def _splice_runs(regex, rendered, original, runs=1):
     from types import SimpleNamespace
-    from engine.render import _apply_regex_splice
+    from hueman.engine.render import _apply_regex_splice
     patch = SimpleNamespace(marker_regex=regex, insert_after_section_regex=None,
                             replacements=[], ensure_after=[])
     log = _RecLog()

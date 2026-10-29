@@ -9,7 +9,7 @@ Hay dos caminos:
 | Camino | Dónde vive | Cuándo usarlo |
 |--------|------------|---------------|
 | **Local (tuyo)** | tu `hueman.config.yaml` + `template_dirs` | La tool es tuya, experimental, o aún no quieres upstream |
-| **Empaquetado (upstream)** | PR a este repo (`templates/`, opcionalmente paletas) | La tool es común y quieres que otros la usen sin copiar templates |
+| **Empaquetado (upstream)** | PR a este repo (`hueman/templates/`, opcionalmente paletas) | La tool es común y quieres que otros la usen sin copiar templates |
 
 Empieza siempre por el camino local. Si funciona, opcionalmente súbelo
 empaquetado.
@@ -162,15 +162,15 @@ El template debe generar **solo el bloque gestionado**, no el archivo entero.
 
 ```sh
 # Ver qué se escribiría, sin tocar disco ni disparar reload
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml \
+hueman --config ~/dotfiles/theme/hueman.config.yaml \
   set mi-paleta --dry-run --only miapp_theme
 
 # Aplicar solo ese target (no cambia el state file ni corre post_apply)
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml \
+hueman --config ~/dotfiles/theme/hueman.config.yaml \
   set mi-paleta --only miapp_theme
 
 # Aplicación completa de tema
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml set mi-paleta
+hueman --config ~/dotfiles/theme/hueman.config.yaml set mi-paleta
 ```
 
 Comprueba:
@@ -193,7 +193,7 @@ Comprueba:
 
 Cuando el template es genérico y reutilizable:
 
-1. Copia el `.j2` a `templates/` en un fork de hueman.
+1. Copia el `.j2` a `hueman/templates/` en un fork de hueman.
 2. No metas rutas de tu home ni secrets.
 3. Si necesitas claves de paleta **nuevas**, documenta la sección o reutiliza
    `polybar` / `kitty` para no romper paletas existentes.

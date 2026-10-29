@@ -2,36 +2,47 @@
 
 ## Requisitos
 
-- Python 3
-- Dependencias: Jinja2 y PyYAML (`requirements.txt`)
+- Python 3.9 o superior
+- Las dependencias (Jinja2 y PyYAML) se instalan solas con el paquete
+
+## Instalar
+
+El paquete se llama `hueman-cli`; instala el comando `hueman`. Para una
+herramienta de línea de comandos lo recomendado es `pipx`, que la aísla en su
+propio entorno:
 
 ```sh
-python3 -m pip install -r requirements.txt
-# o el flujo que uses en tu entorno
+pipx install hueman-cli
 ```
 
-## Obtener hueman
-
-Clona el repo y ejecuta el CLI desde la raíz:
+O con pip:
 
 ```sh
-git clone <url-del-repo> ~/src/hueman
-cd ~/src/hueman
-python3 hueman.py --help
+python3 -m pip install hueman-cli
 ```
 
-(La URL depende de dónde esté alojado el repo.)
-
-Opcional: un wrapper en tu `PATH` para escribir `hueman` en vez de
-`python3 hueman.py`. Por ejemplo `~/.local/bin/hueman`:
+Verifica:
 
 ```sh
-#!/bin/sh
-exec python3 ~/src/hueman/hueman.py "$@"
+hueman --version
+hueman --help
 ```
 
-Dale permisos con `chmod +x ~/.local/bin/hueman`. Un alias también sirve:
-`alias hueman='python3 ~/src/hueman/hueman.py'`.
+También funciona `python3 -m hueman` si el comando no está en tu `PATH`.
+
+## Desde el código fuente
+
+Para contribuir, o si todavía no hay paquete publicado en tu índice:
+
+```sh
+git clone https://github.com/NeanderTeam/hueman.git
+cd hueman
+pip install -e .
+hueman --version
+```
+
+La versión sale de los tags de git. En un checkout de desarrollo, `./init.sh`
+corre smoke tests y la suite.
 
 ## Config del usuario
 
@@ -39,7 +50,7 @@ hueman **no** trae tu mapeo de máquinas. Necesitas un config propio (copia
 desde `hueman.config.example.yaml`) y pásalo así, en este orden de
 precedencia:
 
-1. `hueman.py --config /ruta/al/config.yaml`
+1. `hueman --config /ruta/al/config.yaml`
 2. variable `HUEMAN_CONFIG`
 3. `./hueman.config.yaml` en el working directory
 4. `~/.config/hueman/config.yaml`
@@ -47,8 +58,6 @@ precedencia:
 ## Verificar
 
 ```sh
-python3 hueman.py --config /ruta/al/config.yaml list
-python3 hueman.py --config /ruta/al/config.yaml set <paleta> --dry-run
+hueman --config /ruta/al/config.yaml list
+hueman --config /ruta/al/config.yaml set <paleta> --dry-run
 ```
-
-En un checkout de desarrollo, `./init.sh` corre smoke tests y la suite.

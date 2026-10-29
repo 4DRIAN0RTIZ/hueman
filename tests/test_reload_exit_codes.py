@@ -3,10 +3,10 @@ import os
 
 import pytest
 
-import hueman
-from engine.config import ConfigError, HuemanConfig
-from engine.reload import run_post_apply, run_reload
-from hueman import Hueman
+import hueman.cli as hueman
+from hueman.engine.config import ConfigError, HuemanConfig
+from hueman.engine.reload import run_post_apply, run_reload
+from hueman.cli import Hueman
 
 LOG = logging.getLogger("hueman-tests")
 
@@ -200,7 +200,7 @@ def test_cli_only_validates_just_selected_targets(tmp_path, monkeypatch):
 # --- sync: mismo error limpio que `set` ---------------------------------------
 
 def _sync_app(tmp_path, revision=3, **kw):
-    from engine.statesource import FileSource, State
+    from hueman.engine.statesource import FileSource, State
     shared = tmp_path / "shared"
     shared.mkdir(exist_ok=True)
     FileSource(shared / "s.yaml").write(State("one", revision))

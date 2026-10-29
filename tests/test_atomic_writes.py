@@ -5,10 +5,10 @@ import stat
 
 import pytest
 
-import hueman
-from engine.fsutil import atomic_write_text
-from engine.render import TargetRenderError, make_jinja_env, render_target
-from engine.targets import PatchSpec, Target
+import hueman.cli as hueman
+from hueman.engine.fsutil import atomic_write_text
+from hueman.engine.render import TargetRenderError, make_jinja_env, render_target
+from hueman.engine.targets import PatchSpec, Target
 
 LOG = logging.getLogger("hueman-tests")
 

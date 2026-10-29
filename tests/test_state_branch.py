@@ -5,8 +5,8 @@ import subprocess
 
 import pytest
 
-from engine.config import ConfigError, HuemanConfig
-from engine.statesource import GitBranchSource, State, StateSource
+from hueman.engine.config import ConfigError, HuemanConfig
+from hueman.engine.statesource import GitBranchSource, State, StateSource
 from test_reload_exit_codes import make_app
 
 pytestmark = pytest.mark.skipif(shutil.which("git") is None, reason="git not installed")

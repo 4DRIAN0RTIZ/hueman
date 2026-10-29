@@ -1,8 +1,8 @@
 import logging
 
-from engine.colors import contrast_text, is_dark
-from hueman import Hueman
-from engine.config import HuemanConfig
+from hueman.engine.colors import contrast_text, is_dark
+from hueman.cli import Hueman
+from hueman.engine.config import HuemanConfig
 
 
 def test_color_filters_classify_light_and_dark_values():
@@ -25,7 +25,7 @@ def test_set_theme_persists_state_and_runs_post_apply_after_targets(tmp_path, mo
     config = HuemanConfig(config_file)
     app = Hueman(config)
     calls = []
-    monkeypatch.setattr("hueman.run_post_apply", lambda commands, logger: calls.append(commands))
+    monkeypatch.setattr("hueman.cli.run_post_apply", lambda commands, logger: calls.append(commands))
 
     app.set_theme("palette")
 
@@ -65,8 +65,8 @@ def _only_app(tmp_path, monkeypatch):
         "post_apply: ['echo done']\n"
     )
     reloads, post = [], []
-    monkeypatch.setattr("hueman.run_reload", lambda cmd, logger: reloads.append(cmd))
-    monkeypatch.setattr("hueman.run_post_apply", lambda c, logger: post.append(c))
+    monkeypatch.setattr("hueman.cli.run_reload", lambda cmd, logger: reloads.append(cmd))
+    monkeypatch.setattr("hueman.cli.run_post_apply", lambda c, logger: post.append(c))
     return Hueman(HuemanConfig(tmp_path / "hueman.yaml")), reloads, post
 
 
@@ -95,7 +95,7 @@ def test_set_theme_only_exact_name_limits_render_and_reload(tmp_path, monkeypatc
 
 def test_set_theme_only_unknown_pattern_raises_listing_valid_targets(tmp_path, monkeypatch):
     import pytest
-    from hueman import UnknownTargetError
+    from hueman.cli import UnknownTargetError
 
     app, reloads, post = _only_app(tmp_path, monkeypatch)
 
@@ -108,7 +108,7 @@ def test_set_theme_only_unknown_pattern_raises_listing_valid_targets(tmp_path, m
 
 
 def test_cli_only_flag_is_repeatable_and_comma_separated(tmp_path, monkeypatch):
-    import hueman
+    import hueman.cli as hueman
 
     seen = {}
     monkeypatch.setattr(
@@ -128,7 +128,7 @@ def test_cli_only_flag_is_repeatable_and_comma_separated(tmp_path, monkeypatch):
 
 def test_cli_only_unknown_exits_nonzero(tmp_path, monkeypatch, capsys):
     import pytest
-    import hueman
+    import hueman.cli as hueman
 
     (tmp_path / "p.yaml").write_text("name: demo\n")
     (tmp_path / "c.yaml").write_text(

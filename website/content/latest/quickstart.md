@@ -1,7 +1,8 @@
 # Quickstart
 
-> Los ejemplos usan `python3 hueman.py`; el repo no trae un comando `hueman`
-> (ver [Instalación](install.md)). Si creas el wrapper, quita el prefijo.
+> Los ejemplos asumen que el comando `hueman` está instalado (ver
+> [Instalación](install.md)). Desde un checkout sin instalar, usa
+> `python3 -m hueman` en su lugar.
 
 ## 1. Config mínima
 
@@ -33,7 +34,7 @@ Más opciones (patch, reload, `palette_dirs`) en
 ## 2. Lista las paletas
 
 ```sh
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml list
+hueman --config ~/dotfiles/theme/hueman.config.yaml list
 ```
 
 ```text
@@ -48,7 +49,7 @@ copperwave
 ## 3. Prueba sin escribir
 
 ```sh
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml set catppuccin-mocha --dry-run
+hueman --config ~/dotfiles/theme/hueman.config.yaml set catppuccin-mocha --dry-run
 ```
 
 ```text
@@ -59,7 +60,7 @@ python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml set catppuccin-mo
 ## 4. Aplica
 
 ```sh
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml set catppuccin-mocha
+hueman --config ~/dotfiles/theme/hueman.config.yaml set catppuccin-mocha
 ```
 
 ```text
@@ -71,7 +72,7 @@ INFO: Tema activo: catppuccin-mocha
 ## Cómo saber que funcionó
 
 ```sh
-python3 hueman.py --config ~/dotfiles/theme/hueman.config.yaml status
+hueman --config ~/dotfiles/theme/hueman.config.yaml status
 ```
 
 ```text

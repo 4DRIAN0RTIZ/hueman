@@ -4,8 +4,8 @@ import json
 
 import yaml
 
-from engine.config import HuemanConfig
-from hueman import Hueman
+from hueman.engine.config import HuemanConfig
+from hueman.cli import Hueman
 
 
 def _kitty():

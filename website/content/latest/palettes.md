@@ -1,6 +1,6 @@
 # Paletas
 
-YAML bajo `palettes/` (empaquetadas) y `palette_dirs` (custom). El nombre de
+YAML bajo `hueman/palettes/` (empaquetadas) y `palette_dirs` (custom). El nombre de
 la paleta es el stem del archivo.
 
 ## Precedencia

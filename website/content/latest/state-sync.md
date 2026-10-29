@@ -2,13 +2,13 @@
 
 Opt-in vía `state_sync` en el config. Publica `{palette, revision}` para que
 otras máquinas converjan con `hueman sync`. Sin la clave, nada cambia. Los
-ejemplos usan `python3 hueman.py` (ver [Instalación](install.md)); si creaste
-el wrapper `hueman`, quita el prefijo.
+ejemplos asumen el comando `hueman` instalado (ver
+[Instalación](install.md)).
 
 ## Backends
 
 El backend se elige con `state_sync.type`; la interfaz abstracta es
-`StateSource` (`engine/statesource.py`) y el motor solo la usa a través de
+`StateSource` (`hueman/engine/statesource.py`) y el motor solo la usa a través de
 `build_source`. Un tipo desconocido es un error de config que lista los
 válidos.
 
@@ -94,11 +94,11 @@ Pensado para el arranque del shell:
 1. En cada nodo, agrega `state_sync` a su config (mismo `repo`/`remote` o el
    mismo `path` para `type: file`).
 2. En el nodo A corre un `set` completo:
-   `python3 hueman.py --config RUTA set <paleta>`. La primera vez crea la
+   `hueman --config RUTA set <paleta>`. La primera vez crea la
    rama huérfana `hueman-state` y publica la revisión 1.
-3. En el nodo B corre `python3 hueman.py --config RUTA sync`: aplica la
+3. En el nodo B corre `hueman --config RUTA sync`: aplica la
    paleta y guarda la revisión local.
-4. `python3 hueman.py --config RUTA status` en ambos debe mostrar `in sync`.
+4. `hueman --config RUTA status` en ambos debe mostrar `in sync`.
 
 `set --dry-run` y `set --only` nunca publican, así que no sirven para
 sembrar el estado.
@@ -110,17 +110,17 @@ sembrar el estado.
 hueman sync -q
 
 # 2. Timer de usuario de systemd (~/.config/systemd/user/hueman-sync.{service,timer})
-#    [Service] ExecStart=/ruta/a/hueman.py sync -q
+#    [Service] ExecStart=/ruta/a/hueman sync -q
 #    [Timer]   OnBootSec=1min  OnUnitActiveSec=15min
 #    systemctl --user enable --now hueman-sync.timer
 
 # 3. cron
-*/15 * * * * /ruta/a/hueman.py sync -q
+*/15 * * * * /ruta/a/hueman sync -q
 
 # 4. Hook de git en tu repo de dotfiles (.git/hooks/post-merge)
 #!/bin/sh
 hueman sync -q
 ```
 
-Ajusta `hueman` o la ruta al CLI según tu instalación (wrapper o
-`python3 /ruta/a/hueman.py`).
+Ajusta `hueman` o la ruta absoluta al CLI según tu instalación (`command -v
+hueman`; systemd y cron no cargan el `PATH` de tu shell).
