@@ -69,6 +69,12 @@ no hace nada: sin escrituras ni reload (idempotente). La revisión local vive
 en `<state_file>.revision`; el `state_file` sigue siendo solo el nombre de la
 paleta, y `set` actualiza la revisión al publicar.
 
+Si el estado remoto nombra una paleta que no existe en este nodo, `sync` emite
+un aviso (`la paleta remota '<nombre>' no esta disponible localmente`), no
+escribe nada, no avanza la revisión local y sale con 0 (resultado
+`unknown-palette`), para no romper el arranque del shell. Un estado cuyo nombre
+de paleta es inválido (ruta, `..`) se trata como estado remoto ilegible.
+
 Pensado para el arranque del shell:
 
 - Silencioso si no hay cambios; nunca cuelga (cada llamada git tiene

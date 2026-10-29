@@ -1,7 +1,9 @@
 # Agregar una paleta
 
 Una paleta es un YAML con secciones de color. hueman lista y carga por
-**nombre de archivo** (sin `.yaml`).
+**nombre de archivo** (sin `.yaml`). El nombre solo admite letras, dígitos,
+`.`, `_` y `-`, y debe empezar por letra o dígito (sin `..`, `/` ni espacios);
+`hueman set` rechaza cualquier otro con `Nombre de paleta invalido` (exit 1).
 
 ## Camino local
 

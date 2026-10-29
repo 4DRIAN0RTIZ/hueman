@@ -1,9 +1,20 @@
 """Carga de paletas YAML: empaquetadas dentro del tool + directorios custom
 del usuario, con precedencia de los custom sobre los empaquetados."""
 
+import re
 from pathlib import Path
 
 import yaml
+
+PALETTE_NAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+
+
+def is_valid_palette_name(name) -> bool:
+    """Nombre seguro: sin separadores de ruta, sin '..', sin espacios ni saltos
+    de linea. El nombre llega a rutas, logs y comandos (y con `sync` lo controla
+    el remoto), asi que se valida antes de tocar el disco."""
+    return (isinstance(name, str) and PALETTE_NAME_RE.fullmatch(name) is not None
+            and ".." not in name)
 
 
 class PaletteLoader:
@@ -32,6 +43,12 @@ class PaletteLoader:
         return sorted(found)
 
     def load(self, name: str) -> dict:
+        if not is_valid_palette_name(name):
+            self.logger.error(
+                f"Nombre de paleta invalido: {name!r} "
+                "(solo letras, digitos, '.', '_' y '-'; debe empezar por letra o digito)"
+            )
+            raise SystemExit(1)
         for d in self._search_dirs():
             path = d / f"{name}.yaml"
             if path.exists():

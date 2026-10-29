@@ -30,6 +30,7 @@ from typing import Callable, ClassVar, Optional
 import yaml
 
 from .fsutil import atomic_write_text
+from .palettes import is_valid_palette_name
 
 STATE_FILE_NAME = "hueman.state.yaml"
 DEFAULT_BRANCH = "hueman-state"
@@ -112,9 +113,11 @@ def dump_state(state: State) -> str:
 def parse_state(text: str) -> Optional[State]:
     try:
         raw = yaml.safe_load(text)
-        return State(str(raw["palette"]), int(raw["revision"]))
+        state = State(str(raw["palette"]), int(raw["revision"]))
     except (yaml.YAMLError, KeyError, TypeError, ValueError):
         return None
+    # el nombre viene del remoto: uno invalido (ruta, '..') es dato inutilizable
+    return state if is_valid_palette_name(state.palette) else None
 
 
 class GitBranchSource(StateSource):
