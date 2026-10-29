@@ -29,6 +29,10 @@ All notable changes to this project are documented here.
 - Add Termux colors template and proot guide (#25) (5884ae4)
 - Add static documentation portal shell (#23) (853085f)
 
+### Testing
+
+- Cover the git timeout against a real hung remote (#35) (1fe2de0)
+
 ## [0.1.0] - 2026-10-16
 
 ### Bug Fixes
