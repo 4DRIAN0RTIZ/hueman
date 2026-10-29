@@ -9,4 +9,4 @@ prune openwiki
 prune skills
 prune .github
 prune examples
-exclude CHANGELOG.md cliff.toml release.sh .gitignore
+exclude CHANGELOG.md cliff.toml .gitignore
